@@ -29,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -50,9 +50,24 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'fname' => ['required', 'max:255'],
+            'lname' => ['required', 'max:255'],
+            'bday' => ['required', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users'],
+            'addr' => ['required', 'max:255'],
+            'contact_no' => ['required', 'max:255', 'unique:users'],
+            'password' => ['required'],
+            'confpwd' => ['required', 'same:password'],
+        ], $messages = [
+            'fname.required' => 'The first name field must not be empty.',
+            'lname.required' => 'The last name field must not be empty.',
+            'bday.required' => 'The birthdate field must not be empty.',
+            'addr.required' => 'The address field must not be empty.',
+            'contact_no.required' => 'The contact number field must not be empty.',
+            'contact_no.unique' => 'The contact number has already been taken.',
+            'confpwd.required' => 'The confirm password field must not be empty.',
+            'confpwd.same' => 'The confirm password and password must match.',
+
         ]);
     }
 
@@ -65,9 +80,17 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
+            'fname' => $data['fname'],
+            'lname' => $data['lname'],
+            'bday' => $data['bday'],
             'email' => $data['email'],
+            'addr' => $data['addr'],
+            'contact_no' => $data['contact_no'],
             'password' => Hash::make($data['password']),
+            'is_notify' => $data['is_notify'],
+            'user_role' => 2
         ]);
+
+        //dd($data);
     }
 }

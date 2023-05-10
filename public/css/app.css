@@ -188,3 +188,26 @@ section {
     margin-top: 1rem;
     font-size: 1.5rem;
 }
+
+.auth-card {
+    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+    padding: 2rem;
+}
+
+@media (max-width:768px) {
+    .auth-card {
+        padding: 0rem;
+    }
+}
+
+.auth-card .auth-header h4 {
+    font-weight: 700;
+}
+
+.auth-card .auth-header p {
+    font-weight: 500;
+}
+
+.auth-header-divider {
+    border-top: 0.5px solid #6a7c92;
+}

@@ -34,72 +34,29 @@
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 </head>
 
 <body>
     <div id="app">
-        {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        {{-- @if (Auth::user()->email_verified_at == null)
+            <script>
+                swal({
+                    title: "Your email is not yet verified!",
+                    text: "Kindly verify your email!",
+                    icon: "warning",
+                });
+            </script>
+        @endif --}}
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav> --}}
+        {{-- fix redirection to redirect here --}}
         <header id="header">
             <div class="banner-img">
             </div>
             <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
                 <div class="container-fluid">
-                    <a class="navbar-brand d-block d-lg-none" href="#">
+                    <a class="navbar-brand d-block d-lg-none" href="#header">
                         <img src="{{ asset('img/logo.png') }}" alt="" width="100" height="100">
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -109,19 +66,19 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-center " id="navbarNavAltMarkup">
                         <div class="navbar-nav align-items-lg-center">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" aria-current="page" href="#header">Home</a>
                             <a class="nav-link" href="#cottages">Cottages</a>
                             <a class="nav-link" href="#rooms">Rooms</a>
                             <a class="nav-link" href="#ammenities">Ammenities</a>
                             <a class="nav-link" href="#pools">Pools</a>
-                            <a class="navbar-brand d-none d-lg-block" href="#">
+                            <a class="navbar-brand d-none d-lg-block" href="#header">
                                 <img src="{{ asset('img/logo.png') }}" alt="" width="100" height="100">
                             </a>
                             <a class="nav-link" href="#aboutus">About Us</a>
                             <a class="nav-link" href="#events">Events</a>
                             <a class="nav-link" href="#deals">Deals</a>
                             <a class="nav-link" href="#reviews">Reviews</a>
-                            <a class="nav-link" href="#">Book Now</a>
+                            <a class="nav-link" href="{{ route('booknow') }}">Book Now</a>
                         </div>
                     </div>
                 </div>
