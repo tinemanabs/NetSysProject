@@ -54,7 +54,7 @@
         <header id="header">
             <div class="banner-img">
             </div>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
                 <div class="container-fluid">
                     <a class="navbar-brand d-block d-lg-none" href="#header">
                         <img src="{{ asset('img/logo.png') }}" alt="" width="100" height="100">
@@ -78,7 +78,12 @@
                             <a class="nav-link" href="#events">Events</a>
                             <a class="nav-link" href="#deals">Deals</a>
                             <a class="nav-link" href="#reviews">Reviews</a>
-                            <a class="nav-link" href="{{ route('booknow') }}">Book Now</a>
+                            @guest
+                                <a class="nav-link" href="{{ route('register') }}">Book Now</a>
+                            @endguest
+                            @auth
+                                <a class="nav-link" href="{{ route('booknow') }}">Book Now</a>
+                            @endauth
                         </div>
                     </div>
                 </div>

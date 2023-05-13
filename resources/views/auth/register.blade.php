@@ -23,23 +23,26 @@
                             <div class="row">
                                 <div class="col-lg-6 mb-3">
                                     <label for="" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" value="{{ old('fname') }}" name="fname">
-                                    @error('fname')
+                                    <input type="text" class="form-control" value="{{ old('first_name') }}"
+                                        name="first_name">
+                                    @error('first_name')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
                                 <div class="col-lg-6 mb-3">
                                     <label for="" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" value="{{ old('lname') }}" name="lname">
-                                    @error('lname')
+                                    <input type="text" class="form-control" value="{{ old('last_name') }}"
+                                        name="last_name">
+                                    @error('last_name')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
 
                                 <div class="col-lg-6 mb-3">
                                     <label for="" class="form-label">Birthdate</label>
-                                    <input type="date" name="bday" class="form-control" value="{{ old('bday') }}">
-                                    @error('bday')
+                                    <input type="date" name="birthday" class="form-control"
+                                        value="{{ old('birthday') }}">
+                                    @error('birthday')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -54,8 +57,8 @@
 
                                 <div class="col-lg-6 mb-3">
                                     <label for="" class="form-label">Address</label>
-                                    <input type="text" name="addr" class="form-control" value="{{ old('addr') }}">
-                                    @error('addr')
+                                    <input type="text" name="address" class="form-control" value="{{ old('address') }}">
+                                    @error('address')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>

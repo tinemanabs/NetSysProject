@@ -34,16 +34,31 @@
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!-- Sweet Alert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+    <!-- Axios CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"
+        integrity="sha512-u9akINsQsAkG9xjc1cnGF4zw5TFDwkxuc9vUp5dltDWYCSmyd0meygbvgXrlc/z7/o4a19Fb5V0OUE58J7dcyw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
     <div id="app">
         <header>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
                 <div class="container-fluid">
                     <a class="navbar-brand d-block" href="/">
                         <img src="{{ asset('img/logo.png') }}" alt="" width="100" height="100">
                     </a>
+
+                    @auth
+                        @if (Auth::user()->email_verified_at !== null || Auth::user()->user_role == 1)
+                            <button class="btn btn-primary" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
+                        @endif
+                    @endauth
+
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -57,7 +72,7 @@
                             @endguest
 
                             @auth
-                                <a class="nav-link">{{ Auth::user()->fname }} {{ Auth::user()->lname }}</a>
+                                <a class="nav-link">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</a>
                                 <a class="nav-link" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
@@ -74,7 +89,70 @@
         </header>
 
         <main>
-            @yield('content')
+            @auth
+                @if (Auth::user()->email_verified_at !== null || Auth::user()->user_role == 1)
+                    <div class="d-flex" id="wrapper">
+                        <!-- Sidebar-->
+                        <div class="border-end bg-white" id="sidebar-wrapper">
+                            @if (Auth::user()->user_role == 1)
+                                <div class="list-group list-group-flush">
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="#!">Dashboard</a>
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="#!">Analytics</a>
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="{{ route('useraccounts') }}">User Accounts</a>
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="#!">Rooms</a>
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="#!">Cottages</a>
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="#!">Purchase and Rental Inventory</a>
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="#!">Payment</a>
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="#!">Events</a>
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="#!">SMS Notification System</a>
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="{{ route('editprofile', Auth::user()->id) }}">Profile</a>
+                                </div>
+                            @elseif (Auth::user()->user_role == 2)
+                                <div class="list-group list-group-flush">
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="#!">Book
+                                        Now</a>
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="#!">Book
+                                        an Event</a>
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="#!">History</a>
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="{{ route('editprofile', Auth::user()->id) }}">Profile</a>
+                                </div>
+                            @endif
+                        </div>
+
+
+                        <!-- Page content wrapper-->
+                        <div id="page-content-wrapper">
+                            <!-- Page content-->
+                            <div class="container-fluid p-3">
+                                @yield('content')
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <div class="container">
+                        Please verify your email address.
+                    </div>
+                @endif
+            @endauth
+
+            @guest
+                @yield('content')
+            @endguest
+
         </main>
     </div>
 

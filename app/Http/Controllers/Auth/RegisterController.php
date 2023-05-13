@@ -50,19 +50,20 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'fname' => ['required', 'max:255'],
-            'lname' => ['required', 'max:255'],
-            'bday' => ['required', 'max:255'],
+            'first_name' => ['required', 'max:255'],
+            'last_name' => ['required', 'max:255'],
+            'birthday' => ['required', 'max:255', 'before:-18 years'],
             'email' => ['required', 'email', 'max:255', 'unique:users'],
-            'addr' => ['required', 'max:255'],
+            'address' => ['required', 'max:255'],
             'contact_no' => ['required', 'max:255', 'unique:users'],
             'password' => ['required'],
             'confpwd' => ['required', 'same:password'],
         ], $messages = [
-            'fname.required' => 'The first name field must not be empty.',
-            'lname.required' => 'The last name field must not be empty.',
-            'bday.required' => 'The birthdate field must not be empty.',
-            'addr.required' => 'The address field must not be empty.',
+            'first_name.required' => 'The first name field must not be empty.',
+            'last_name.required' => 'The last name field must not be empty.',
+            'birthday.required' => 'The birthdate field must not be empty.',
+            'birthday.before' => 'Age must be more than or equal to 18 years old.',
+            'address.required' => 'The address field must not be empty.',
             'contact_no.required' => 'The contact number field must not be empty.',
             'contact_no.unique' => 'The contact number has already been taken.',
             'confpwd.required' => 'The confirm password field must not be empty.',
@@ -80,14 +81,15 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'fname' => $data['fname'],
-            'lname' => $data['lname'],
-            'bday' => $data['bday'],
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'birthday' => $data['birthday'],
             'email' => $data['email'],
-            'addr' => $data['addr'],
+            'address' => $data['address'],
             'contact_no' => $data['contact_no'],
             'password' => Hash::make($data['password']),
             'is_notify' => $data['is_notify'],
+            'is_booked' => NULL, // confirm what data to save
             'user_role' => 2
         ]);
 
