@@ -108,7 +108,7 @@
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('useraccounts') }}">User Accounts</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">Rooms</a>
+                                        href="{{ route('showRoomsPage') }}">Rooms</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="#!">Cottages</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"

@@ -4,6 +4,7 @@ use App\Http\Controllers\Features\ProfileController;
 use App\Http\Controllers\Features\UserAccountsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Features\BookNowController;
+use App\Http\Controllers\Features\RoomsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +34,4 @@ Route::post('/editpassword', [ProfileController::class, 'updatePassword']);
 Route::get('/useraccounts', [UserAccountsController::class, 'index'])->name('useraccounts');
 Route::get('/addadmin', [UserAccountsController::class, 'showAddAdmin'])->name('showAddAdmin');
 Route::post('/saveadmin', [UserAccountsController::class, 'addAdmin']);
+Route::get('/rooms', [RoomsController::class, 'showRoomsPage'])->name('showRoomsPage');

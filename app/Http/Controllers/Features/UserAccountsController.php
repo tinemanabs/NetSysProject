@@ -13,14 +13,14 @@ class UserAccountsController extends Controller
     public function index()
     {
         $users = User::all()->where('user_role', 2);
-        return view('auth.features.useraccounts', [
+        return view('features.useraccounts', [
             'users' => $users
         ]);
     }
 
     public function showAddAdmin()
     {
-        return view('auth.features.addadmin');
+        return view('features.addadmin');
     }
 
     public function addAdmin(Request $request)
