@@ -110,7 +110,7 @@
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('showRoomsPage') }}">Rooms</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">Cottages</a>
+                                        href="{{ route('showCottagesPage') }}">Cottages</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="#!">Purchase and Rental Inventory</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"

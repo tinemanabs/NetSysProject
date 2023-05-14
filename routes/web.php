@@ -4,7 +4,7 @@ use App\Http\Controllers\Features\ProfileController;
 use App\Http\Controllers\Features\UserAccountsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Features\BookNowController;
-use App\Http\Controllers\Features\RoomsController;
+use App\Http\Controllers\Features\RoomsAndCottagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,5 +33,8 @@ Route::post('/editpassword', [ProfileController::class, 'updatePassword']);
 // ADMIN 
 Route::get('/useraccounts', [UserAccountsController::class, 'index'])->name('useraccounts');
 Route::get('/addadmin', [UserAccountsController::class, 'showAddAdmin'])->name('showAddAdmin');
-Route::post('/saveadmin', [UserAccountsController::class, 'addAdmin']);
-Route::get('/rooms', [RoomsController::class, 'showRoomsPage'])->name('showRoomsPage');
+Route::post('/addadmin', [UserAccountsController::class, 'addAdmin']);
+Route::get('/rooms', [RoomsAndCottagesController::class, 'showRoomsPage'])->name('showRoomsPage');
+Route::post('/addroom', [RoomsAndCottagesController::class, 'addRoom']);
+Route::get('/cottages', [RoomsAndCottagesController::class, 'showCottagesPage'])->name('showCottagesPage');
+Route::post('/addcottage', [RoomsAndCottagesController::class, 'addCottage']);

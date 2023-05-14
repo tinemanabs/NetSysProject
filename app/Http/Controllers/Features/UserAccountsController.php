@@ -18,11 +18,6 @@ class UserAccountsController extends Controller
         ]);
     }
 
-    public function showAddAdmin()
-    {
-        return view('features.addadmin');
-    }
-
     public function addAdmin(Request $request)
     {
         User::create([
