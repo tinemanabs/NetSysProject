@@ -15,5 +15,6 @@ class RoomsAndCottages extends Model
         'cottage_name',
         'type_of_rent',
         'room_cottage_price',
+        'room_cottage_image',
     ];
 }

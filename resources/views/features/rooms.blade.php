@@ -1,40 +1,38 @@
 @extends('layouts.auth')
 
 @section('content')
-    <div class="container">
-        <h4>Rooms Management</h4>
-        <div class="d-flex justify-content-end mb-3">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoomModal">
-                Add Room
-            </button>
-        </div>
+    <h4>Rooms Management</h4>
+    <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoomModal">
+            Add Room
+        </button>
+    </div>
 
-        <div class="card">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="myTable" class="row-border" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Room</th>
-                                <th>Fullname</th>
-                                <th>Check-in</th>
-                                <th>Check-out</th>
-                                <th>Day/Night</th>
-                                <th>Contact Number</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Room 101</td>
-                                <td>Tine Manabs</td>
-                                <td>Feb 12</td>
-                                <td>Feb 12</td>
-                                <td>Day</td>
-                                <td>Contact Number</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="myTable" class="row-border" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Room</th>
+                            <th>Fullname</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>Day/Night</th>
+                            <th>Contact Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{-- <tr>
+                            <td>Room 101</td>
+                            <td>Tine Manabs</td>
+                            <td>Feb 12</td>
+                            <td>Feb 12</td>
+                            <td>Day</td>
+                            <td>Contact Number</td>
+                        </tr> --}}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -47,7 +45,7 @@
                     <h5 class="modal-title" id="addRoomModalLabel">Add Rooms</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="" method="post">
+                <form action="" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="card-body">
@@ -63,6 +61,10 @@
                                 <div class="col-lg-12 mb-3">
                                     <label for="" class="form-label">Room Price</label>
                                     <input type="text" class="form-control" name="room_price" id="roomPrice">
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <label for="" class="form-label">Room Image</label>
+                                    <input type="file" class="form-control" name="room_image" id="roomImage">
                                 </div>
                             </div>
 
@@ -88,14 +90,21 @@
             $room_id = $('#roomID').val();
             $room_name = $('#roomName').val();
             $room_price = $('#roomPrice').val();
-
+            $room_image = $('#roomImage').val().split('\\').pop();
+            $fileExtension = ['jpeg', 'jpg', 'png', 'gif'];
             //console.log($room_id, $room_name, $room_price)
 
-            if ($room_id == '' || $room_name == '' || $room_price == '') {
+            if ($room_id == '' || $room_name == '' || $room_price == '' || $room_image == '') {
                 swal({
                     icon: 'warning',
                     title: 'Empty Fields!',
                     text: 'Please fill up the required fields!'
+                });
+            } else if ($.inArray($room_image.split('.').pop().toLowerCase(), $fileExtension) == -1) {
+                swal({
+                    icon: 'warning',
+                    title: 'Invalid File Format!',
+                    text: `The image is invalid, or not supported. Allowed types: ${$fileExtension}`
                 });
             } else {
                 swal({
@@ -108,10 +117,16 @@
                     formdata.append('room_id', $room_id);
                     formdata.append('room_name', $room_name);
                     formdata.append('room_price', $room_price);
+                    formdata.append('room_image', document.getElementById('roomImage').files[0]);
 
                     console.log([...formdata]);
 
-                    axios.post('/addroom', formdata)
+                    let settings = {
+                        headers: {
+                            'content-type': 'multipart/form-data'
+                        }
+                    }
+                    axios.post('/addroom', formdata, settings)
                         .then(response => {
                             location.reload();
                         })

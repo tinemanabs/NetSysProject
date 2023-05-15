@@ -15,11 +15,15 @@ class RoomsAndCottagesController extends Controller
 
     public function addRoom(Request $request)
     {
+
+        $fileName = $request->room_id . '-' . $request->room_image->getClientOriginalName();
+        $request->room_image->move(public_path('img/rooms/' . $request->room_id), $fileName);
+
         RoomsAndCottages::create([
             'room_id' => $request->room_id,
             'room_name' => $request->room_name,
-            'type_of_rent' => 'room',
-            'room_cottage_price' => $request->room_price
+            'room_cottage_price' => $request->room_price,
+            'room_cottage_image' => $fileName,
         ]);
     }
 
@@ -30,10 +34,14 @@ class RoomsAndCottagesController extends Controller
 
     public function addCottage(Request $request)
     {
+        $fileName = $request->cottage_name . '-' . $request->cottage_image->getClientOriginalName();
+        $request->cottage_image->move(public_path('img/cottages/' . $request->cottage_name), $fileName);
+
         RoomsAndCottages::create([
             'cottage_name' => $request->cottage_name,
-            'type_of_rent' => 'cottage',
-            'room_cottage_price' => $request->cottage_price
+            'room_cottage_price' => $request->cottage_price,
+            'room_cottage_image' => $request->cottage_image,
+            'room_cottage_image' => $fileName,
         ]);
     }
 }

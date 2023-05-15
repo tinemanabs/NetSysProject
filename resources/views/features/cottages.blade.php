@@ -1,43 +1,42 @@
 @extends('layouts.auth')
 
 @section('content')
-    <div class="container">
-        <h4>Cottages Management</h4>
-        <div class="d-flex justify-content-end mb-3">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCottageModal">
-                Add Cottage
-            </button>
-        </div>
+    <h4>Cottages Management</h4>
+    <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCottageModal">
+            Add Cottage
+        </button>
+    </div>
 
-        <div class="card">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="myTable" class="row-border" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Cottage</th>
-                                <th>Fullname</th>
-                                <th>Check-in</th>
-                                <th>Check-out</th>
-                                <th>Day/Night</th>
-                                <th>Contact Number</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Cottage 101</td>
-                                <td>Tine Manabs</td>
-                                <td>Feb 12</td>
-                                <td>Feb 12</td>
-                                <td>Day</td>
-                                <td>Contact Number</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="myTable" class="row-border" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Cottage</th>
+                            <th>Fullname</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>Day/Night</th>
+                            <th>Contact Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cottage 101</td>
+                            <td>Tine Manabs</td>
+                            <td>Feb 12</td>
+                            <td>Feb 12</td>
+                            <td>Day</td>
+                            <td>Contact Number</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+
 
     <!-- Modal -->
     <div class="modal fade" id="addCottageModal" tabindex="-1" aria-labelledby="addCottageModalLabel" aria-hidden="true">
@@ -47,7 +46,7 @@
                     <h5 class="modal-title" id="addCottageModalLabel">Add Cottage</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="" method="post">
+                <form action="" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="card-body">
@@ -59,6 +58,10 @@
                                 <div class="col-lg-12 mb-3">
                                     <label for="" class="form-label">Cottage Price</label>
                                     <input type="text" class="form-control" id="cottagePrice">
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <label for="" class="form-label">Cottage Image</label>
+                                    <input type="file" class="form-control" name="cottage_image" id="cottageImage">
                                 </div>
                             </div>
 
@@ -83,14 +86,22 @@
         $('#addCottageBtn').on('click', () => {
             $cottage_name = $('#cottageName').val();
             $cottage_price = $('#cottagePrice').val();
+            $cottage_image = $('#cottageImage').val().split('\\').pop();
+            $fileExtension = ['jpeg', 'jpg', 'png', 'gif'];
 
             //console.log($cottage_id, $cottage_name, $cottage_price)
 
-            if ($cottage_name == '' || $cottage_price == '') {
+            if ($cottage_name == '' || $cottage_price == '' || $cottage_image == '') {
                 swal({
                     icon: 'warning',
                     title: 'Empty Fields!',
                     text: 'Please fill up the required fields!'
+                });
+            } else if ($.inArray($cottage_image.split('.').pop().toLowerCase(), $fileExtension) == -1) {
+                swal({
+                    icon: 'warning',
+                    title: 'Invalid File Format!',
+                    text: `The image is invalid, or not supported. Allowed types: ${$fileExtension}`
                 });
             } else {
                 swal({
@@ -102,10 +113,17 @@
                     const formdata = new FormData();
                     formdata.append('cottage_name', $cottage_name);
                     formdata.append('cottage_price', $cottage_price);
+                    formdata.append('cottage_image', document.getElementById('cottageImage').files[0]);
 
                     console.log([...formdata]);
 
-                    axios.post('/addcottage', formdata)
+                    let settings = {
+                        headers: {
+                            'content-type': 'multipart/form-data'
+                        }
+                    }
+
+                    axios.post('/addcottage', formdata, settings)
                         .then(response => {
                             location.reload();
                         })

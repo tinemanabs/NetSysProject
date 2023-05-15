@@ -47,6 +47,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js'></script>
+
 </head>
 
 <body>
@@ -142,7 +144,7 @@
                         <!-- Page content wrapper-->
                         <div id="page-content-wrapper">
                             <!-- Page content-->
-                            <div class="container-fluid p-3">
+                            <div class="container-fluid p-4">
                                 @yield('content')
                             </div>
                         </div>
