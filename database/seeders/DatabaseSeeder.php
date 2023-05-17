@@ -25,6 +25,16 @@ class DatabaseSeeder extends Seeder
             'user_role' => 1
         ]);
 
+        User::create([
+            'first_name' => 'Christine',
+            'last_name' => 'Manabat',
+            'email' => 'test@gmail.com',
+            'birthday' => '25-12-99',
+            'email_verified_at' => 'test@gmail.com',
+            'password' => Hash::make('user'),
+            'user_role' => 2
+        ]);
+
         RoomsAndCottages::create([
             'room_id' => 'Room 101',
             'room_name' => '2-Bed Ventilated Room',

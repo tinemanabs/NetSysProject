@@ -38,3 +38,5 @@ Route::get('/rooms', [RoomsAndCottagesController::class, 'showRoomsPage'])->name
 Route::post('/addroom', [RoomsAndCottagesController::class, 'addRoom']);
 Route::get('/cottages', [RoomsAndCottagesController::class, 'showCottagesPage'])->name('showCottagesPage');
 Route::post('/addcottage', [RoomsAndCottagesController::class, 'addCottage']);
+
+Route::post('/addbooking', [BookNowController::class, 'addBooking']);

@@ -83,8 +83,8 @@
                             <div class="button-row d-flex mt-4">
                                 <a class="btn btn-outline-secondary me-auto" href="" role="button"
                                     title="Next">Cancel</a>
-                                <button class="btn btn-primary ms-auto js-btn-next" type="button"
-                                    title="Next">Next</button>
+                                <button class="btn btn-primary ms-auto js-btn-next" type="button" title="Next"
+                                    id="nextBtnToDate">Next</button>
                             </div>
                         </div>
                     </div>
@@ -94,9 +94,10 @@
                         <h3 class="multisteps-form__title">Choose a Date</h3>
                         <div class="multisteps-form__content">
                             <div id='calendar'></div>
+                            <input type="text" name="date_booked" id="dateBooked">
                             <div class="button-row d-flex mt-4">
                                 <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
-                                <button class="btn btn-primary ms-auto js-btn-next" type="button" id="nextBtnSumm"
+                                <button class="btn btn-primary ms-auto js-btn-next" type="button" id="nextBtnToType"
                                     title="Next">Next</button>
                             </div>
                         </div>
@@ -115,12 +116,6 @@
                                                 <input id="day_swimming" type="radio" name="is_half" value="day">
                                                 <label for="">Day Swimming</label>
                                             </h5>
-
-                                            <label for="" class="form-label">Adults</label>
-                                            <input type="text" class="form-control mb-3" name="adults">
-
-                                            <label for="" class="form-label">Children</label>
-                                            <input type="text" class="form-control mb-3" name="children">
                                         </div>
                                     </div>
                                 </div>
@@ -132,20 +127,24 @@
                                                 <input id="night_swimming" type="radio" name="is_half" value="night">
                                                 <label for="">Night Swimming</label>
                                             </h5>
-                                            <label for="" class="form-label">Adults</label>
-                                            <input type="text" class="form-control mb-3" name="adults">
 
-                                            <label for="" class="form-label">Children</label>
-                                            <input type="text" class="form-control mb-3" name="children">
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="" class="form-label">Adults</label>
+                                    <input type="text" class="form-control mb-3" name="adults" id="adults">
+
+                                    <label for="" class="form-label">Children</label>
+                                    <input type="text" class="form-control mb-3" name="children" id="children">
                                 </div>
                             </div>
 
                             <div class="button-row d-flex mt-4">
                                 <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
-                                <button class="btn btn-primary ms-auto js-btn-next" type="button"
-                                    title="Next">Next</button>
+                                <button class="btn btn-primary ms-auto js-btn-next" type="button" title="Next"
+                                    id="nextBtnToInfo">Next</button>
                             </div>
                         </div>
                     </div>
@@ -157,57 +156,35 @@
                             <div class="row">
                                 <div class="col-lg-6 mb-3">
                                     <label for="" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" value="{{ old('first_name') }}"
-                                        name="first_name">
-                                    @error('first_name')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
+                                    <input type="text" class="form-control" name="first_name">
                                 </div>
                                 <div class="col-lg-6 mb-3">
                                     <label for="" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" value="{{ old('last_name') }}"
-                                        name="last_name">
-                                    @error('last_name')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
+                                    <input type="text" class="form-control" name="last_name">
                                 </div>
 
                                 <div class="col-lg-6 mb-3">
                                     <label for="" class="form-label">Birthdate</label>
-                                    <input type="date" name="birthday" class="form-control"
-                                        value="{{ old('birthday') }}">
-                                    @error('birthday')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
+                                    <input type="date" name="birthday" class="form-control">
                                 </div>
 
                                 <div class="col-lg-6 mb-3">
                                     <label for="" class="form-label">Email Address</label>
-                                    <input type="email" name="email" class="form-control"
-                                        value="{{ old('email') }}">
-                                    @error('email')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
+                                    <input type="email" name="email" class="form-control">
                                 </div>
 
                                 <div class="col-lg-6 mb-3">
                                     <label for="" class="form-label">Address</label>
-                                    <input type="text" name="address" class="form-control"
-                                        value="{{ old('address') }}">
-                                    @error('address')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
+                                    <input type="text" name="address" class="form-control">
                                 </div>
 
                                 <div class="col-lg-6 mb-3">
                                     <label for="" class="form-label">Contact Number</label>
-                                    <input type="text" name="contact_no" class="form-control"
-                                        value="{{ old('contact_no') }}">
-                                    @error('contact_no')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
+                                    <input type="text" name="contact_no" class="form-control">
                                 </div>
                             </div>
+
+                            <input type="text" value="{{ Auth::user()->id }}" id="user">
 
                             <div class="button-row d-flex mt-4">
                                 <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
@@ -223,7 +200,8 @@
                         <div class="multisteps-form__content">
                             <div class="button-row d-flex mt-4">
                                 <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
-                                <button class="btn btn-success ms-auto" type="submit" title="Submit">Submit</button>
+                                <button class="btn btn-success ms-auto" type="button" title="Submit"
+                                    id="bookingBtn">Submit</button>
                             </div>
                         </div>
                     </div>
@@ -307,20 +285,20 @@
             const activePanel = getActivePanel();
             formHeight(activePanel);
         };
-        //STEPS BAR CLICK FUNCTION
-        DOMstrings.stepsBar.addEventListener('click', e => {
-            //check if click target is a step button
-            const eventTarget = e.target;
-            if (!eventTarget.classList.contains(`${DOMstrings.stepsBtnClass}`)) {
-                return;
-            }
-            //get active button step number
-            const activeStep = getActiveStep(eventTarget);
-            //set all steps before clicked (and clicked too) to active
-            setActiveStep(activeStep);
-            //open active panel
-            setActivePanel(activeStep);
-        });
+        // //STEPS BAR CLICK FUNCTION
+        // DOMstrings.stepsBar.addEventListener('click', e => {
+        //     //check if click target is a step button
+        //     const eventTarget = e.target;
+        //     if (!eventTarget.classList.contains(`${DOMstrings.stepsBtnClass}`)) {
+        //         return;
+        //     }
+        //     //get active button step number
+        //     const activeStep = getActiveStep(eventTarget);
+        //     //set all steps before clicked (and clicked too) to active
+        //     setActiveStep(activeStep);
+        //     //open active panel
+        //     setActivePanel(activeStep);
+        // });
         //PREV/NEXT BTNS CLICK
         DOMstrings.stepsForm.addEventListener('click', e => {
             const eventTarget = e.target;
@@ -336,7 +314,22 @@
         if (eventTarget.classList.contains(`${DOMstrings.stepPrevBtnClass}`)) {
                 activePanelNum--;
             } else {
-                activePanelNum++;
+                if (activePanelNum == 0 && $('input[name = "room_cottage"]:checked').val() != undefined) {
+                    console.log($('input[name = "room_cottage"]:checked').val())
+                    activePanelNum++;
+                } else if (activePanelNum == 1 && $('#dateBooked').val() != '') {
+                    console.log($('#dateBooked').val())
+                    activePanelNum++;
+                } else if (activePanelNum == 2 && $('input[name = "is_half"]:checked').val() != undefined && $(
+                        '#adults').val() != '' && $('#children').val()) {
+                    console.log($('input[name = "is_half"]:checked').val())
+                    console.log($('#adults').val())
+                    console.log($('#children').val())
+                    activePanelNum++;
+                } else if (activePanelNum == 3) {
+                    activePanelNum++;
+                }
+
             }
             setActiveStep(activePanelNum);
             setActivePanel(activePanelNum);
@@ -348,14 +341,102 @@
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                selectable: true,
-                height: 500
-            });
-            calendar.render();
+        $('#nextBtnToDate').on('click', () => {
+            if (!$('input[name = "room_cottage"]').is(':checked')) {
+                swal({
+                    icon: 'warning',
+                    title: 'Select a Room or Cottage',
+                    text: 'Please choose the room or cottage you want to reserve.'
+                })
+            }
+        });
+
+        $('#nextBtnToType').on('click', () => {
+            if ($('#dateBooked').val() == '') {
+                swal({
+                    icon: 'warning',
+                    title: 'Select a date',
+                    text: 'Please choose the date.'
+                })
+            }
+        });
+
+        $('#nextBtnToInfo').on('click', () => {
+            if (!$('input[name = "room_cottage"]').is(':checked') ||
+                $('#adults').val() == '' ||
+                $('#children').val() == '') {
+                swal({
+                    icon: 'warning',
+                    title: 'Choose if day or night',
+                    text: 'Please choose your preferred time.'
+                })
+            }
         });
     </script>
+
+    <script>
+        const clickDate = (info) => {
+            $dateBooked = $('#dateBooked').val(info.dateStr);
+        }
+        let calendarEl = document.getElementById('calendar');
+        let calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            selectable: true,
+            height: 500,
+            dateClick: clickDate,
+
+        });
+        calendar.render();
+
+
+        $('#bookingBtn').on('click', () => {
+            $room_id = $('input[name = "room_cottage"]:checked').val();
+            $date = $('#dateBooked').val();
+            $day = $('input[name = "is_half"]:checked').val();
+            $adults = $('#adults').val();
+            $children = $('#children').val();
+            $user = $('#user').val();
+
+            swal({
+                icon: 'warning',
+                title: 'Warning',
+                text: 'Are you sure you to reserve this booking?',
+                buttons: {
+                    cancel: 'Cancel',
+                    true: 'OK'
+                }
+            }).then((response) => {
+                if (response == 'true') {
+                    swal({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Your booking has been saved!',
+                    }).then((response) => {
+                        const formdata = new FormData();
+                        formdata.append('room_id', $room_id);
+                        formdata.append('date', $date);
+                        formdata.append('day', $day);
+                        formdata.append('adults', $adults);
+                        formdata.append('children', $children);
+                        formdata.append('user', $user);
+
+                        console.log([...formdata])
+
+                        axios.post('/addbooking', formdata)
+                            .then(response => {
+                                location.reload();
+                            })
+                    })
+                }
+            })
+        })
+    </script>
+
+    {{-- NOTE:
+        - POPULATE THE DATES THAT ARE ALREADY RESERVED 
+        - DATE SHOULD BE DRAGGABLE INTO TO 2 DATES
+        - DISABLE THE DAY / NIGHT IF NOT AVAILABLE
+        - FILL OUT THE GUEST INFO FORMS
+        - DESIGN THE UI FOR SUMMARY
+        --}}
 @endsection
