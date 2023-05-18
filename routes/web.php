@@ -18,7 +18,7 @@ use App\Http\Controllers\Features\RoomsAndCottagesController;
 */
 
 Route::get('/', function () {
-    return view('app.index');
+    return view('index');
 });
 
 

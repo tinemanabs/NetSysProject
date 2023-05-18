@@ -13,7 +13,7 @@ class BookNowController extends Controller
     {
         $rooms = RoomsAndCottages::all()->where('cottage_name', NULL);
         $cottages = RoomsAndCottages::all()->where('room_id', NULL);
-        return view('app.booknow', [
+        return view('features.booknow', [
             'rooms' => $rooms,
             'cottages' => $cottages
         ]);
