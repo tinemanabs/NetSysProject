@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Features\BookEventsController;
 use App\Http\Controllers\Features\ProfileController;
 use App\Http\Controllers\Features\UserAccountsController;
 use Illuminate\Support\Facades\Route;
@@ -40,3 +41,5 @@ Route::get('/cottages', [RoomsAndCottagesController::class, 'showCottagesPage'])
 Route::post('/addcottage', [RoomsAndCottagesController::class, 'addCottage']);
 
 Route::post('/addbooking', [BookNowController::class, 'addBooking']);
+
+Route::get('/bookevent', [BookEventsController::class, 'index'])->name('bookevent');

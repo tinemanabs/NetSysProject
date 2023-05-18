@@ -133,11 +133,9 @@
                             @elseif (Auth::user()->user_role == 2)
                                 <div class="list-group list-group-flush">
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">Book
-                                        Now</a>
+                                        href="#!">Book Now</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">Book
-                                        an Event</a>
+                                        href="{{ route('bookevent') }}">Book an Event</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="#!">History</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
