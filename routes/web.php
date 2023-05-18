@@ -43,3 +43,4 @@ Route::post('/addcottage', [RoomsAndCottagesController::class, 'addCottage']);
 Route::post('/addbooking', [BookNowController::class, 'addBooking']);
 
 Route::get('/bookevent', [BookEventsController::class, 'index'])->name('bookevent');
+Route::post('/admin-addbooking', [BookNowController::class, 'adminAddBooking']);

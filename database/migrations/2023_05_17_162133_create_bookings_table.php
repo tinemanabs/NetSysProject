@@ -18,7 +18,6 @@ class CreateBookingsTable extends Migration
             $table->unsignedBigInteger('room_id');
             $table->string('date_start');
             $table->string('date_end');
-            $table->boolean('is_half');
             $table->string('type');
             $table->string('adults');
             $table->string('children');
