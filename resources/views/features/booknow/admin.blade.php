@@ -13,8 +13,8 @@
                     Date</button>
                 <button class="multisteps-form__progress-btn" type="button" title="Day / Night Swimming Rates">Day
                     or Night Swimming</button>
-                <button class="multisteps-form__progress-btn" type="button" title="Indicate number of persons">Indicate
-                    number of persons</button>
+                <button class="multisteps-form__progress-btn" type="button" title="Number of persons">
+                    Number of persons</button>
                 <button class="multisteps-form__progress-btn" type="button" title="Choose a Room or Cottage">Choose a
                     Room or Cottage</button>
                 <button class="multisteps-form__progress-btn" type="button" title="Guest Information">Guest
@@ -148,10 +148,10 @@
                         <div class="row">
                             <div class="col-12">
                                 <label for="" class="form-label">Adults</label>
-                                <input type="text" class="form-control mb-3" name="adults" id="adults">
+                                <input type="number" class="form-control mb-3" name="adults" id="adults">
 
                                 <label for="" class="form-label">Children</label>
-                                <input type="text" class="form-control mb-3" name="children" id="children">
+                                <input type="number" class="form-control mb-3" name="children" id="children">
                             </div>
                         </div>
 
@@ -169,8 +169,9 @@
                     <h3 class="multisteps-form__title">Choose a Room or Cottage</h3>
                     <div class="multisteps-form__content">
                         {{-- START OF CONTENT --}}
-                        <input type="radio" name="room_cottage" id="" value="">
+                        <input type="radio" name="room_cottage" value="0">
                         <label for="">I don't want to reserve a room or cottag</label>
+
                         <h4>Rooms</h4>
                         <div class="row row-cols-2 row-cols-lg-3 g-4 mb-3">
                             @foreach ($rooms as $room)
@@ -182,11 +183,15 @@
                                             <h5 class="card-title">
                                                 <input id="{{ $room->room_id }}" type="radio" name="room_cottage"
                                                     value="{{ $room->id }}">
-                                                <label for="{{ $room->room_id }}">{{ $room->room_id }}</label>
+                                                <label
+                                                    id="roomCottageName{{ $room->id }}">{{ $room->room_id }}</label>
                                             </h5>
 
                                             <p class="card-text">{{ $room->room_name }}</p>
-                                            <p class="card-text">{{ $room->room_cottage_price }}</p>
+
+                                            <p class="card-text" id="roomCottagePrice{{ $room->id }}">
+                                                {{ $room->room_cottage_price }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -205,11 +210,15 @@
                                                     <input id="{{ $cottage->cottage_name }}" type="radio"
                                                         name="room_cottage" value="{{ $cottage->id }}">
                                                     <label
-                                                        for="{{ $cottage->cottage_name }}">{{ $cottage->cottage_name }}</label>
+                                                        id="roomCottageName{{ $cottage->id }}">{{ $cottage->cottage_name }}</label>
                                                 </h5>
 
-                                                <p class="card-text">{{ $cottage->cottage_name }}</p>
-                                                <p class="card-text">{{ $cottage->room_cottage_price }}</p>
+                                                {{-- <p class="card-text" id="roomCottageName{{ $cottage->id }}"
+                                                        data-name={{ $cottage->cottage_name }}>
+                                                        {{ $cottage->cottage_name }}</p> --}}
+
+                                                <p class="card-text" id="roomCottagePrice{{ $cottage->id }}">
+                                                    {{ $cottage->room_cottage_price }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -267,7 +276,7 @@
 
                             <div class="col-lg-6 mb-3">
                                 <label for="" class="form-label">Confirm Password</label>
-                                <input type="password" name="confpassword" class="form-control">
+                                <input type="password" name="confpassword" class="form-control" id="confPassword">
                             </div>
                         </div>
 
@@ -275,8 +284,8 @@
 
                         <div class="button-row d-flex mt-4">
                             <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
-                            <button class="btn btn-primary ms-auto js-btn-next" type="button"
-                                title="Next">Next</button>
+                            <button class="btn btn-primary ms-auto js-btn-next" type="button" title="Next"
+                                id="nextBtnToSummary">Next</button>
                         </div>
                     </div>
                 </div>
@@ -286,6 +295,76 @@
                 <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
                     <h3 class="multisteps-form__title">Summary and Payment</h3>
                     <div class="multisteps-form__content">
+
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <h4>Booking Summary</h4>
+
+                                <p id="bookingDateInfo"></p>
+                                <p id="timeOfSwimmingInfo"></p>
+                                <p id="numberOfAdultsInfo"></p>
+                                <p id="numberOfChildrenInfo"></p>
+                                <p id="chosenRoomInfo"></p>
+                                <hr>
+                                <h4>Personal Information</h4>
+                                <p id="nameOfGuest"></p>
+                                <p id="bdayOfGuest"></p>
+                                <p id="emailOfGuest"></p>
+                                <p id="addrOfGuest"></p>
+                                <p id="contactNumOfGuest"></p>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <h4>Payment Information</h4>
+                                <ul class="list-group list-group-flush p-0">
+                                    <li class="list-group-item px-0" id="typeOfReservationForPayment">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Exclusive Overnight Swimming</h6>
+                                            <p class="m-0 p-0">P 75</p>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item px-0">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">General Admission Fee</h6>
+                                            <p class="m-0 p-0">P 75</p>
+                                        </div>
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <div>
+                                                <small class="mb-1">Non-Exclusive Day Swimming</small>
+                                                <small class="mb-1">x <span id="totalPersons"></span></small>
+                                            </div>
+
+                                            <p class="m-0 p-0">P <span id="totalAddmissionFee"></span></p>
+                                        </div>
+
+
+                                    </li>
+                                    <li class="list-group-item px-0">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Room or Cottage Fee</h6>
+                                            <p class="m-0 p-0">P <span id="roomPriceSummary"></span></p>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item px-0">
+                                        <div class="d-flex w-100 justify-content-end">
+                                            <h6>Total: P <span id="totalFee"> 1000</span></h6>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <label for="" class="form-label">Kindly upload your proof of payment:</label>
+                                <input type="file" name="" class="form-control">
+
+
+                                <div class="mt-3">
+                                    <div class="text-center">
+                                        <img src="{{ asset('img/SAMPLEGCASHQRCODE.jpg') }}" alt=""
+                                            class="img-fluid" width="250">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                         <div class="button-row d-flex mt-4">
                             <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
                             <button class="btn btn-success ms-auto" type="button" title="Submit"
@@ -299,6 +378,7 @@
     </div>
 </div>
 
+{{-- MULTI-STEP FORN --}}
 <script>
     //DOM elements
     const DOMstrings = {
@@ -373,6 +453,22 @@
         const activePanel = getActivePanel();
         formHeight(activePanel);
     };
+
+    // // //STEPS BAR CLICK FUNCTION
+    // DOMstrings.stepsBar.addEventListener('click', e => {
+    //     //check if click target is a step button
+    //     const eventTarget = e.target;
+    //     if (!eventTarget.classList.contains(`${DOMstrings.stepsBtnClass}`)) {
+    //         return;
+    //     }
+    //     //get active button step number
+    //     const activeStep = getActiveStep(eventTarget);
+    //     //set all steps before clicked (and clicked too) to active
+    //     setActiveStep(activeStep);
+    //     //open active panel
+    //     setActivePanel(activeStep);
+    // });
+
     //PREV/NEXT BTNS CLICK
     DOMstrings.stepsForm.addEventListener('click', e => {
         const eventTarget = e.target;
@@ -388,22 +484,41 @@
         if (eventTarget.classList.contains(`${DOMstrings.stepPrevBtnClass}`)) {
             activePanelNum--;
         } else {
-            activePanelNum++;
-            // if (activePanelNum == 0 && $('input[name = "room_cottage"]:checked').val() != undefined) {
-            //     console.log($('input[name = "room_cottage"]:checked').val())
-            //     activePanelNum++;
-            // } else if (activePanelNum == 1 && $('#dateBooked').val() != '') {
-            //     console.log($('#dateBooked').val())
-            //     activePanelNum++;
-            // } else if (activePanelNum == 2 && $('input[name = "is_half"]:checked').val() != undefined && $(
-            //         '#adults').val() != '' && $('#children').val()) {
-            //     console.log($('input[name = "is_half"]:checked').val())
-            //     console.log($('#adults').val())
-            //     console.log($('#children').val())
-            //     activePanelNum++;
-            // } else if (activePanelNum == 3) {
-            //     activePanelNum++;
-            // }
+            //activePanelNum++;
+            if (activePanelNum == 0 && $('input[name = "type_of_reservation"]:checked').val() != undefined) {
+                console.log($('input[name="type_of_reservation"]:checked').val())
+                activePanelNum++;
+            } else if (activePanelNum == 1 && $('#dateBooked').val() != '') {
+                console.log($('#dateBooked').val())
+                activePanelNum++;
+            } else if (activePanelNum == 2 && $('input[name="timeBooked"]:checked').val() != undefined) {
+                console.log($('input[name="timeBooked"]:checked').val())
+                activePanelNum++;
+            } else if (activePanelNum == 3 && $('#adults').val() != '' && $('#children').val() != '') {
+                console.log($('#adults').val(), $('#children').val());
+                activePanelNum++;
+            } else if (activePanelNum == 4 && $('input[name = "room_cottage"]:checked').val() != undefined) {
+                console.log($('input[name = "room_cottage"]:checked').val())
+                activePanelNum++;
+            } else if (activePanelNum == 5 &&
+                $('#first_name').val() != '' &&
+                $('#last_name').val() != '' &&
+                $('#birthday').val() != '' &&
+                $('#email').val() != '' &&
+                $('#address').val() != '' &&
+                $('#contact_no').val() != '' &&
+                $('#password').val() != '' && $('#confPassword').val() != '') {
+
+                console.log($('#first_name').val(),
+                    $('#last_name').val(),
+                    $('#birthday').val(),
+                    $('#email').val(),
+                    $('#address').val(),
+                    $('#contact_no').val(),
+                    $('#password').val())
+                activePanelNum++;
+            }
+
 
         }
         setActiveStep(activePanelNum);
@@ -415,13 +530,14 @@
     window.addEventListener('resize', setFormHeight, false);
 </script>
 
+{{-- VALIDATIONS --}}
 <script>
     $('#nextBtnToDate').on('click', () => {
         if (!$('input[name="type_of_reservation"]').is(':checked')) {
             swal({
                 icon: 'warning',
-                title: 'Select a type of reseravtion!',
-                text: 'Please choose a type of reservation!'
+                title: 'Select a type of reservation!',
+                text: 'Please choose a type of reservation.'
             })
         }
     });
@@ -441,67 +557,127 @@
             swal({
                 icon: 'warning',
                 title: "Select a time!",
-                text: "Please choose a time"
+                text: "Please choose a time."
             })
         }
-    })
+    });
 
+    $('#nextBtnToRoom').on('click', () => {
+        if ($('#adults').val() == '' || $('#children').val() == '') {
+            swal({
+                icon: 'warning',
+                title: "Indicate the number of persons!",
+                text: "Please indicate the number of adult and children in the field."
+            })
+        }
+    });
+
+    $('#nextBtnToInfo').on('click', () => {
+        if (!$('input[name = "room_cottage"]').is(':checked')) {
+            swal({
+                icon: 'warning',
+                title: 'Select a Room or Cottage',
+                text: 'Please choose the room or cottage you want to reserve.'
+            })
+        }
+    });
+</script>
+
+{{-- SUMMARY & PAYMENT --}}
+<script>
     $('input[name="type_of_reservation"]:radio').on('click', (event) => {
         if (event.target.value === 'non-exclusive') {
             console.log('success')
             $('#radioBtnForNight').hide('#radioBtnForNight')
             $('#radioBtnForOvn').hide('#radioBtnForOvn')
+            $('#typeOfReservationForPayment').hide('#typeOfReservationForPayment')
         } else if (event.target.value === 'exclusive') {
             console.log('exclusive')
             $('#cottagesValues').hide('#cottagesValues')
         }
+    });
+
+
+    $('#nextBtnToSummary').on('click', () => {
+        if ($('#first_name').val() == '' ||
+            $('#last_name').val() == '' ||
+            $('#birthday').val() == '' ||
+            $('#email').val() == '' ||
+            $('#address').val() == '' ||
+            $('#contact_no').val() == '' ||
+            $('#password').val() == '' || $('#confPassword').val() == '') {
+            swal({
+                icon: 'warning',
+                title: 'Empty or Incomplete Fields',
+                text: "Please fill up the fields."
+            });
+        } else {
+            const roomID = $('input[name = "room_cottage"]:checked').val();
+
+            $('#bookingDateInfo').text('Booking Date: ' + '' + $('#dateBooked').val());
+            $('#timeOfSwimmingInfo').text('Time: ' + '' + $('input[name = "timeBooked"]:checked').val());
+            $('#numberOfAdultsInfo').text('Adults: ' + '' + $('#adults').val());
+            $('#numberOfChildrenInfo').text('Children: ' + '' + $('#children').val());
+            $nameOfRoomCottage = $('#roomCottageName' + roomID).text();
+
+            if ($('input[name = "room_cottage"]:checked').val() != '0') {
+                $('#chosenRoomInfo').text('Room or Cottage: ' + '' + $nameOfRoomCottage);
+            } else {
+                $('#chosenRoomInfo').text('Room or Cottage: No room or cottage.');
+
+            }
+            $('#nameOfGuest').text($('#first_name').val() + ' ' + $('#last_name').val());
+            $('#bdayOfGuest').text($('#birthday').val());
+            $('#emailOfGuest').text($('#email').val());
+            $('#addrOfGuest').text($('#address').val());
+            $('#contactNumOfGuest').text($('#contact_no').val());
+
+
+            //PAYMENT INFO
+
+            //ADDMISSION FEE
+            $totalNumOfAdults = Number($('#adults').val());
+            $totalNumOfChild = Number($('#children').val());
+            $totalPersons = $totalNumOfAdults + $totalNumOfChild;
+            $('#totalPersons').text($totalPersons)
+            $totalAddmissionFee = $totalPersons * 75
+            $('#totalAddmissionFee').text($totalAddmissionFee);
+
+            console.log('Total Persons' + $totalPersons)
+            console.log('Total Addmission:' + $totalAddmissionFee)
+
+            //ROOM 
+            let roomPrice = '';
+            if ($('input[name = "room_cottage"]:checked').val() != '0') {
+                roomPrice = $('#roomCottagePrice' + roomID).text();
+            } else {
+                roomPrice = 0;
+            }
+
+            $('#roomPriceSummary').text(roomPrice)
+            console.log(roomPrice)
+
+            $totalFee = Number($totalAddmissionFee) + Number(roomPrice);
+            $('#totalFee').text($totalFee)
+            console.log('Total: ' + $totalFee)
+        }
     })
-</script>
-
-<script>
-    // $('#nextBtnToDate').on('click', () => {
-    //     if (!$('input[name = "room_cottage"]').is(':checked')) {
-    //         swal({
-    //             icon: 'warning',
-    //             title: 'Select a Room or Cottage',
-    //             text: 'Please choose the room or cottage you want to reserve.'
-    //         })
-    //     }
-    // });
-
-    // $('#nextBtnToType').on('click', () => {
-    //     if ($('#dateBooked').val() == '') {
-    //         swal({
-    //             icon: 'warning',
-    //             title: 'Select a date',
-    //             text: 'Please choose the date.'
-    //         })
-    //     }
-    // });
-
-    // $('#nextBtnToInfo').on('click', () => {
-    //     if (!$('input[name = "room_cottage"]').is(':checked') ||
-    //         $('#adults').val() == '' ||
-    //         $('#children').val() == '') {
-    //         swal({
-    //             icon: 'warning',
-    //             title: 'Choose if day or night',
-    //             text: 'Please choose your preferred time.'
-    //         })
-    //     }
-    // });
 </script>
 
 <script>
     const clickDate = (info) => {
         $dateBooked = $('#dateBooked').val(info.dateStr);
     }
+
     let calendarEl = document.getElementById('calendar');
     let calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         selectable: true,
-        height: 500,
+        height: 700,
         dateClick: clickDate,
+        validRange: {
+            start: moment().format('YYYY-MM-DD')
+        }
 
     });
     calendar.render();

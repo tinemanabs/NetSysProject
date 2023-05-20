@@ -48,8 +48,8 @@ class BookNowController extends Controller
             'contact_no' => $request->contact_no,
             'password' => Hash::make($request->password),
             'user_role' => 2,
-            'is_notify' => 0,
-            'is_booked' => 0
+            'is_notify' => NULL,
+            'is_booked' => NULL
         ]);
 
         Bookings::create([

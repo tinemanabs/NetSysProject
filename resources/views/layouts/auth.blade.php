@@ -50,10 +50,8 @@
     <!-- FullCalendar CDN -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js'></script>
 
-    {{-- <!-- Moment JS CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"
-        integrity="sha512-CryKbMe7sjSCDPl18jtJI5DR5jtkUWxPXWaLCst6QjH8wxDexfRJic2WRmRXmstr2Y8SxDDWuBO6CQC6IE4KTA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+    <!-- Moment JS CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 
 </head>
 
@@ -115,6 +113,8 @@
                                         href="#!">Analytics</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('useraccounts') }}">User Accounts</a>
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="{{ route('booknow') }}">Book Now</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('showRoomsPage') }}">Rooms</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
