@@ -120,7 +120,7 @@
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('showCottagesPage') }}">Cottages</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">Purchase and Rental Inventory</a>
+                                        href="{{ route('purchaseAndRentals') }}">Purchase and Rental Inventory</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="#!">Payment</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"

@@ -5,6 +5,7 @@ use App\Http\Controllers\Features\ProfileController;
 use App\Http\Controllers\Features\UserAccountsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Features\BookNowController;
+use App\Http\Controllers\Features\PurchaseAndRental;
 use App\Http\Controllers\Features\RoomsAndCottagesController;
 
 /*
@@ -44,3 +45,7 @@ Route::post('/addbooking', [BookNowController::class, 'addBooking']);
 
 Route::get('/bookevent', [BookEventsController::class, 'index'])->name('bookevent');
 Route::post('/admin-addbooking', [BookNowController::class, 'adminAddBooking']);
+
+Route::get('/purchaseandrentals', [PurchaseAndRental::class, 'index'])->name('purchaseAndRentals');
+Route::post('/addpurchaseandrental', [PurchaseAndRental::class, 'addPurchaseAndRental']);
+Route::post('/deletepurchaseandrental', [PurchaseAndRental::class, 'deletePurchaseAndRental']);

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Features\Mobile\RoomsAndCottagesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +20,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Auth::routes();
+
+Route::post('mobileLogin', [LoginController::class, 'mobileLogin']);
+Route::get('getAllRoomsAndCottages', [RoomsAndCottagesController::class, 'getAllRoomsAndCottages']);
