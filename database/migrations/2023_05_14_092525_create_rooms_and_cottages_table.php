@@ -18,6 +18,7 @@ class CreateRoomsAndCottagesTable extends Migration
             $table->string('room_id')->nullable();
             $table->string('room_name')->nullable();
             $table->string('cottage_name')->nullable();
+            $table->string('place_room_cottage')->nullable();
             $table->string('room_cottage_price')->nullable();
             $table->string('room_cottage_image')->nullable();
             $table->timestamps();
