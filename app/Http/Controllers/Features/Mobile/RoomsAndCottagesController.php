@@ -13,4 +13,13 @@ class RoomsAndCottagesController extends Controller
         return DB::table('rooms_and_cottages')
             ->get();
     }
+
+    // public function getFilteredRooms(Request $request)
+    // {
+    //     $bookings = DB::table('bookings')
+    //         ->where('start_date', '!=' ,$request->start_date)
+    //         ->where('end_date', '!=' ,$request->end_date)
+    //         ->where('end_date', '!=' ,$request->end_date)
+    //         ->get()
+    // }
 }
