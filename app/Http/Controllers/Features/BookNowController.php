@@ -7,6 +7,7 @@ use App\Models\Bookings;
 use App\Models\RoomsAndCottages;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class BookNowController extends Controller
@@ -61,5 +62,24 @@ class BookNowController extends Controller
             'children' => $request->children,
             'user_id' => $user->id,
         ]);
+    }
+
+    public function getRooms($place)
+    {
+        $filteredRooms = DB::table('rooms_and_cottages')
+            ->where('place_room_cottage', $place)
+            ->where('cottage_name', NULL)
+            ->get();
+        return $filteredRooms;
+    }
+
+    public function getCottages($place)
+    {
+        $filteredCottages = DB::table('rooms_and_cottages')
+            ->where('place_room_cottage', $place)
+            ->where('room_id', NULL)
+            ->get();
+
+        return $filteredCottages;
     }
 }

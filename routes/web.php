@@ -45,6 +45,8 @@ Route::post('/addbooking', [BookNowController::class, 'addBooking']);
 
 Route::get('/bookevent', [BookEventsController::class, 'index'])->name('bookevent');
 Route::post('/admin-addbooking', [BookNowController::class, 'adminAddBooking']);
+Route::get('/getFilteredRooms/{place}', [BookNowController::class, 'getRooms']);
+Route::get('/getFilteredCottages/{place}', [BookNowController::class, 'getCottages']);
 
 Route::get('/purchaseandrentals', [PurchaseAndRental::class, 'index'])->name('purchaseAndRentals');
 Route::post('/addpurchaseandrental', [PurchaseAndRental::class, 'addPurchaseAndRental']);

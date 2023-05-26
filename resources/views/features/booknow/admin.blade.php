@@ -13,10 +13,14 @@
                     Date</button>
                 <button class="multisteps-form__progress-btn" type="button" title="Day / Night Swimming Rates">Day
                     or Night Swimming</button>
-                <button class="multisteps-form__progress-btn" type="button" title="Number of persons">
-                    Number of persons</button>
+                <button class="multisteps-form__progress-btn" type="button" title="Place of Swimming">Choose a
+                    Pool</button>
                 <button class="multisteps-form__progress-btn" type="button" title="Choose a Room or Cottage">Choose a
                     Room or Cottage</button>
+                <button class="multisteps-form__progress-btn" type="button" title="Number of persons">
+                    Number of persons</button>
+                <button class="multisteps-form__progress-btn" type="button" title="Book an Event">Book an
+                    Event</button>
                 <button class="multisteps-form__progress-btn" type="button" title="Guest Information">Guest
                     Information </button>
                 <button class="multisteps-form__progress-btn" type="button" title="Summary & Payment">Summary &
@@ -77,7 +81,8 @@
                     <h3 class="multisteps-form__title">Choose a Date</h3>
                     <div class="multisteps-form__content">
                         <div id='calendar'></div>
-                        <input type="text" name="date_booked" id="dateBooked">
+                        <input type="text" name="date_Start" id="dateStart">
+                        <input type="text" name="date_End" id="dateEnd">
                         <div class="button-row d-flex mt-4">
                             <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
                             <button class="btn btn-primary ms-auto js-btn-next" type="button" id="nextBtnToType"
@@ -97,7 +102,7 @@
                                     <i class="fa-solid fa-sun fa-10x m-auto text-warning"></i>
                                     <div class="card-body">
                                         <h5 class="card-title">
-                                            <input id="day_swimming" type="radio" name="timeBooked" value="day">
+                                            <input id="daySwimming" type="radio" name="timeBooked" value="day">
                                             <label for="">Day Swimming</label>
                                         </h5>
                                     </div>
@@ -108,7 +113,7 @@
                                     <i class="fa-solid fa-moon fa-10x m-auto text-white"></i>
                                     <div class="card-body text-white">
                                         <h5 class="card-title">
-                                            <input id="night_swimming" type="radio" name="timeBooked"
+                                            <input id="nightSwimming" type="radio" name="timeBooked"
                                                 value="night">
                                             <label for="">Night Swimming</label>
                                         </h5>
@@ -121,7 +126,7 @@
                                     <i class="fa-solid fa-moon fa-10x m-auto text-white"></i>
                                     <div class="card-body text-white">
                                         <h5 class="card-title">
-                                            <input id="overnight_swimming" type="radio" name="timeBooked"
+                                            <input id="overnightSwimming" type="radio" name="timeBooked"
                                                 value="overnight">
                                             <label for="">Overnight Swimming</label>
                                         </h5>
@@ -134,11 +139,81 @@
                         <div class="button-row d-flex mt-4">
                             <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
                             <button class="btn btn-primary ms-auto js-btn-next" type="button" title="Next"
-                                id="nextBtnToNumPeople">Next</button>
+                                id="nextBtnToPlaceOfPool">Next</button>
                         </div>
                     </div>
                 </div>
                 <!--single form panel: END OF DAY / NIGHT CONTENT -->
+
+                <!--single form panel: PLACE OF POOL -->
+                <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
+                    <h3 class="multisteps-form__title">Choose a Pool</h3>
+                    <div class="multisteps-form__content">
+                        <div class="row">
+                            <div class="col-12 col-lg-6">
+                                <div class="card h-100 rooms-cottages-card p-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <input id="taasPool" type="radio" name="place_of_pool"
+                                                value="taas">
+                                            <label for="">Taas</label>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="card h-100 rooms-cottages-card p-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <input id="babaPool" type="radio" name="place_of_pool"
+                                                value="baba">
+                                            <label for="">Baba</label>
+                                        </h5>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="button-row d-flex mt-4">
+                            <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
+                            <button class="btn btn-primary ms-auto js-btn-next" type="button" title="Next"
+                                id="nextBtnToRoom">Next</button>
+                        </div>
+                    </div>
+                </div>
+                <!--single form panel: END OF PLACE OF POOL -->
+
+                <!--single form panel: ROOM OR COTTAGE CONTENT-->
+                <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
+                    <h3 class="multisteps-form__title">Choose a Room or Cottage</h3>
+                    <div class="multisteps-form__content">
+                        {{-- START OF CONTENT --}}
+                        <input type="checkbox" name="room_cottage" value="0">
+                        <label for="">I don't want to reserve a room or cottag</label>
+
+                        <div id="roomsAndCottagesContent">
+                            <div id="roomsValues">
+                                <h4>Rooms</h4>
+                                <div class="row row-cols-2 row-cols-lg-3 g-4 mb-3" id="roomsContent">
+                                </div>
+                            </div>
+
+                            <div id="cottagesValues">
+                                <h4>Cottages</h4>
+                                <div class="row row-cols-2 row-cols-lg-3 g-4" id="cottagesContent">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="button-row d-flex mt-4">
+                            <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
+                            <button class="btn btn-primary ms-auto js-btn-next" type="button" title="Next"
+                                id="nextBtnToNumPeople">Next</button>
+                        </div>
+                    </div>
+                </div>
+                <!--single form panel: END OF ROOM OR COTTAGE CONTENT-->
 
                 <!--single form panel: NUMBER OF PEOPLE CONTENT -->
                 <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn"
@@ -158,71 +233,58 @@
                         <div class="button-row d-flex mt-4">
                             <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
                             <button class="btn btn-primary ms-auto js-btn-next" type="button" title="Next"
-                                id="nextBtnToRoom">Next</button>
+                                id="nextBtnToPlacePool">Next</button>
                         </div>
                     </div>
                 </div>
                 <!--single form panel: END OF NUMBER OF PEOPLE CONTENT -->
 
-                <!--single form panel: ROOM OR COTTAGE CONTENT-->
+                <!--single form panel: BOOK AN EVENT -->
                 <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
-                    <h3 class="multisteps-form__title">Choose a Room or Cottage</h3>
+                    <h3 class="multisteps-form__title">Book an Event</h3>
                     <div class="multisteps-form__content">
-                        {{-- START OF CONTENT --}}
-                        <input type="radio" name="room_cottage" value="0">
-                        <label for="">I don't want to reserve a room or cottag</label>
 
-                        <h4>Rooms</h4>
-                        <div class="row row-cols-2 row-cols-lg-3 g-4 mb-3">
-                            @foreach ($rooms as $room)
-                                <div class="col">
-                                    <div class="card h-100 rooms-cottages-card">
-                                        <img src="{{ asset('img/rooms/' . $room->room_id . '/' . $room->room_cottage_image) }}"
-                                            class="card-img-top">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <input id="{{ $room->room_id }}" type="radio" name="room_cottage"
-                                                    value="{{ $room->id }}">
-                                                <label
-                                                    id="roomCottageName{{ $room->id }}">{{ $room->room_id }}</label>
-                                            </h5>
+                        <input type="checkbox" name="functional_hall" value="0">
+                        <label for="">I don't want to set an Event.</label>
 
-                                            <p class="card-text">{{ $room->room_name }}</p>
-
-                                            <p class="card-text" id="roomCottagePrice{{ $room->id }}">
-                                                {{ $room->room_cottage_price }}
-                                            </p>
-                                        </div>
+                        <div class="row" id="bookEventContent">
+                            <div class="col-12 col-lg-6">
+                                <div class="card h-100 functional-halls-card">
+                                    <img src="{{ asset('img/events/1.png') }}" class="card-img-top">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <input type="radio" name="functional_hall" value="Ilang-Ilang">
+                                            <label for="">Ilang-Ilang</label>
+                                        </h5>
                                     </div>
                                 </div>
-                            @endforeach
-                        </div>
-                        <div id="cottagesValues">
-                            <h4>Cottages</h4>
-                            <div class="row row-cols-2 row-cols-lg-3 g-4">
-                                @foreach ($cottages as $cottage)
-                                    <div class="col">
-                                        <div class="card h-100 rooms-cottages-card">
-                                            <img src="{{ asset('img/cottages/' . $cottage->cottage_name . '/' . $cottage->room_cottage_image) }}"
-                                                class="card-img-top">
-                                            <div class="card-body">
-                                                <h5 class="card-title">
-                                                    <input id="{{ $cottage->cottage_name }}" type="radio"
-                                                        name="room_cottage" value="{{ $cottage->id }}">
-                                                    <label
-                                                        id="roomCottageName{{ $cottage->id }}">{{ $cottage->cottage_name }}</label>
-                                                </h5>
-
-                                                {{-- <p class="card-text" id="roomCottageName{{ $cottage->id }}"
-                                                        data-name={{ $cottage->cottage_name }}>
-                                                        {{ $cottage->cottage_name }}</p> --}}
-
-                                                <p class="card-text" id="roomCottagePrice{{ $cottage->id }}">
-                                                    {{ $cottage->room_cottage_price }}</p>
-                                            </div>
-                                        </div>
+                            </div>
+                            <div class="col-12 col-lg-6">
+                                <div class="card h-100 functional-halls-card">
+                                    <img src="{{ asset('img/events/2.png') }}" class="card-img-top">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <input type="radio" name="functional_hall" value="Jasmin">
+                                            <label for="">Jasmin</label>
+                                        </h5>
                                     </div>
-                                @endforeach
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Inclusions:</h5>
+                                        <input type="radio" name="inclusions" id="withTables"
+                                            value="with Tables and Chairs">
+                                        <label for="">With Tables and Chairs</label>
+
+                                        <br>
+                                        <input type="radio" name="inclusions" id="withoutTables"
+                                            value="without Tables and Chairs">
+                                        <label for="">Without Tables and Chairs</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -233,7 +295,7 @@
                         </div>
                     </div>
                 </div>
-                <!--single form panel: END OF ROOM OR COTTAGE CONTENT-->
+                <!--single form panel: END OF BOOK AN EVENT -->
 
                 <!--single form panel: GUEST INFO CONTENT-->
                 <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
@@ -300,40 +362,46 @@
                             <div class="col-12 col-lg-6">
                                 <h4>Booking Summary</h4>
 
-                                <p id="bookingDateInfo"></p>
-                                <p id="timeOfSwimmingInfo"></p>
-                                <p id="numberOfAdultsInfo"></p>
-                                <p id="numberOfChildrenInfo"></p>
-                                <p id="chosenRoomInfo"></p>
+                                <p id="bookInfo_date"></p>
+                                <p id="bookInfo_time"></p>
+                                <p id="bookInfo_placePool"></p>
+                                <p id="bookInfo_room"></p>
+                                <p id="bookInfo_adults"></p>
+                                <p id="bookInfo_children"></p>
                                 <hr>
                                 <h4>Personal Information</h4>
-                                <p id="nameOfGuest"></p>
-                                <p id="bdayOfGuest"></p>
-                                <p id="emailOfGuest"></p>
-                                <p id="addrOfGuest"></p>
-                                <p id="contactNumOfGuest"></p>
+                                <p id="bookInfo_name"></p>
+                                <p id="bookInfo_bday"></p>
+                                <p id="bookInfo_email"></p>
+                                <p id="bookInfo_addr"></p>
+                                <p id="bookInfo_contact"></p>
+                                <hr>
+                                <h4>Event Information</h4>
+                                <p id="bookInfo_functionalHall"></p>
+                                <p id="bookInfo_inclusions"></p>
                             </div>
                             <div class="col-12 col-lg-6">
                                 <h4>Payment Information</h4>
                                 <ul class="list-group list-group-flush p-0">
                                     <li class="list-group-item px-0" id="typeOfReservationForPayment">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1">Exclusive Overnight Swimming</h6>
-                                            <p class="m-0 p-0">P 75</p>
+                                            <h6 class="mb-1" id="payment_exlusiveReservationHeading"></h6>
+                                            <p class="m-0 p-0" id="payment_exlusiveReservationPrice"></p>
                                         </div>
                                     </li>
                                     <li class="list-group-item px-0">
                                         <div class="d-flex w-100 justify-content-between">
                                             <h6 class="mb-1">General Admission Fee</h6>
-                                            <p class="m-0 p-0">P 75</p>
+                                            <p class="m-0 p-0" id="payment_admissionFeePrice"></p>
                                         </div>
                                         <div class="d-flex w-100 justify-content-between">
                                             <div>
-                                                <small class="mb-1">Non-Exclusive Day Swimming</small>
-                                                <small class="mb-1">x <span id="totalPersons"></span></small>
+                                                <small class="mb-1" id="payment_typeOfReservation"></small>
+                                                <small class="mb-1">x <span
+                                                        id="payment_totalPersons"></span></small>
                                             </div>
 
-                                            <p class="m-0 p-0">P <span id="totalAddmissionFee"></span></p>
+                                            <p class="m-0 p-0" id="payment_totalAdmissionFee"></p>
                                         </div>
 
 
@@ -341,26 +409,47 @@
                                     <li class="list-group-item px-0">
                                         <div class="d-flex w-100 justify-content-between">
                                             <h6 class="mb-1">Room or Cottage Fee</h6>
-                                            <p class="m-0 p-0">P <span id="roomPriceSummary"></span></p>
+                                            <p class="m-0 p-0">P <span id="payment_roomCottagePrice"></span></p>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item px-0">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">Inclusions</h6>
+                                            <p class="m-0 p-0" id="payment_inclusions"></p>
                                         </div>
                                     </li>
                                     <li class="list-group-item px-0">
                                         <div class="d-flex w-100 justify-content-end">
-                                            <h6>Total: P <span id="totalFee"> 1000</span></h6>
+                                            <h6 id="payment_totalFee"></h6>
                                         </div>
                                     </li>
                                 </ul>
 
-                                <label for="" class="form-label">Kindly upload your proof of payment:</label>
-                                <input type="file" name="" class="form-control">
+                                <div id="modeOfPayment" class="mb-3">
+                                    <h5>Mode of Payment:</h5>
 
+                                    <input type="radio" name="mode_of_payment" value="cash">
+                                    <label for="">Cash</label>
 
-                                <div class="mt-3">
-                                    <div class="text-center">
-                                        <img src="{{ asset('img/SAMPLEGCASHQRCODE.jpg') }}" alt=""
-                                            class="img-fluid" width="250">
+                                    <input type="radio" name="mode_of_payment" value="gcash">
+                                    <label for="">GCash</label>
+                                </div>
+
+                                <div id="modeOfPaymentUpload">
+                                    <label for="" class="form-label">Kindly upload your proof of
+                                        payment:</label>
+                                    <input type="file" name="" class="form-control">
+
+                                    <div class="mt-3">
+                                        <div class="text-center">
+                                            <img src="{{ asset('img/SAMPLEGCASHQRCODE.jpg') }}" alt=""
+                                                class="img-fluid" width="250">
+                                        </div>
                                     </div>
                                 </div>
+
+
+
                             </div>
                         </div>
 
@@ -454,20 +543,20 @@
         formHeight(activePanel);
     };
 
-    // // //STEPS BAR CLICK FUNCTION
-    // DOMstrings.stepsBar.addEventListener('click', e => {
-    //     //check if click target is a step button
-    //     const eventTarget = e.target;
-    //     if (!eventTarget.classList.contains(`${DOMstrings.stepsBtnClass}`)) {
-    //         return;
-    //     }
-    //     //get active button step number
-    //     const activeStep = getActiveStep(eventTarget);
-    //     //set all steps before clicked (and clicked too) to active
-    //     setActiveStep(activeStep);
-    //     //open active panel
-    //     setActivePanel(activeStep);
-    // });
+    // //STEPS BAR CLICK FUNCTION
+    DOMstrings.stepsBar.addEventListener('click', e => {
+        //check if click target is a step button
+        const eventTarget = e.target;
+        if (!eventTarget.classList.contains(`${DOMstrings.stepsBtnClass}`)) {
+            return;
+        }
+        //get active button step number
+        const activeStep = getActiveStep(eventTarget);
+        //set all steps before clicked (and clicked too) to active
+        setActiveStep(activeStep);
+        //open active panel
+        setActivePanel(activeStep);
+    });
 
     //PREV/NEXT BTNS CLICK
     DOMstrings.stepsForm.addEventListener('click', e => {
@@ -484,40 +573,40 @@
         if (eventTarget.classList.contains(`${DOMstrings.stepPrevBtnClass}`)) {
             activePanelNum--;
         } else {
-            //activePanelNum++;
-            if (activePanelNum == 0 && $('input[name = "type_of_reservation"]:checked').val() != undefined) {
-                console.log($('input[name="type_of_reservation"]:checked').val())
-                activePanelNum++;
-            } else if (activePanelNum == 1 && $('#dateBooked').val() != '') {
-                console.log($('#dateBooked').val())
-                activePanelNum++;
-            } else if (activePanelNum == 2 && $('input[name="timeBooked"]:checked').val() != undefined) {
-                console.log($('input[name="timeBooked"]:checked').val())
-                activePanelNum++;
-            } else if (activePanelNum == 3 && $('#adults').val() != '' && $('#children').val() != '') {
-                console.log($('#adults').val(), $('#children').val());
-                activePanelNum++;
-            } else if (activePanelNum == 4 && $('input[name = "room_cottage"]:checked').val() != undefined) {
-                console.log($('input[name = "room_cottage"]:checked').val())
-                activePanelNum++;
-            } else if (activePanelNum == 5 &&
-                $('#first_name').val() != '' &&
-                $('#last_name').val() != '' &&
-                $('#birthday').val() != '' &&
-                $('#email').val() != '' &&
-                $('#address').val() != '' &&
-                $('#contact_no').val() != '' &&
-                $('#password').val() != '' && $('#confPassword').val() != '') {
+            activePanelNum++;
+            // if (activePanelNum == 0 && $('input[name = "type_of_reservation"]:checked').val() != undefined) {
+            //     console.log($('input[name="type_of_reservation"]:checked').val())
+            //     activePanelNum++;
+            // } else if (activePanelNum == 1 && $('#dateBooked').val() != '') {
+            //     console.log($('#dateBooked').val())
+            //     activePanelNum++;
+            // } else if (activePanelNum == 2 && $('input[name="timeBooked"]:checked').val() != undefined) {
+            //     console.log($('input[name="timeBooked"]:checked').val())
+            //     activePanelNum++;
+            // } else if (activePanelNum == 3 && $('#adults').val() != '' && $('#children').val() != '') {
+            //     console.log($('#adults').val(), $('#children').val());
+            //     activePanelNum++;
+            // } else if (activePanelNum == 4 && $('input[name = "room_cottage"]:checked').val() != undefined) {
+            //     console.log($('input[name = "room_cottage"]:checked').val())
+            //     activePanelNum++;
+            // } else if (activePanelNum == 5 &&
+            //     $('#first_name').val() != '' &&
+            //     $('#last_name').val() != '' &&
+            //     $('#birthday').val() != '' &&
+            //     $('#email').val() != '' &&
+            //     $('#address').val() != '' &&
+            //     $('#contact_no').val() != '' &&
+            //     $('#password').val() != '' && $('#confPassword').val() != '') {
 
-                console.log($('#first_name').val(),
-                    $('#last_name').val(),
-                    $('#birthday').val(),
-                    $('#email').val(),
-                    $('#address').val(),
-                    $('#contact_no').val(),
-                    $('#password').val())
-                activePanelNum++;
-            }
+            //     console.log($('#first_name').val(),
+            //         $('#last_name').val(),
+            //         $('#birthday').val(),
+            //         $('#email').val(),
+            //         $('#address').val(),
+            //         $('#contact_no').val(),
+            //         $('#password').val())
+            //     activePanelNum++;
+            // }
 
 
         }
@@ -530,7 +619,7 @@
     window.addEventListener('resize', setFormHeight, false);
 </script>
 
-{{-- VALIDATIONS --}}
+{{-- VALIDATIONS 
 <script>
     $('#nextBtnToDate').on('click', () => {
         if (!$('input[name="type_of_reservation"]').is(':checked')) {
@@ -581,9 +670,9 @@
             })
         }
     });
-</script>
+</script> --}}
 
-{{-- SUMMARY & PAYMENT --}}
+{{-- RESTRICTIONS AND API CALLS --}}
 <script>
     $('input[name="type_of_reservation"]:radio').on('click', (event) => {
         if (event.target.value === 'non-exclusive') {
@@ -591,82 +680,118 @@
             $('#radioBtnForNight').hide('#radioBtnForNight')
             $('#radioBtnForOvn').hide('#radioBtnForOvn')
             $('#typeOfReservationForPayment').hide('#typeOfReservationForPayment')
+
+            $('#modeOfPaymentUpload').hide('#modeOfPaymentUpload');
+            $('input[name="mode_of_payment"]').click(function() {
+                let value = $(this).attr('value');
+
+                if (value == 'gcash') {
+                    $('#modeOfPaymentUpload').show();
+                } else {
+                    $('#modeOfPaymentUpload').hide('#modeOfPaymentUpload');
+                }
+            })
         } else if (event.target.value === 'exclusive') {
             console.log('exclusive')
             $('#cottagesValues').hide('#cottagesValues')
+            $('#modeOfPayment').hide('#modeOfPayment')
+            //$('#modeOfPaymentUpload').show('#modeOfPaymentUpload')
         }
     });
 
+    $('#nextBtnToRoom').on('click', () => {
+        $placePool = $('input[name="place_of_pool"]:checked').val();
 
-    $('#nextBtnToSummary').on('click', () => {
-        if ($('#first_name').val() == '' ||
-            $('#last_name').val() == '' ||
-            $('#birthday').val() == '' ||
-            $('#email').val() == '' ||
-            $('#address').val() == '' ||
-            $('#contact_no').val() == '' ||
-            $('#password').val() == '' || $('#confPassword').val() == '') {
-            swal({
-                icon: 'warning',
-                title: 'Empty or Incomplete Fields',
-                text: "Please fill up the fields."
-            });
-        } else {
-            const roomID = $('input[name = "room_cottage"]:checked').val();
+        axios.get('/getFilteredRooms/' + $placePool)
+            .then((response) => {
+                let data = response.data;
+                let content = ""
+                data.map((d) => {
+                    console.log(d)
+                    content = `<div class="col">
+                                    <div class="card h-100 rooms-cottages-card">
+                                        <img src="/img/rooms/${d.room_id}/${d.room_cottage_image}"
+                                            class="card-img-top">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <input id="${d.room_id}" type="checkbox" name="room_cottage"
+                                                    value="${d.id}">
+                                                <label
+                                                    id="roomCottageName${d.id}">${d.room_id}</label>
+                                            </h5>
 
-            $('#bookingDateInfo').text('Booking Date: ' + '' + $('#dateBooked').val());
-            $('#timeOfSwimmingInfo').text('Time: ' + '' + $('input[name = "timeBooked"]:checked').val());
-            $('#numberOfAdultsInfo').text('Adults: ' + '' + $('#adults').val());
-            $('#numberOfChildrenInfo').text('Children: ' + '' + $('#children').val());
-            $nameOfRoomCottage = $('#roomCottageName' + roomID).text();
+                                            <p class="card-text">${d.room_name}</p>
 
-            if ($('input[name = "room_cottage"]:checked').val() != '0') {
-                $('#chosenRoomInfo').text('Room or Cottage: ' + '' + $nameOfRoomCottage);
-            } else {
-                $('#chosenRoomInfo').text('Room or Cottage: No room or cottage.');
+                                            <p class="card-text" id="roomCottagePrice${d.id}">${d.room_cottage_price}</p>
+                                        </div>
+                                    </div>
+                                </div> `
+                    $('#roomsContent').append(content)
+                })
+            })
 
-            }
-            $('#nameOfGuest').text($('#first_name').val() + ' ' + $('#last_name').val());
-            $('#bdayOfGuest').text($('#birthday').val());
-            $('#emailOfGuest').text($('#email').val());
-            $('#addrOfGuest').text($('#address').val());
-            $('#contactNumOfGuest').text($('#contact_no').val());
+        axios.get('/getFilteredCottages/' + $placePool)
+            .then((response) => {
+                let data = response.data;
+                let content = ""
+                data.map((d, index) => {
 
+                    console.log(data[index])
+                    content = `<div class="col">
+                                        <div class="card h-100 rooms-cottages-card">
+                                            <img src="img/cottages/${d.cottage_name}/${d.room_cottage_image}"
+                                                class="card-img-top">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <input id="${d.cottage_name}" type="checkbox"
+                                                        name="room_cottage" value="${d.id}">
+                                                    <label
+                                                        id="roomCottageName${d.id}">${d.cottage_name}</label>
+                                                </h5>
 
-            //PAYMENT INFO
+                                                <p class="card-text" id="roomCottagePrice${d.id}">${d.room_cottage_price}</p>
+                                            </div>
+                                        </div>
+                                    </div> `
+                    $('#cottagesContent').append(content)
+                })
+            })
+    })
 
-            //ADDMISSION FEE
-            $totalNumOfAdults = Number($('#adults').val());
-            $totalNumOfChild = Number($('#children').val());
-            $totalPersons = $totalNumOfAdults + $totalNumOfChild;
-            $('#totalPersons').text($totalPersons)
-            $totalAddmissionFee = $totalPersons * 75
-            $('#totalAddmissionFee').text($totalAddmissionFee);
+    $('input[name="room_cottage"]').click(function() {
+        let value = $(this).attr('value')
 
-            console.log('Total Persons' + $totalPersons)
-            console.log('Total Addmission:' + $totalAddmissionFee)
+        if (value == 0) {
+            $('#roomsAndCottagesContent').toggle();
+        }
+    });
 
-            //ROOM 
-            let roomPrice = '';
-            if ($('input[name = "room_cottage"]:checked').val() != '0') {
-                roomPrice = $('#roomCottagePrice' + roomID).text();
-            } else {
-                roomPrice = 0;
-            }
+    $('input[name="functional_hall"]').click(function() {
+        let value = $(this).attr('value');
 
-            $('#roomPriceSummary').text(roomPrice)
-            console.log(roomPrice)
-
-            $totalFee = Number($totalAddmissionFee) + Number(roomPrice);
-            $('#totalFee').text($totalFee)
-            console.log('Total: ' + $totalFee)
+        if (value == 0) {
+            $('#bookEventContent').toggle();
         }
     })
 </script>
 
+{{-- SUMMARY & PAYMENT --}}
 <script>
+    $('#nextBtnToSummary').on('click', () => {
+        $dateStart = $('input[name="dateStart"]:checked').val();
+        $dateEnd = $('input[name="dateEnd"]:checked').val();
+        $day =
+            $('#bookInfo_date').val()
+    });
+</script>
+
+
+{{-- SUBMISSION OF FORM --}}
+<script>
+    // CALENDAR
     const clickDate = (info) => {
-        $dateBooked = $('#dateBooked').val(info.dateStr);
+        $dateStart = $('#dateStart').val(moment(info.dateStr).format('YYYY-MM-DD'));
+        $dateEnd = $('#dateEnd').val(moment(info.dateStr).add(1, 'days').format('YYYY-MM-DD'));
     }
 
     let calendarEl = document.getElementById('calendar');
@@ -682,14 +807,255 @@
     });
     calendar.render();
 
+    // END OF CALENDAR
 
-    $('#bookingBtn').on('click', () => {
-        $date = $('#dateBooked').val();
-        $day = $('input[name = "timeBooked"]:checked').val();
+    $('#nextBtnToSummary').on('click', () => {
+        //VALUES
+        $typeOfReservation = $('input[name="type_of_reservation"]:checked').val();
+        $dateStart = moment($('#dateStart').val()).format('ll');
+        $dateEnd = '';
+        $time = $('input[name = "timeBooked"]:checked').val();
+        $timeFormat = '';
+        $placePool = $('input[name="place_of_pool"]:checked').val();
+
+        //Payment Information
+        $content = '' // type of reservation
+        $exclusivePrice = ''
+        $admissionFee = 0; //for non-exclu & exclusive day only
+        $totalAdmissionFee = 0;
+        $totalPaymentPrice = 0
+
+        let totalRoomPrice = 0;
+        let roomsAndCottages = $('input[name="room_cottage"]:checked').map(function() {
+            $roomID = $(this).val();
+            if ($roomID != 0) {
+                return $('#roomCottageName' + $roomID).text();
+            } else {
+                return 'No room or cottage.'
+            }
+
+        }).get(); // displays the chosen rooms & cottages
+
+        let roomsAndCottagesPrice = $('input[name="room_cottage"]:checked').map(function() {
+            $roomID = $(this).val();
+            if ($roomID != 0) {
+                return $('#roomCottagePrice' + $roomID).text();
+            } else {
+                return 0;
+            }
+
+        }).get(); // gets the prices of rooms selected
+
+        roomsAndCottagesPrice.map((item, index) => {
+            totalRoomPrice = totalRoomPrice + Number(item)
+        }) // stores the prices of each room selected
+
+        // intialized it here to retrieve the total room price
+        $('#payment_roomCottagePrice').text(`${totalRoomPrice}`);
+        $totalRoomCottagePrice = Number($('#payment_roomCottagePrice').text());
+
+
         $adults = $('#adults').val();
         $children = $('#children').val();
-        $room_cottage_id = $('input[name = "room_cottage"]:checked').val();
-        //$user = $('#user').val();
+        $totalPersons = Number($adults) + Number($children);
+
+        // events & inclusions are for exclu day & overnight 
+        $event = $('input[name="functional_hall"]:checked').val();
+        $inclusions = $('input[name="inclusions"]:checked').val();
+        $inclusionsPrice = 0;
+
+        if ($typeOfReservation == 'non-exclusive') {
+            $('#bookInfo_date').text(`Booking Date: ${$dateStart}`);
+
+            $timeFormat = '8:00 AM - 5:00 PM';
+            $content = 'Non-Exclusive Day Swimming';
+            $admissionFee = 75;
+            $totalAdmissionFee = Number($admissionFee) * Number($totalPersons);
+
+            $totalPaymentPrice = Number($totalAdmissionFee) + Number(
+                $totalRoomCottagePrice); //computes the total price
+        } else if ($typeOfReservation == 'exclusive') {
+            if ($time == 'day') {
+                $('#bookInfo_date').text(`Booking Date: ${$dateStart}`);
+
+                $timeFormat = '8:00 AM - 5:00 PM';
+                $content = 'Exclusive Day Swimming';
+                $admissionFee = 100;
+                $totalAdmissionFee = Number($admissionFee) * Number($totalPersons);
+
+                if ($placePool == 'taas') {
+                    $exclusivePrice = 1950;
+
+                } else if ($placePool == 'baba') {
+                    $exclusivePrice = 3550;
+                }
+
+
+                if ($event == 'Ilang-Ilang') {
+                    if ($inclusions == 'with Tables and Chairs') {
+                        $inclusionsPrice = 3000;
+                    } else if ($inclusions == 'without Tables and Chairs') {
+                        $inclusionsPrice = 2000;
+                    }
+                } else if ($event == 'Jasmin') {
+                    if ($inclusions == 'with Tables and Chairs') {
+                        $inclusionsPrice = 4000;
+                    } else if ($inclusions == 'without Tables and Chairs') {
+                        $inclusionsPrice = 3000;
+                    }
+                }
+
+                console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice,
+                    $inclusionsPrice)
+
+                $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
+                    $totalRoomCottagePrice) + Number($inclusionsPrice); //computes the total price
+
+
+            } else if ($time == 'night') {
+                $dateEnd = moment($('#dateEnd').val()).subtract(1, 'days').format('ll');
+
+                $('#bookInfo_date').text(`Booking Date: ${$dateStart}`);
+                $timeFormat = '7:00 PM - 11:00 PM';
+                $content = 'Exclusive Night Swimming';
+                $exclusivePrice = 1200;
+
+                console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice)
+
+                if ($totalPersons <= 7) {
+                    $totalPaymentPrice = Number($exclusivePrice) + Number(
+                        $totalRoomCottagePrice); //computes the total price
+                } else {
+                    $excess = $totalPersons - 7;
+                    $totalPersons = $excess;
+                    $admissionFee = 100
+                    $totalAdmissionFee = Number($admissionFee) * Number($excess);
+
+                    $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
+                        $totalRoomCottagePrice); //computes the total price
+                }
+
+                // TODO: MISSING TOTAL FEE;
+            } else if ($time == 'overnight') {
+                $dateEnd = moment($('#dateEnd').val()).format('ll');
+
+                $('#bookInfo_date').text(`Booking Date: ${$dateStart} - ${$dateEnd}`);
+                $timeFormat = '7:00 PM - 8:00 AM';
+                $content = 'Exclusive Overnight Swimming';
+                $exclusivePrice = 4000;
+
+                if ($event == 'Ilang-Ilang') {
+                    if ($inclusions == 'with Tables and Chairs') {
+                        $inclusionsPrice = 4000;
+                    } else if ($inclusions == 'without Tables and Chairs') {
+                        $inclusionsPrice = 3000;
+                    }
+                } else if ($event == 'Jasmin') {
+                    if ($inclusions == 'with Tables and Chairs') {
+                        $inclusionsPrice = 5000;
+                    } else if ($inclusions == 'without Tables and Chairs') {
+                        $inclusionsPrice = 4000;
+                    }
+                }
+
+                console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice, $inclusionsPrice)
+
+                if ($totalPersons <= 25) {
+                    $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
+                        $totalRoomCottagePrice) + Number($inclusionsPrice); //computes the total price
+                } else {
+                    $excess = $totalPersons - 25
+                    $totalPersons = $excess
+
+                    $admissionFee = 110;
+                    $totalAdmissionFee = Number($admissionFee) * Number($excess);
+
+                    $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
+                        $totalRoomCottagePrice) + Number($inclusionsPrice)
+                }
+
+                //TODO: MISSING TOTAL FEE;
+            }
+        }
+
+        //checks and replaces the content if there's a booked event
+        $eventContent = '';
+        $inclusionsContent = '';
+
+        if ($event == 0) {
+            $eventContent = 'No reserved functional hall';
+            $inclusionsContent = 'No inclusions added.';
+        } else {
+            $eventContent = $('input[name="functional_hall"]:checked').val();
+            $inclusionsContent = $('input[name="inclusions"]:checked').val();
+        }
+
+
+        $fname = $('#first_name').val();
+        $lname = $('#last_name').val();
+        $bday = moment($('#birthday').val()).format('ll');
+        $email = $('#email').val();
+        $address = $('#address').val();
+        $contact_no = $('#contact_no').val();
+
+
+        $('#bookInfo_time').text(`Time: ${$timeFormat}`);
+        $('#bookInfo_placePool').text(`Chosen Pool: ${$placePool}`);
+        $('#bookInfo_room').text(`Room or Cottage: ${roomsAndCottages}`);
+        $('#bookInfo_adults').text(`Number of Adults: ${$adults}`);
+        $('#bookInfo_children').text(`Number of Children: ${$children}`);
+
+        $('#bookInfo_name').text(`Name: ${$fname} ${$lname}`);
+        $('#bookInfo_bday').text(`Birthday: ${$bday}`);
+        $('#bookInfo_email').text(`Email: ${$email}`);
+        $('#bookInfo_addr').text(`Address: ${$address}`);
+        $('#bookInfo_contact').text(`Contact Number: ${$contact_no}`);
+
+        $('#bookInfo_functionalHall').text(`Functional Hall: ${$eventContent}`);
+        $('#bookInfo_inclusions').text(`Inclusions: ${$inclusionsContent}`)
+
+        //PAYMENT 
+        $('#payment_exlusiveReservationHeading').text($content); // for exclusive only
+        $('#payment_exlusiveReservationPrice').text(`P ${$exclusivePrice}`); // for exclusive only
+
+        $('#payment_typeOfReservation').text($content);
+        $('#payment_totalPersons').text($totalPersons);
+        $('#payment_admissionFeePrice').text(`P ${$admissionFee}`); // for non-exclusive only
+        $('#payment_totalAdmissionFee').text(`P ${$totalAdmissionFee}`);
+        $('#payment_inclusions').text(`P ${$inclusionsPrice}`);
+
+        $('#payment_totalFee').text(`Total: P ${$totalPaymentPrice}`);
+
+
+    });
+
+
+    $('#bookingBtn').on('click', () => {
+        //VALUES
+        $dateStart = $('#dateStart').val();
+        $dateEnd = '';
+
+        $time = $('input[name = "timeBooked"]:checked').val();
+
+        if ($('input[name = "timeBooked"]:checked').val() == 'day' || $('input[name = "timeBooked"]:checked')
+            .val() == 'night') {
+            //$dateEnd = 'night and day time';
+            $dateEnd = moment($('#dateEnd').val()).subtract(1, 'days').format('YYYY-MM-DD');
+        } else {
+            $dateEnd = $('#dateEnd').val();
+        }
+
+        $placePool = $('input[name="place_of_pool"]:checked').val();
+
+        let roomsAndCottages = $('input[name="room_cottage"]:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        $adults = $('#adults').val();
+        $children = $('#children').val();
+
+        $event = $('input[name="functional_hall"]:checked').val();
+        $inclusions = $('input[name="inclusions"]:checked').val();
 
         $fname = $('#first_name').val();
         $lname = $('#last_name').val();
@@ -698,8 +1064,6 @@
         $address = $('#address').val();
         $contact_no = $('#contact_no').val();
         $password = $('#password').val();
-
-        //console.log($date, $day, $adults, $children, $room_cottage_id, $user)
 
         swal({
             icon: 'warning',
@@ -717,11 +1081,16 @@
                     text: 'Your booking has been saved!',
                 }).then((response) => {
                     const formdata = new FormData();
-                    formdata.append('date', $date);
-                    formdata.append('day', $day);
+                    formdata.append('date_start', $dateStart);
+                    formdata.append('date_end', $dateEnd);
+                    formdata.append('time', $time);
+                    formdata.append('place_pool', $placePool);
+                    formdata.append('room_cottage_id', roomsAndCottages);
                     formdata.append('adults', $adults);
                     formdata.append('children', $children);
-                    formdata.append('room_cottage_id', $room_cottage_id);
+
+                    formdata.append('event', $event);
+                    formdata.append('inclusions', $inclusions)
                     //formdata.append('user', $user);
 
                     formdata.append('first_name', $fname);
@@ -734,10 +1103,10 @@
 
                     console.log([...formdata])
 
-                    axios.post('/admin-addbooking', formdata)
-                        .then(response => {
-                            location.reload();
-                        })
+                    // axios.post('/admin-addbooking', formdata)
+                    //     .then(response => {
+                    //         location.reload();
+                    //     })
                 })
             }
         })
