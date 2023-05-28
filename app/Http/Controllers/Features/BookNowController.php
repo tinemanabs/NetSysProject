@@ -74,6 +74,8 @@ class BookNowController extends Controller
                 'inclusions' => $request->inclusions,
                 'user_id' => $user->id,
             ]);
+
+            //note: don't use same email address
         } else if ($request->user_role == 2) {
             // SAVING FOR THOSE WHO HAVE ALREADY ACCTS
             $booking = Bookings::create([
