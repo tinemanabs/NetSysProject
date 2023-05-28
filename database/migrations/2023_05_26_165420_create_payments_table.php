@@ -18,6 +18,7 @@ class CreatePaymentsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('total_paid');
             $table->string('total_price');
+            $table->boolean('payment_status');
             $table->string('payment_image');
             $table->timestamps();
         });
