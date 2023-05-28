@@ -75,6 +75,28 @@ class BookNowController extends Controller
                 'user_id' => $user->id,
             ]);
 
+            if ($request->mode_of_payment === 'cash') {
+                Payments::create([
+                    'user_id' => $user->id,
+                    'booking_id' => $booking->id,
+                    'total_paid' => $request->total_price,
+                    'total_price' => $request->total_price,
+                    'payment_type' => $request->mode_of_payment,
+                    'payment_status' => 1, //1=paid, 0=not yet
+                    'payment_image' => NULL,
+                ]);
+            } else if ($request->mode_of_payment === 'gcash') {
+                Payments::create([
+                    'user_id' => $user->id,
+                    'booking_id' => $booking->id,
+                    'total_paid' => $request->total_price,
+                    'total_price' => $request->total_price,
+                    'payment_type' => $request->mode_of_payment,
+                    'payment_status' => 0,
+                    'payment_image' => $request->payment_image,
+                ]);
+            }
+
             //note: don't use same email address
         } else if ($request->user_role == 2) {
             // SAVING FOR THOSE WHO HAVE ALREADY ACCTS
