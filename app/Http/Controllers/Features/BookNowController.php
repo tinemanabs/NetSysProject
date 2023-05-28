@@ -114,14 +114,15 @@ class BookNowController extends Controller
                 'user_id' => $request->user,
             ]);
 
-            // Payments::create([
-            //     'user_id' => $request->user,
-            //     'booking_id' => $booking->id,
-            //     'total_paid' => $request->total_price,
-            //     'total_price' => $request->total_price,
-            //     'payment_status' => 0,
-            //     'payment_image' => 0
-            // ]);
+            Payments::create([
+                'user_id' => $request->user,
+                'booking_id' => $booking->id,
+                'total_paid' => $request->total_price,
+                'total_price' => $request->total_price,
+                'payment_type' => $request->mode_of_payment,
+                'payment_status' => 0,
+                'payment_image' => $request->payment_image,
+            ]);
         }
     }
 
