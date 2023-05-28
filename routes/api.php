@@ -26,6 +26,8 @@ Auth::routes();
 
 Route::post('mobileLogin', [LoginController::class, 'mobileLogin']);
 Route::post('addBooking', [BookNowController::class, 'addbooking']);
+Route::post('getUserBooking', [BookNowController::class, 'getUserBooking']);
+Route::post('getIndividualBooking', [BookNowController::class, 'getIndividualBooking']);
 Route::post('filterDates', [BookNowController::class, 'filterDates']);
 Route::post('getFilteredRooms', [RoomsAndCottagesController::class, 'getFilteredRooms']);
 Route::get('getAllRoomsAndCottages', [RoomsAndCottagesController::class, 'getAllRoomsAndCottages']);

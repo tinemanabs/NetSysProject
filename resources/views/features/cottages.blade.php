@@ -15,22 +15,20 @@
                     <thead>
                         <tr>
                             <th>Cottage</th>
-                            <th>Fullname</th>
-                            <th>Check-in</th>
-                            <th>Check-out</th>
-                            <th>Day/Night</th>
-                            <th>Contact Number</th>
+                            <th>Place</th>
+                            <th>Price</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Cottage 101</td>
-                            <td>Tine Manabs</td>
-                            <td>Feb 12</td>
-                            <td>Feb 12</td>
-                            <td>Day</td>
-                            <td>Contact Number</td>
-                        </tr>
+                        @foreach ($cottages as $cottage)
+                            @if ($cottage->cottage_name != null)
+                                <tr>
+                                    <td>{{ $cottage->cottage_name }}</td>
+                                    <td>{{ $cottage->place_room_cottage }}</td>
+                                    <td>P{{ $cottage->room_cottage_price }}</td>
+                                </tr>
+                            @endif
+                        @endforeach
                     </tbody>
                 </table>
             </div>

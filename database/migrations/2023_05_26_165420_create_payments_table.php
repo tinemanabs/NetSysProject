@@ -15,12 +15,13 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('booking_id');
-            $table->string('total_paid');
-            $table->string('total_price');
-            $table->boolean('payment_status');
-            $table->string('payment_image');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('booking_id')->nullable();
+            $table->string('total_paid')->nullable();
+            $table->string('total_price')->nullable();
+            $table->string('payment_type')->nullable();
+            $table->boolean('payment_status')->nullable();
+            $table->string('payment_image')->nullable();
             $table->timestamps();
         });
     }

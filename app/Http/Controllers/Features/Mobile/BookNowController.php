@@ -42,6 +42,8 @@ class BookNowController extends Controller
                     'type' => $request->type,
                     'adults' => $request->adults,
                     'children' => $request->children,
+                    'functional_hall' => $request->functional_hall,
+                    'inclusions' => $request->inclusions,
                     'user_id' => $request->user_id,
                 ]);
             return 'true';
@@ -50,5 +52,19 @@ class BookNowController extends Controller
         }
 
         // return $request;
+    }
+
+    public function getUserBooking(Request $request)
+    {
+        return DB::table('bookings')
+            ->where('user_id', $request->user_id)
+            ->get();
+    }
+
+    public function getIndividualBooking(Request $request)
+    {
+        return DB::table('bookings')
+            ->where('id', $request->id)
+            ->first();
     }
 }

@@ -5,12 +5,17 @@ namespace App\Http\Controllers\Features;
 use App\Http\Controllers\Controller;
 use App\Models\RoomsAndCottages;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RoomsAndCottagesController extends Controller
 {
     public function showRoomsPage()
     {
-        return view('features.rooms');
+        $rooms = DB::table('rooms_and_cottages')
+            ->get();
+        return view('features.rooms', [
+            'rooms' => $rooms
+        ]);
     }
 
     public function addRoom(Request $request)
@@ -29,7 +34,11 @@ class RoomsAndCottagesController extends Controller
 
     public function showCottagesPage()
     {
-        return view('features.cottages');
+        $cottages = DB::table('rooms_and_cottages')
+            ->get();
+        return view('features.cottages', [
+            'cottages' => $cottages
+        ]);
     }
 
     public function addCottage(Request $request)

@@ -14,15 +14,21 @@
                 <table id="myTable" class="row-border" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Room</th>
-                            <th>Fullname</th>
-                            <th>Check-in</th>
-                            <th>Check-out</th>
-                            <th>Day/Night</th>
-                            <th>Contact Number</th>
+                            <th>Cottage</th>
+                            <th>Place</th>
+                            <th>Price</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($rooms as $room)
+                            @if ($room->room_name != null)
+                                <tr>
+                                    <td>{{ $room->room_name }}</td>
+                                    <td>{{ $room->place_room_cottage }}</td>
+                                    <td>P{{ $room->room_cottage_price }}</td>
+                                </tr>
+                            @endif
+                        @endforeach
                         {{-- <tr>
                             <td>Room 101</td>
                             <td>Tine Manabs</td>
