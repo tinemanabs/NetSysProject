@@ -10,6 +10,7 @@ class Bookings extends Model
     use HasFactory;
     protected $fillable = [
         'room_id',
+        'reservation_type',
         'date_start',
         'date_end',
         'is_half',
