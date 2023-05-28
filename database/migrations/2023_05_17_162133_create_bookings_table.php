@@ -20,6 +20,7 @@ class CreateBookingsTable extends Migration
             $table->string('date_start');
             $table->string('date_end');
             $table->string('type');
+            $table->string('place_pool');
             $table->string('adults')->nullable();
             $table->string('children')->nullable();
             $table->string('functional_hall')->nullable();
