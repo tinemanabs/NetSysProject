@@ -22,6 +22,8 @@ class CreateBookingsTable extends Migration
             $table->string('type');
             $table->string('adults')->nullable();
             $table->string('children')->nullable();
+            $table->string('functional_hall')->nullable();
+            $table->string('inclusions')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });

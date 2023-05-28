@@ -18,5 +18,7 @@ class Bookings extends Model
         'adults',
         'children',
         'user_id',
+        'functional_hall',
+        'inclusions'
     ];
 }
