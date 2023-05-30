@@ -498,11 +498,21 @@
 
                                                 <input type="radio" name="mode_of_payment" value="cash">
                                                 <label for="">Cash</label>
-
+                                                <br>
                                                 <input type="radio" name="mode_of_payment" value="gcash">
                                                 <label for="">GCash</label>
                                             </div>
                                         @endif
+
+                                        <div id="paymentType" class="mb-3">
+                                            <h5>Payment Type:</h5>
+
+                                            <input type="radio" name="payment_type" value="Full Payment">
+                                            <label for="">Full Payment</label>
+                                            <br>
+                                            <input type="radio" name="payment_type" value="Down Payment">
+                                            <label for="">Down Payment (50%)</label>
+                                        </div>
 
                                         <div id="modeOfPaymentUpload">
                                             <label for="" class="form-label">Kindly upload your proof of
@@ -1154,9 +1164,10 @@
 
             $paymentFee = $('#payment_totalFee').text();
             $modeOfPayment = $('input[name="mode_of_payment"]:checked').val();
-
+            $paymentType = $('input[name="payment_type"]:checked').val();
             console.log($paymentFee)
 
+            $downPayment = Number(50 / 100 * $paymentFee);
 
             swal({
                 icon: 'warning',
@@ -1199,6 +1210,8 @@
 
                         formdata.append('mode_of_payment', $modeOfPayment)
                         formdata.append('total_price', $paymentFee);
+                        formdata.append('payment_type', $paymentType)
+                        formdata.append('down_payment', $downPayment)
                         formdata.append('payment_image', document.getElementById('receiptImage')
                             .files[0]);
 
