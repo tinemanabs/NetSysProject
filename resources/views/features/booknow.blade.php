@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 
 @section('content')
-    <div class="container-fluid">
+    {{-- <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4>Booking</h4>
             <a class="btn btn-primary" href="{{ route('addbooking') }}" role="button">Add Booking</a>
@@ -46,12 +46,12 @@
         $(document).ready(function() {
             $('#myTable').DataTable();
         });
-    </script>
-    {{-- @if (Auth::user()->user_role == 1)
-        @include('features.booknow.admin')
+    </script> --}}
+    @if (Auth::user()->user_role == 1)
+        @include('features.booking.admin')
     @elseif (Auth::user()->user_role == 2)
-        @include('features.booknow.admin')
-    @endif --}}
+        @include('features.booking.guest')
+    @endif
 
     {{-- NOTE:
         - POPULATE THE DATES THAT ARE ALREADY RESERVED 

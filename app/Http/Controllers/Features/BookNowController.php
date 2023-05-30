@@ -8,6 +8,7 @@ use App\Models\Payments;
 use App\Models\RoomsAndCottages;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,11 +16,52 @@ class BookNowController extends Controller
 {
     public function index()
     {
-        $rooms = RoomsAndCottages::all()->where('cottage_name', NULL);
-        $cottages = RoomsAndCottages::all()->where('room_id', NULL);
+        $getAllBookings = DB::table('bookings')
+            ->join('users', 'users.id', '=', 'bookings.user_id')
+            ->join('payments', 'payments.booking_id', '=', 'bookings.id')
+            //->join('rooms_and_cottages', 'rooms_and_cottages.id', '=', 'bookings.room_id')
+            ->select(
+                'bookings.*',
+                'users.email',
+                'users.first_name',
+                'users.last_name',
+                'users.birthday',
+                'users.address',
+                'users.contact_no',
+                'payments.total_paid',
+                'payments.total_price',
+                'payments.payment_type',
+                'payments.payment_status',
+                'payments.payment_image',
+
+            )
+            ->get();
+
+        $getMyBookings = DB::table('bookings')
+            ->where('bookings.user_id', Auth::user()->id)
+            ->join('users', 'users.id', '=', 'bookings.user_id')
+            ->join('payments', 'payments.booking_id', '=', 'bookings.id')
+            //->join('rooms_and_cottages', 'rooms_and_cottages.id', '=', 'bookings.room_id')
+            ->select(
+                'bookings.*',
+                'users.email',
+                'users.first_name',
+                'users.last_name',
+                'users.birthday',
+                'users.address',
+                'users.contact_no',
+                'payments.total_paid',
+                'payments.total_price',
+                'payments.payment_type',
+                'payments.payment_status',
+                'payments.payment_image',
+            )
+            ->get();
+        //dd($getMyBookings);
+        //return $getAllBookings;
         return view('features.booknow', [
-            'rooms' => $rooms,
-            'cottages' => $cottages
+            'allBookings' => $getAllBookings,
+            'myBooking' => $getMyBookings
         ]);
     }
 
@@ -150,5 +192,25 @@ class BookNowController extends Controller
             ->get();
 
         return $filteredCottages;
+    }
+
+    public function approvePaymentStatus($id)
+    {
+        Payments::where('booking_id', $id)->update([
+            'payment_status' => 1
+        ]);
+    }
+
+    public function checkFullPayment($id)
+    {
+        Payments::where('booking_id', $id)->update([
+            'payment_type' => 'Full Payment'
+        ]);
+    }
+
+    public function deleteBooking($id)
+    {
+        Bookings::find($id)->delete();
+        Payments::where('booking_id', $id)->delete();
     }
 }
