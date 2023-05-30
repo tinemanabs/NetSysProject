@@ -772,7 +772,9 @@
             }
         });
 
-        $('#modeOfPaymentUpload').hide('#modeOfPaymentUpload');
+        @if (Auth::user()->user_role == 1)
+            $('#modeOfPaymentUpload').hide('#modeOfPaymentUpload');
+        @endif
         $('input[name="mode_of_payment"]').click(function() {
             let value = $(this).attr('value');
 
