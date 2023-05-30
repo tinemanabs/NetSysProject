@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payments extends Model
 {
-    use HasFactory;
+        use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'booking_id',
-        'total_paid',
-        'total_price',
-        'payment_type',
-        'payment_status',
-        'payment_image',
-    ];
+        protected $fillable = [
+                'user_id',
+                'booking_id',
+                'total_paid',
+                'total_price',
+                'payment_type',
+                'payment_status',
+                'payment_image'
+        ];
 }

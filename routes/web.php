@@ -41,8 +41,9 @@ Route::post('/addroom', [RoomsAndCottagesController::class, 'addRoom']);
 Route::get('/cottages', [RoomsAndCottagesController::class, 'showCottagesPage'])->name('showCottagesPage');
 Route::post('/addcottage', [RoomsAndCottagesController::class, 'addCottage']);
 
-Route::post('/addbooking', [BookNowController::class, 'addBooking']);
+//Route::post('/addbooking', [BookNowController::class, 'addBooking']);
 
+Route::get('/addbooking', [BookNowController::class, 'addBooking'])->name('addbooking');
 Route::get('/bookevent', [BookEventsController::class, 'index'])->name('bookevent');
 Route::post('/admin-addbooking', [BookNowController::class, 'adminAddBooking']);
 Route::get('/getFilteredRooms/{place}', [BookNowController::class, 'getRooms']);
