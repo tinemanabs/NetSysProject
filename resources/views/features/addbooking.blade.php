@@ -763,21 +763,23 @@
                 $('#radioBtnForOvn').hide('#radioBtnForOvn')
                 $('#typeOfReservationForPayment').hide('#typeOfReservationForPayment')
 
-                $('#modeOfPaymentUpload').hide('#modeOfPaymentUpload');
-                $('input[name="mode_of_payment"]').click(function() {
-                    let value = $(this).attr('value');
-
-                    if (value == 'gcash') {
-                        $('#modeOfPaymentUpload').show();
-                    } else {
-                        $('#modeOfPaymentUpload').hide('#modeOfPaymentUpload');
-                    }
-                })
+                //$('#modeOfPaymentUpload').hide('#modeOfPaymentUpload');
             } else if (event.target.value === 'exclusive') {
                 console.log('exclusive')
                 $('#cottagesValues').hide('#cottagesValues')
                 //$('#modeOfPayment').hide('#modeOfPayment')
                 //$('#modeOfPaymentUpload').show('#modeOfPaymentUpload')
+            }
+        });
+
+        $('#modeOfPaymentUpload').hide('#modeOfPaymentUpload');
+        $('input[name="mode_of_payment"]').click(function() {
+            let value = $(this).attr('value');
+
+            if (value == 'gcash') {
+                $('#modeOfPaymentUpload').show();
+            } else {
+                $('#modeOfPaymentUpload').hide('#modeOfPaymentUpload');
             }
         });
 
