@@ -10,9 +10,12 @@ class Payments extends Model
     use HasFactory;
 
     protected $fillable = [
-        "user_id",
+        'user_id',
+        'booking_id',
         'total_paid',
         'total_price',
-        'payment_image'
+        'payment_type',
+        'payment_status',
+        'payment_image',
     ];
 }

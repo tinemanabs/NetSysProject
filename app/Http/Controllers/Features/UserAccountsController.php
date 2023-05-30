@@ -27,4 +27,11 @@ class UserAccountsController extends Controller
             'user_role' => 1
         ]);
     }
+
+    public function getProfile(Request $request)
+    {
+        return DB::table('users')
+            ->where('id', $request->id)
+            ->first();
+    }
 }

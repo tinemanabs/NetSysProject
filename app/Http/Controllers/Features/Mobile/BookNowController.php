@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Features\Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bookings;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,18 +34,31 @@ class BookNowController extends Controller
             ->where("type", $request->type)
             ->get();
         if (count($exist) == 0) {
-            DB::table('bookings')
+            $booking = Bookings::create([
+                'room_id' => $request->room_id,
+                'reservation_type' => $request->reservation_type,
+                'date_start' => $request->date_start,
+                'date_end' => $request->date_end,
+                'type' => $request->type,
+                'adults' => $request->adults,
+                'children' => $request->children,
+                'functional_hall' => $request->functional_hall,
+                'inclusions' => $request->inclusions,
+                'user_id' => $request->user_id,
+            ]);
+
+            DB::table('users')
+                ->where('id', $request->user_id)
+                ->update([
+                    'is_booked' => true
+                ]);
+
+            DB::table('payments')
                 ->insert([
-                    'room_id' => $request->room_id,
-                    'reservation_type' => $request->reservation_type,
-                    'date_start' => $request->date_start,
-                    'date_end' => $request->date_end,
-                    'type' => $request->type,
-                    'adults' => $request->adults,
-                    'children' => $request->children,
-                    'functional_hall' => $request->functional_hall,
-                    'inclusions' => $request->inclusions,
                     'user_id' => $request->user_id,
+                    'booking_id' => $booking->id,
+                    'total_price' => $request->total_price,
+                    'payment_status' => false,
                 ]);
             return 'true';
         } else {
@@ -57,14 +71,16 @@ class BookNowController extends Controller
     public function getUserBooking(Request $request)
     {
         return DB::table('bookings')
-            ->where('user_id', $request->user_id)
+            ->join('payments', 'bookings.id', 'payments.booking_id')
+            ->where('bookings.user_id', $request->user_id)
             ->get();
     }
 
     public function getIndividualBooking(Request $request)
     {
         return DB::table('bookings')
-            ->where('id', $request->id)
+            ->join('payments', 'bookings.id', 'payments.booking_id')
+            ->where('bookings.id', $request->id)
             ->first();
     }
 }
