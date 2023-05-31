@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h6>Booking</h6>
+        <h4>Booking</h4>
         <a class="btn btn-primary" href="{{ route('addbooking') }}" role="button">Add Booking</a>
     </div>
 
