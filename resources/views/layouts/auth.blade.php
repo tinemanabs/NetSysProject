@@ -126,11 +126,9 @@
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('purchaseAndRentals') }}">Purchase and Rental Inventory</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">Payment</a>
-                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="#!">Events</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">SMS Notification System</a>
+                                        href="{{ route('smsDashboard') }}">SMS Notification System</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('editprofile', Auth::user()->id) }}">Profile</a>
                                 </div>
@@ -140,8 +138,6 @@
                                         href="#!">Book Now</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('bookevent') }}">Book an Event</a>
-                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">History</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('editprofile', Auth::user()->id) }}">Profile</a>
                                 </div>
