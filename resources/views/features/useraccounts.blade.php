@@ -1,9 +1,9 @@
 @extends('layouts.auth')
 
 @section('content')
-    <div class="container">
-        <h4>User Accounts Management</h4>
-        <div class="d-flex justify-content-end mb-3">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4>User Accounts Management</h4>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAdminModal">
                 Add Admin
             </button>
@@ -21,7 +21,7 @@
                                 <th>Address</th>
                                 <th>Birthday</th>
                                 <th>Email</th>
-                                <th>Contact Address</th>
+                                <th>Contact Number</th>
                             </tr>
                         </thead>
                         <tbody>

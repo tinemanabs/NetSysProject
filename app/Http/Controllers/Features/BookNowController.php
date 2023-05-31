@@ -8,6 +8,7 @@ use App\Models\Payments;
 use App\Models\RoomsAndCottages;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,11 +16,52 @@ class BookNowController extends Controller
 {
     public function index()
     {
-        $rooms = RoomsAndCottages::all()->where('cottage_name', NULL);
-        $cottages = RoomsAndCottages::all()->where('room_id', NULL);
+        $getAllBookings = DB::table('bookings')
+            ->join('users', 'users.id', '=', 'bookings.user_id')
+            ->join('payments', 'payments.booking_id', '=', 'bookings.id')
+            //->join('rooms_and_cottages', 'rooms_and_cottages.id', '=', 'bookings.room_id')
+            ->select(
+                'bookings.*',
+                'users.email',
+                'users.first_name',
+                'users.last_name',
+                'users.birthday',
+                'users.address',
+                'users.contact_no',
+                'payments.total_paid',
+                'payments.total_price',
+                'payments.payment_type',
+                'payments.payment_status',
+                'payments.payment_image',
+
+            )
+            ->get();
+
+        $getMyBookings = DB::table('bookings')
+            ->where('bookings.user_id', Auth::user()->id)
+            ->join('users', 'users.id', '=', 'bookings.user_id')
+            ->join('payments', 'payments.booking_id', '=', 'bookings.id')
+            //->join('rooms_and_cottages', 'rooms_and_cottages.id', '=', 'bookings.room_id')
+            ->select(
+                'bookings.*',
+                'users.email',
+                'users.first_name',
+                'users.last_name',
+                'users.birthday',
+                'users.address',
+                'users.contact_no',
+                'payments.total_paid',
+                'payments.total_price',
+                'payments.payment_type',
+                'payments.payment_status',
+                'payments.payment_image',
+            )
+            ->get();
+        //dd($getMyBookings);
+        //return $getAllBookings;
         return view('features.booknow', [
-            'rooms' => $rooms,
-            'cottages' => $cottages
+            'allBookings' => $getAllBookings,
+            'myBooking' => $getMyBookings
         ]);
     }
 
@@ -28,24 +70,9 @@ class BookNowController extends Controller
         return view('features.addbooking');
     }
 
-    // public function addBooking(Request $request)
-    // {
-    //     Bookings::create([
-    //         'room_id' => $request->room_id,
-    //         'date_start' => $request->date,
-    //         'date_end' => $request->date,
-    //         'is_half' => '0',
-    //         'type' => $request->day,
-    //         'adults' => $request->adults,
-    //         'children' => $request->children,
-    //         'user_id' => $request->user,
-    //     ]);
-
-    //     //dd($user);
-    // }
-
     public function adminAddBooking(Request $request)
     {
+
         if ($request->user_role == 1) {
             // SAVING FOR ADMIN SIDE - WALK IN GUEST
             $user = User::create([
@@ -75,26 +102,32 @@ class BookNowController extends Controller
                 'user_id' => $user->id,
             ]);
 
-            if ($request->mode_of_payment === 'cash') {
-                Payments::create([
+            if ($request->payment_type == 'Full Payment') {
+                $payment = Payments::create([
                     'user_id' => $user->id,
                     'booking_id' => $booking->id,
                     'total_paid' => $request->total_price,
                     'total_price' => $request->total_price,
-                    'payment_type' => $request->mode_of_payment,
-                    'payment_status' => 1, //1=paid, 0=not yet
+                    'payment_type' => $request->payment_type,
+                    'payment_status' => 1,
+                    'payment_image' => NULL, // should be null bc there's a cash option
+                ]);
+            } else if ($request->payment_type == 'Down Payment') {
+                $payment = Payments::create([
+                    'user_id' => $user->id,
+                    'booking_id' => $booking->id,
+                    'total_paid' => $request->down_payment, // change base if full payment or downpayment
+                    'total_price' => $request->total_price,
+                    'payment_type' => $request->payment_type,
+                    'payment_status' => 1,
                     'payment_image' => NULL,
                 ]);
-            } else if ($request->mode_of_payment === 'gcash') {
-                Payments::create([
-                    'user_id' => $user->id,
-                    'booking_id' => $booking->id,
-                    'total_paid' => $request->total_price,
-                    'total_price' => $request->total_price,
-                    'payment_type' => $request->mode_of_payment,
-                    'payment_status' => 0,
-                    'payment_image' => $request->payment_image,
-                ]);
+            }
+
+            if ($request->hasFile('payment_image')) {
+                $receiptImage = $request->payment_image->getClientOriginalName();
+                $request->payment_image->move(public_path('img/payments/' . $user->id), $receiptImage);
+                $payment->update(['payment_image' => $receiptImage]);
             }
 
             //note: don't use same email address
@@ -114,15 +147,31 @@ class BookNowController extends Controller
                 'user_id' => $request->user,
             ]);
 
-            Payments::create([
-                'user_id' => $request->user,
-                'booking_id' => $booking->id,
-                'total_paid' => $request->total_price,
-                'total_price' => $request->total_price,
-                'payment_type' => $request->mode_of_payment,
-                'payment_status' => 0,
-                'payment_image' => $request->payment_image,
-            ]);
+            $receiptImage = $request->payment_image->getClientOriginalName();
+            $request->payment_image->move(public_path('img/payments/' . $request->user), $receiptImage);
+
+            if ($request->payment_type == 'Full Payment') {
+                //changes in total paid if different payment type
+                Payments::create([
+                    'user_id' => $request->user,
+                    'booking_id' => $booking->id,
+                    'total_paid' => $request->total_price,
+                    'total_price' => $request->total_price,
+                    'payment_type' => $request->payment_type,
+                    'payment_status' => 0,
+                    'payment_image' => $receiptImage,
+                ]);
+            } else if ($request->payment_type == 'Down Payment') {
+                Payments::create([
+                    'user_id' => $request->user,
+                    'booking_id' => $booking->id,
+                    'total_paid' => $request->down_payment,
+                    'total_price' => $request->total_price,
+                    'payment_type' => $request->payment_type,
+                    'payment_status' => 0,
+                    'payment_image' => $receiptImage,
+                ]);
+            }
         }
     }
 
@@ -143,5 +192,26 @@ class BookNowController extends Controller
             ->get();
 
         return $filteredCottages;
+    }
+
+    public function approvePaymentStatus($id)
+    {
+        Payments::where('booking_id', $id)->update([
+            'payment_status' => 1
+        ]);
+    }
+
+    public function checkFullPayment(Request $request, $id)
+    {
+        Payments::where('booking_id', $id)->update([
+            'payment_type' => 'Full Payment',
+            'total_paid' => $request->total_price
+        ]);
+    }
+
+    public function deleteBooking($id)
+    {
+        Bookings::find($id)->delete();
+        Payments::where('booking_id', $id)->delete();
     }
 }

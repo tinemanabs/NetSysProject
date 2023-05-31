@@ -53,6 +53,10 @@
     <!-- Moment JS CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 
 <body>
@@ -122,11 +126,9 @@
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('purchaseAndRentals') }}">Purchase and Rental Inventory</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">Payment</a>
-                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="#!">Events</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">SMS Notification System</a>
+                                        href="{{ route('smsDashboard') }}">SMS Notification System</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('editprofile', Auth::user()->id) }}">Profile</a>
                                 </div>
@@ -136,8 +138,6 @@
                                         href="{{ route('booknow') }}">Book Now</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('bookevent') }}">Book an Event</a>
-                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">History</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('editprofile', Auth::user()->id) }}">Profile</a>
                                 </div>

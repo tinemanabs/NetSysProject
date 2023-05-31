@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Features\BookNowController;
 use App\Http\Controllers\Features\PurchaseAndRental;
 use App\Http\Controllers\Features\RoomsAndCottagesController;
+use App\Http\Controllers\Features\SMSController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +49,15 @@ Route::get('/bookevent', [BookEventsController::class, 'index'])->name('bookeven
 Route::post('/admin-addbooking', [BookNowController::class, 'adminAddBooking']);
 Route::get('/getFilteredRooms/{place}', [BookNowController::class, 'getRooms']);
 Route::get('/getFilteredCottages/{place}', [BookNowController::class, 'getCottages']);
+Route::post('/approvePaymentStatus/{id}', [BookNowController::class, 'approvePaymentStatus']);
+Route::post('/checkFullPayment/{id}', [BookNowController::class, 'checkFullPayment']);
+Route::post('/deleteBooking/{id}', [BookNowController::class, 'deleteBooking']);
 
 Route::get('/purchaseandrentals', [PurchaseAndRental::class, 'index'])->name('purchaseAndRentals');
 Route::post('/addpurchaseandrental', [PurchaseAndRental::class, 'addPurchaseAndRental']);
 Route::post('/deletepurchaseandrental', [PurchaseAndRental::class, 'deletePurchaseAndRental']);
+
+//SMS Feature
+Route::get('/smsDashboard', [SMSController::class, 'index'])->name('smsDashboard');
+Route::get('/createSMS', [SMSController::class, 'createSMS'])->name('createsms');
+Route::post('/sendSMS', [SMSController::class, 'itexmo'])->name('sendsms');
