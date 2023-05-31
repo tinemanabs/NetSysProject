@@ -30,6 +30,7 @@
                                 <td>{{ $item->item_description }}</td>
                                 <td>P{{ $item->item_price }}</td>
                                 <td>{{ $item->item_count }}</td>
+                                <td>{{ $item->item_count }}</td>
                                 <td><img src="{{ asset('img/purchaseandrentals/' . $item->item_image) }}" height="100"
                                         width="100">
                                 </td>
@@ -108,6 +109,25 @@
                                     <input type="text" class="form-control" id="itemCount">
                                 </div>
                                 <div class="col-lg-12 mb-3">
+                                    <label for="" class="form-label">Is Rental</label>
+                                    <div class="row px-2">
+                                        <div class="form-check col">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                                value="true" id="flexRadioDefault1">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                                Yes
+                                            </label>
+                                        </div>
+                                        <div class="form-check col">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                                value="false" id="flexRadioDefault1">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                                No
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 mb-3">
                                     <label for="" class="form-label">Item Image</label>
                                     <input type="file" class="form-control" id="itemImage"
                                         accept="image/png, image/gif, image/jpg, image/jpeg">
@@ -122,6 +142,7 @@
                     </div>
                 </form>
 
+
                 <script>
                     $("#addItemBtn").click(() => {
                         $itemName = $("#itemName").val()
@@ -130,6 +151,8 @@
                         $itemCount = $("#itemCount").val()
                         $itemImage = $("#itemImage").val().split('\\').pop()
                         $fileExtension = ['jpeg', 'jpg', 'png', 'gif']
+                        $isRental = $('input[name="flexRadioDefault"]:checked').val();
+                        console.log($isRental)
 
                         if ($itemName == '' || $itemDesc == '' || $itemPrice == "" || $itemCount == '' || $itemImage == '') {
                             swal({
@@ -146,9 +169,10 @@
                         } else {
                             const formdata = new FormData()
                             formdata.append('item_name', $itemName)
-                            formdata.append('item_description', $itemName)
+                            formdata.append('item_description', $itemDesc)
                             formdata.append('item_price', $itemPrice)
                             formdata.append('item_count', $itemCount)
+                            formdata.append('is_rental', $isRental)
                             formdata.append('item_image', document.getElementById('itemImage').files[0])
                             axios.post("/addpurchaseandrental", formdata, {
                                     headers: {

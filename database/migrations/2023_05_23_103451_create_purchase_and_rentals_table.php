@@ -20,6 +20,7 @@ class CreatePurchaseAndRentalsTable extends Migration
             $table->string('item_price');
             $table->string('item_count');
             $table->string('item_image');
+            $table->string('is_rental');
             $table->timestamps();
         });
     }

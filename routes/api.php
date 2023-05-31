@@ -41,3 +41,9 @@ Route::post('submitPayment', [PaymentController::class, 'submitPayment']);
 
 //rentals
 Route::get('getAllRentals', [RentalsController::class, 'getAllRentals']);
+Route::post('addPurchaseAndRentals', [RentalsController::class, 'addPurchaseAndRentals']);
+Route::post('getUserPurchaseAndRentals', [RentalsController::class, 'getUserPurchaseAndRentals']);
+Route::post('addPurchaseAndRentalsQuantity', [RentalsController::class, 'addPurchaseAndRentalsQuantity']);
+Route::post('subtractPurchaseAndRentalsQuantity', [RentalsController::class, 'subtractPurchaseAndRentalsQuantity']);
+Route::post('removePurchaseAndRentals', [RentalsController::class, 'removePurchaseAndRentals']);
+Route::post('submitPurchaseAndRentalsPayment', [RentalsController::class, 'submitPurchaseAndRentalsPayment']);

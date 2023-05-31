@@ -30,6 +30,7 @@ class PurchaseAndRental extends Controller
                     'item_price' => $request->item_price,
                     'item_count' => $request->item_count,
                     'item_image' => $fileName,
+                    'is_rental' => $request->is_rental,
                 ]);
             return true;
         } else {
