@@ -130,10 +130,13 @@
                                                 icon: 'success'
                                             }).then((response) => {
                                                 let id = $('#checkFullPaymentBtn{{ $booking->id }}').data('id');
+                                                let totalPrice = {{ $booking->total_price }}
+                                                console.log(totalPrice);
                                                 console.log(id);
 
                                                 const formdata = new FormData();
                                                 formdata.append('book_id', id);
+                                                formdata.append('total_price', totalPrice);
                                                 axios.post('/checkFullPayment/' + id, formdata)
                                                     .then((response) => {
                                                         location.reload();

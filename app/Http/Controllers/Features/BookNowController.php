@@ -201,10 +201,11 @@ class BookNowController extends Controller
         ]);
     }
 
-    public function checkFullPayment($id)
+    public function checkFullPayment(Request $request, $id)
     {
         Payments::where('booking_id', $id)->update([
-            'payment_type' => 'Full Payment'
+            'payment_type' => 'Full Payment',
+            'total_paid' => $request->total_price
         ]);
     }
 
