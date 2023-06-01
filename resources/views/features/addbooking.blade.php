@@ -1137,7 +1137,7 @@
             $placePool = $('input[name="place_of_pool"]:checked').val();
 
             let roomsAndCottages = $('input[name="room_cottage"]:checked').map(function() {
-                return $(this).val();
+                return Number($(this).val());
             }).get();
 
             $adults = $('#adults').val();
@@ -1194,7 +1194,7 @@
                         formdata.append('date_end', $dateEnd);
                         formdata.append('time', $time);
                         formdata.append('place_pool', $placePool);
-                        formdata.append('room_cottage_id', roomsAndCottages);
+                        formdata.append('room_cottage_id', JSON.stringify(roomsAndCottages));
                         formdata.append('adults', $adults);
                         formdata.append('children', $children);
 
@@ -1237,10 +1237,4 @@
             })
         })
     </script>
-
-    {{-- NOTES:
-    - continue the validations
-    - guest side functions
-    - payment function
-     --}}
 @endsection

@@ -89,7 +89,7 @@ class BookNowController extends Controller
             ]);
 
             $booking = Bookings::create([
-                'room_id' => json_encode($request->room_cottage_id), // note: ask rob how to save array
+                'room_id' => $request->room_cottage_id,
                 'reservation_type' => $request->reservation_type,
                 'date_start' => $request->date_start,
                 'date_end' => $request->date_end,
@@ -134,7 +134,7 @@ class BookNowController extends Controller
         } else if ($request->user_role == 2) {
             // SAVING FOR THOSE WHO HAVE ALREADY ACCTS
             $booking = Bookings::create([
-                'room_id' => json_encode($request->room_cottage_id), // note: ask rob how to save array
+                'room_id' => $request->room_cottage_id,
                 'reservation_type' => $request->reservation_type,
                 'date_start' => $request->date_start,
                 'date_end' => $request->date_end,
