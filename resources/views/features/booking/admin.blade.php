@@ -250,6 +250,22 @@
                                                             @endif
                                                         </li>
                                                         <li class="list-group-item">
+                                                            <b>Room or Cottage:</b>
+                                                            @foreach (json_decode($booking->room_id) as $reservedRoom)
+                                                                @foreach ($rooms as $room)
+                                                                    @switch($reservedRoom)
+                                                                        @case($room->id)
+                                                                            {{ $room->room_name }}{{ $room->cottage_name }},
+                                                                        @break
+                                                                    @endswitch
+                                                                @endforeach
+                                                            @endforeach
+
+                                                            @if ($booking->room_id == '[0]')
+                                                                No room or cottage reserved.
+                                                            @endif
+                                                        </li>
+                                                        <li class="list-group-item">
                                                             <b>Pool:</b>
                                                             {{ $booking->place_pool }}
                                                         </li>

@@ -57,11 +57,21 @@ class BookNowController extends Controller
                 'payments.payment_image',
             )
             ->get();
+
+        $rooms = DB::table('rooms_and_cottages')
+            ->select(
+                'id',
+                'room_name',
+                'cottage_name'
+            )
+            ->get();
+
         //dd($getMyBookings);
         //return $getAllBookings;
         return view('features.booknow', [
             'allBookings' => $getAllBookings,
-            'myBooking' => $getMyBookings
+            'myBooking' => $getMyBookings,
+            'rooms' => $rooms
         ]);
     }
 
