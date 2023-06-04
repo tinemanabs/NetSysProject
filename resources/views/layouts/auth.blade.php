@@ -126,7 +126,7 @@
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('purchaseAndRentals') }}">Purchase and Rental Inventory</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">Events</a>
+                                        href="{{ route('bookevent') }}">Events</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('smsDashboard') }}">SMS Notification System</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"

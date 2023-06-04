@@ -55,6 +55,7 @@ Route::get('/getFilteredCottages/{place}', [BookNowController::class, 'getCottag
 Route::post('/approvePaymentStatus/{id}', [BookNowController::class, 'approvePaymentStatus']);
 Route::post('/checkFullPayment/{id}', [BookNowController::class, 'checkFullPayment']);
 Route::post('/deleteBooking/{id}', [BookNowController::class, 'deleteBooking']);
+Route::get('/viewBooking/{id}', [BookNowController::class, 'viewBooking'])->name('viewBooking');
 
 Route::get('/purchaseandrentals', [PurchaseAndRental::class, 'index'])->name('purchaseAndRentals');
 Route::post('/addpurchaseandrental', [PurchaseAndRental::class, 'addPurchaseAndRental']);

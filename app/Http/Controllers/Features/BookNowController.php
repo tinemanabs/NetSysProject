@@ -33,7 +33,6 @@ class BookNowController extends Controller
                 'payments.payment_type',
                 'payments.payment_status',
                 'payments.payment_image',
-
             )
             ->get();
 
@@ -183,6 +182,45 @@ class BookNowController extends Controller
                 ]);
             }
         }
+    }
+
+    public function viewBooking($id)
+    {
+        $getAllBookings = DB::table('bookings')
+            ->join('users', 'users.id', '=', 'bookings.user_id')
+            ->join('payments', 'payments.booking_id', '=', 'bookings.id')
+            ->where('bookings.id', $id)
+            //->join('rooms_and_cottages', 'rooms_and_cottages.id', '=', 'bookings.room_id')
+            ->select(
+                'bookings.*',
+                'users.email',
+                'users.first_name',
+                'users.last_name',
+                'users.birthday',
+                'users.address',
+                'users.contact_no',
+                'payments.total_paid',
+                'payments.total_price',
+                'payments.payment_type',
+                'payments.payment_status',
+                'payments.payment_image',
+
+            )
+            ->first();
+
+        $rooms = DB::table('rooms_and_cottages')
+            ->select(
+                'id',
+                'room_name',
+                'cottage_name'
+            )
+            ->get();
+        //return $getAllBookings;
+
+        return view('features.booking.viewbooking', [
+            'booking' => $getAllBookings,
+            'rooms' => $rooms
+        ]);
     }
 
     public function getRooms($place)
