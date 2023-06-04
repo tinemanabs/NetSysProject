@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\RoomsAndCottages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class RoomsAndCottagesController extends Controller
 {
@@ -13,7 +14,7 @@ class RoomsAndCottagesController extends Controller
     {
         $rooms = DB::table('rooms_and_cottages')
             ->get();
-        return view('features.rooms', [
+        return view('features.rooms.rooms', [
             'rooms' => $rooms
         ]);
     }
@@ -27,16 +28,24 @@ class RoomsAndCottagesController extends Controller
         RoomsAndCottages::create([
             'room_id' => $request->room_id,
             'room_name' => $request->room_name,
+            'place_room_cottage' => $request->place_room_cottage,
             'room_cottage_price' => $request->room_price,
             'room_cottage_image' => $fileName,
         ]);
+    }
+
+    public function deleteRoom($id)
+    {
+        $room = RoomsAndCottages::find($id);
+        $room->delete();
+        File::deleteDirectory(public_path('img/rooms/' . $room->room_id));
     }
 
     public function showCottagesPage()
     {
         $cottages = DB::table('rooms_and_cottages')
             ->get();
-        return view('features.cottages', [
+        return view('features.cottages.cottages', [
             'cottages' => $cottages
         ]);
     }
@@ -48,9 +57,17 @@ class RoomsAndCottagesController extends Controller
 
         RoomsAndCottages::create([
             'cottage_name' => $request->cottage_name,
+            'place_room_cottage' => $request->place_room_cottage,
             'room_cottage_price' => $request->cottage_price,
             'room_cottage_image' => $request->cottage_image,
             'room_cottage_image' => $fileName,
         ]);
+    }
+
+    public function deleteCottage($id)
+    {
+        $cottage = RoomsAndCottages::find($id);
+        $cottage->delete();
+        File::deleteDirectory(public_path('img/cottages/' . $cottage->cottage_name));
     }
 }

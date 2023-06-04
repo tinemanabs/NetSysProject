@@ -14,6 +14,7 @@ class RoomsAndCottages extends Model
         'room_name',
         'cottage_name',
         'type_of_rent',
+        'place_room_cottage',
         'room_cottage_price',
         'room_cottage_image',
     ];

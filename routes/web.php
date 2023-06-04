@@ -39,8 +39,11 @@ Route::get('/addadmin', [UserAccountsController::class, 'showAddAdmin'])->name('
 Route::post('/addadmin', [UserAccountsController::class, 'addAdmin']);
 Route::get('/rooms', [RoomsAndCottagesController::class, 'showRoomsPage'])->name('showRoomsPage');
 Route::post('/addroom', [RoomsAndCottagesController::class, 'addRoom']);
+Route::post('/deleteRoom/{id}', [RoomsAndCottagesController::class, 'deleteRoom']);
 Route::get('/cottages', [RoomsAndCottagesController::class, 'showCottagesPage'])->name('showCottagesPage');
 Route::post('/addcottage', [RoomsAndCottagesController::class, 'addCottage']);
+Route::post('/deleteCottage/{id}', [RoomsAndCottagesController::class, 'deleteCottage']);
+
 
 //Route::post('/addbooking', [BookNowController::class, 'addBooking']);
 
