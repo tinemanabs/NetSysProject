@@ -79,10 +79,14 @@
                             <a class="nav-link" href="#deals">Deals</a>
                             <a class="nav-link" href="#reviews">Reviews</a>
                             @guest
-                                <a class="nav-link" href="{{ route('register') }}">Book Now</a>
+                                <a class="nav-link" href="{{ route('login') }}">Book Now</a>
                             @endguest
                             @auth
-                                <a class="nav-link" href="{{ route('booknow') }}">Book Now</a>
+                                @if (Auth::user()->user_role == 1)
+                                    <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                                @else
+                                    <a class="nav-link" href="{{ route('booknow') }}">Book Now</a>
+                                @endif
                             @endauth
                         </div>
                     </div>

@@ -5,6 +5,7 @@ use App\Http\Controllers\Features\ProfileController;
 use App\Http\Controllers\Features\UserAccountsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Features\BookNowController;
+use App\Http\Controllers\Features\DashboardController;
 use App\Http\Controllers\Features\PurchaseAndRental;
 use App\Http\Controllers\Features\RoomsAndCottagesController;
 use App\Http\Controllers\Features\SMSController;
@@ -33,7 +34,8 @@ Route::get('/editprofile/{id}', [ProfileController::class, 'index'])->name('edit
 Route::post('/editprofile', [ProfileController::class, 'updatePersonalInfo']);
 Route::post('/editpassword', [ProfileController::class, 'updatePassword']);
 
-// ADMIN 
+// ADMIN
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/useraccounts', [UserAccountsController::class, 'index'])->name('useraccounts');
 Route::get('/addadmin', [UserAccountsController::class, 'showAddAdmin'])->name('showAddAdmin');
 Route::post('/addadmin', [UserAccountsController::class, 'addAdmin']);
