@@ -108,4 +108,36 @@ class RoomsAndCottagesController extends Controller
         $cottage->delete();
         File::deleteDirectory(public_path('img/cottages/' . $cottage->cottage_name));
     }
+
+    public function checkCottageIndex()
+    {
+        if (isset($_GET['date'])) {
+            $data = [
+                'date' => $_GET['date'],
+                'time' => $_GET['time']
+            ];
+
+            $bookings = DB::table('bookings')
+                ->where('date_start', $data['date'])
+                ->where('type', $data['time'])
+                ->pluck('room_id')
+                ->toArray();
+
+            $singleArray = array_reduce($bookings, function ($carry, $item) {
+                $decoded = json_decode($item, true);
+                return array_merge($carry, $decoded);
+            }, []);
+
+            //dd($bookings);
+            //return $singleArray;
+            $cottages = RoomsAndCottages::where('room_id', NULL)->get();
+            //dd($cottages);
+            return view('features.cottages.checkcottages', [
+                'bookings' => $singleArray,
+                'cottages' => $cottages
+            ]);
+        }
+
+        return view('features.cottages.checkcottages');
+    }
 }
