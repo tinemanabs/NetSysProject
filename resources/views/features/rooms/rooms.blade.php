@@ -4,9 +4,14 @@
     <div class="container-fluid">
         <div class="d-flex justify-content-between mb-3">
             <h4>Rooms Management</h4>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoomModal">
-                Add Room
-            </button>
+            <div class="rooms-buttons">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoomModal">
+                    Add Room
+                </button>
+
+                <a href="{{ route('checkroom') }}" class="btn btn-success">Check Rooms</a>
+            </div>
+
         </div>
 
         <div class="card">

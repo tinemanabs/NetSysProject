@@ -42,6 +42,8 @@ Route::post('/addadmin', [UserAccountsController::class, 'addAdmin']);
 Route::get('/rooms', [RoomsAndCottagesController::class, 'showRoomsPage'])->name('showRoomsPage');
 Route::post('/addroom', [RoomsAndCottagesController::class, 'addRoom']);
 Route::post('/deleteRoom/{id}', [RoomsAndCottagesController::class, 'deleteRoom']);
+Route::get('/checkrooms', [RoomsAndCottagesController::class, 'checkRoomIndex'])->name('checkroom');
+Route::post('/checkAvailableRooms', [RoomsAndCottagesController::class, 'checkAvailableRooms'])->name('checkAvailableRooms');
 Route::get('/cottages', [RoomsAndCottagesController::class, 'showCottagesPage'])->name('showCottagesPage');
 Route::post('/addcottage', [RoomsAndCottagesController::class, 'addCottage']);
 Route::post('/deleteCottage/{id}', [RoomsAndCottagesController::class, 'deleteCottage']);
