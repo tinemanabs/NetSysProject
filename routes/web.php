@@ -57,12 +57,13 @@ Route::get('/booknow', [BookNowController::class, 'index'])->name('booknow');
 Route::get('/addbooking', [BookNowController::class, 'addBooking'])->name('addbooking');
 Route::get('/bookevent', [BookEventsController::class, 'index'])->name('bookevent');
 Route::post('/admin-addbooking', [BookNowController::class, 'adminAddBooking']);
-Route::get('/getFilteredRooms/{place}', [BookNowController::class, 'getRooms']);
-Route::get('/getFilteredCottages/{place}', [BookNowController::class, 'getCottages']);
 Route::post('/approvePaymentStatus/{id}', [BookNowController::class, 'approvePaymentStatus']);
 Route::post('/checkFullPayment/{id}', [BookNowController::class, 'checkFullPayment']);
 Route::post('/deleteBooking/{id}', [BookNowController::class, 'deleteBooking']);
 Route::get('/viewBooking/{id}', [BookNowController::class, 'viewBooking'])->name('viewBooking');
+Route::get('/getDisabledDates', [BookNowController::class, 'getDisabledDates']);
+Route::get('/getFilteredRooms', [BookNowController::class, 'getFilteredRooms']);
+Route::get('/getFilteredCottages', [BookNowController::class, 'getFilteredCottages']);
 
 // PURCHASE AND RENTAL MODULE
 Route::get('/purchaseandrentals', [PurchaseAndRental::class, 'index'])->name('purchaseAndRentals');

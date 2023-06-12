@@ -673,7 +673,7 @@
                     console.log($('input[name="type_of_reservation"]:checked').val())
                     activePanelNum++;
                 } else if (activePanelNum == 1 && $('input[name="place_of_pool"]:checked').val() != undefined) {
-                    console.log($('input[name="place_of_pool"]').val())
+                    console.log($('input[name="place_of_pool"]:checked').val())
                     activePanelNum++;
                 } else if (activePanelNum == 2 && $('input[name="timeBooked"]:checked').val() != undefined) {
                     console.log($('input[name="timeBooked"]:checked').val())
@@ -749,7 +749,7 @@
             }
         })
 
-        // TIME OF BOOKING VALIDATION
+        // TIME OF BOOKING VALIDATION AND DISABLING DATES
         $('#nextBtnToDate').on('click', () => {
             if (!$('input[name ="timeBooked"]').is(':checked')) {
                 swal({
@@ -757,6 +757,67 @@
                     title: "Select a time!",
                     text: "Please choose a time."
                 })
+            } else {
+                const placePool = $('input[name="place_of_pool"]:checked').val();
+                const timeBooked = $('input[name="timeBooked"]:checked').val();
+
+                console.log(placePool, timeBooked)
+                axios.get('/getDisabledDates', {
+                        params: {
+                            timeBooked: timeBooked,
+                            place_of_pool: placePool
+                        }
+                    })
+                    .then((response) => {
+                        const disabledDates = response.data;
+                        initializeCalendar(disabledDates);
+
+                        console.log(disabledDates)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    });
+
+                function initializeCalendar(disabledDates) {
+                    let calendarEl = document.getElementById('calendar');
+                    let calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialView: 'dayGridMonth',
+                        selectable: true,
+                        height: 700,
+                        dateClick: function(info) {
+                            const clickedDate = info.dateStr;
+
+                            if (disabledDates.includes(clickedDate)) {
+                                swal({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: `This date is already reserved!`
+                                });
+
+                                console.log(disabledDates)
+                                return;
+                            }
+                            console.log(disabledDates)
+                            $dateStart = $('#dateStart').val(moment(info.dateStr).format('YYYY-MM-DD'));
+                            $dateEnd = $('#dateEnd').val(moment(info.dateStr).add(1, 'days').format(
+                                'YYYY-MM-DD'));
+
+                        },
+                        validRange: {
+                            start: moment().format('YYYY-MM-DD')
+                        },
+                        dayCellDidMount: function(cell) {
+                            const cellDate = moment(cell.date).format('YYYY-MM-DD');
+
+                            if (disabledDates.includes(cellDate)) {
+                                // Date is disabled, gray out the cell
+                                cell.el.classList.add('disabled-cell');
+                            }
+                        }
+
+                    });
+                    calendar.render();
+                }
             }
         });
 
@@ -865,15 +926,24 @@
         });
 
         $('#nextBtnToRoom').on('click', () => {
-            $placePool = $('input[name="place_of_pool"]:checked').val();
+            const dateStart = $('#dateStart').val();
+            const placePool = $('input[name="place_of_pool"]:checked').val();
+            const timeBooked = $('input[name="timeBooked"]:checked').val();
 
-            axios.get('/getFilteredRooms/' + $placePool)
+            axios.get('/getFilteredRooms', {
+                    params: {
+                        date_Start: dateStart,
+                        place_of_pool: placePool,
+                        timeBooked: timeBooked
+                    }
+                })
                 .then((response) => {
                     let data = response.data;
                     let content = ""
-                    data.map((d) => {
-                        console.log(d)
-                        content = `<div class="col">
+                    if (data.length !== 0) {
+                        data.map((d) => {
+                            //console.log(d)
+                            content = `<div class="col">
                                     <div class="card h-100 rooms-cottages-card">
                                         <img src="/img/rooms/${d.room_id}/${d.room_cottage_image}"
                                             class="card-img-top">
@@ -891,19 +961,35 @@
                                         </div>
                                     </div>
                                 </div> `
+                            $('#roomsContent').append(content)
+                        })
+                    } else {
+                        content = `<div class="col-12">
+                                    <div class="card h-100 rooms-cottages-card">
+                                        <div class="card-body">
+                                            <p class="card-text">There are no rooms available.</p>
+                                        </div>
+                                    </div>
+                                </div> `
                         $('#roomsContent').append(content)
-                    })
+                    }
                 })
 
             @if (Auth::user()->user_role == 1)
-                axios.get('/getFilteredCottages/' + $placePool)
+                axios.get('/getFilteredCottages', {
+                        params: {
+                            date_Start: dateStart,
+                            place_of_pool: placePool,
+                            timeBooked: timeBooked
+                        }
+                    })
                     .then((response) => {
                         let data = response.data;
                         let content = ""
-                        data.map((d, index) => {
-
-                            console.log(data[index])
-                            content = `<div class="col">
+                        if (data.length !== 0) {
+                            data.map((d) => {
+                                //console.log(data)
+                                content = `<div class="col">
                                         <div class="card h-100 rooms-cottages-card">
                                             <img src="img/cottages/${d.cottage_name}/${d.room_cottage_image}"
                                                 class="card-img-top">
@@ -919,8 +1005,18 @@
                                             </div>
                                         </div>
                                     </div> `
+                                $('#cottagesContent').append(content)
+                            })
+                        } else {
+                            content = `<div class="col-12">
+                                    <div class="card h-100 rooms-cottages-card">
+                                        <div class="card-body">
+                                            <p class="card-text">There are no cottages available.</p>
+                                        </div>
+                                    </div>
+                                </div> `
                             $('#cottagesContent').append(content)
-                        })
+                        }
                     })
             @endif
         })
@@ -928,27 +1024,6 @@
 
     {{-- SUMMARY & PAYMENT & SUBMISSION OF FORM --}}
     <script>
-        // CALENDAR
-        const clickDate = (info) => {
-            $dateStart = $('#dateStart').val(moment(info.dateStr).format('YYYY-MM-DD'));
-            $dateEnd = $('#dateEnd').val(moment(info.dateStr).add(1, 'days').format('YYYY-MM-DD'));
-        }
-
-        let calendarEl = document.getElementById('calendar');
-        let calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            selectable: true,
-            height: 700,
-            dateClick: clickDate,
-            validRange: {
-                start: moment().format('YYYY-MM-DD')
-            }
-
-        });
-        calendar.render();
-
-        // END OF CALENDAR
-
         // SUMMARY AND PAYMENT
         $('#nextBtnToSummary').on('click', () => {
             if ($('#first_name').val() == '' ||

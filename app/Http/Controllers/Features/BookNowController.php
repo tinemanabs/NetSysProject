@@ -223,25 +223,6 @@ class BookNowController extends Controller
         ]);
     }
 
-    public function getRooms($place)
-    {
-        $filteredRooms = DB::table('rooms_and_cottages')
-            ->where('place_room_cottage', $place)
-            ->where('cottage_name', NULL)
-            ->get();
-        return $filteredRooms;
-    }
-
-    public function getCottages($place)
-    {
-        $filteredCottages = DB::table('rooms_and_cottages')
-            ->where('place_room_cottage', $place)
-            ->where('room_id', NULL)
-            ->get();
-
-        return $filteredCottages;
-    }
-
     public function approvePaymentStatus($id)
     {
         Payments::where('booking_id', $id)->update([
@@ -261,5 +242,62 @@ class BookNowController extends Controller
     {
         Bookings::find($id)->delete();
         Payments::where('booking_id', $id)->delete();
+    }
+
+    public function getDisabledDates(Request $request)
+    {
+        $disabledDates = DB::table('bookings')
+            ->where('reservation_type', 'exclusive')
+            ->where('place_pool', $request->input('place_of_pool'))
+            ->where('type', $request->input('timeBooked'))
+            ->pluck('date_start')
+            ->toArray();
+        return response()->json($disabledDates);
+    }
+
+    public function getFilteredRooms(Request $request)
+    {
+        $filteredRooms = DB::table('bookings')
+            ->where('date_start', $request->date_Start)
+            ->where('place_pool',  $request->place_of_pool)
+            ->where('type', $request->timeBooked)
+            ->pluck('room_id')
+            ->toArray();
+
+        $singleArrayRooms = array_reduce($filteredRooms, function ($carry, $item) {
+            $decoded = json_decode($item, true);
+            return array_merge($carry, $decoded);
+        }, []);
+
+        $rooms = DB::table('rooms_and_cottages')
+            ->where('cottage_name', NULL)
+            ->where('place_room_cottage',  $request->place_of_pool)
+            ->whereNotIn('id', $singleArrayRooms)
+            ->get();
+
+        return response()->json($rooms);
+    }
+
+    public function getFilteredCottages(Request $request)
+    {
+        $filteredCottages = DB::table('bookings')
+            ->where('date_start', $request->date_Start)
+            ->where('place_pool',  $request->place_of_pool)
+            ->where('type', $request->timeBooked)
+            ->pluck('room_id')
+            ->toArray();
+
+        $singleArrayCottages = array_reduce($filteredCottages, function ($carry, $item) {
+            $decoded = json_decode($item, true);
+            return array_merge($carry, $decoded);
+        }, []);
+
+        $cottages = DB::table('rooms_and_cottages')
+            ->where('room_id', NULL)
+            ->where('place_room_cottage',  $request->place_of_pool)
+            ->whereNotIn('id', $singleArrayCottages)
+            ->get();
+
+        return response()->json($cottages);
     }
 }

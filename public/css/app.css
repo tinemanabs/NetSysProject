@@ -380,3 +380,8 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
 
 
 /* END OFROOM & COTTAGES CARD */
+
+.disabled-cell {
+    background-color: #f2f2f2 !important;
+    cursor: not-allowed;
+}
