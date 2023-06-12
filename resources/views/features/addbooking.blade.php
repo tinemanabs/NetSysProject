@@ -1,6 +1,17 @@
 @extends('layouts.auth')
 
 @section('content')
+    <script>
+        function onlyNumberKey(evt) {
+
+            // Only ASCII character in that range allowed
+            var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+            if (ASCIICode < 48 || ASCIICode > 57)
+                return false;
+            return true;
+        }
+    </script>
+
     <div class="container-fluid">
         <h4>Booking</h4>
 
@@ -98,8 +109,8 @@
                             <h3 class="multisteps-form__title">Choose a Date</h3>
                             <div class="multisteps-form__content">
                                 <div id='calendar'></div>
-                                <input type="text" name="date_Start" id="dateStart">
-                                <input type="text" name="date_End" id="dateEnd">
+                                <input type="text" name="date_Start" id="dateStart" hidden>
+                                <input type="text" name="date_End" id="dateEnd" hidden>
                                 <div class="button-row d-flex mt-4">
                                     <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
                                     <button class="btn btn-primary ms-auto js-btn-next" type="button" id="nextBtnToType"
@@ -210,7 +221,7 @@
                             <div class="multisteps-form__content">
                                 {{-- START OF CONTENT --}}
                                 <input type="checkbox" name="room_cottage" value="0">
-                                <label for="">I don't want to reserve a room or cottag</label>
+                                <label for="">I don't want to reserve a room or cottage</label>
 
                                 <div id="roomsAndCottagesContent">
                                     <div id="roomsValues">
@@ -244,10 +255,12 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <label for="" class="form-label">Adults</label>
-                                        <input type="number" class="form-control mb-3" name="adults" id="adults">
+                                        <input type="text" class="form-control mb-3" name="adults" id="adults"
+                                            onkeypress="return onlyNumberKey(event)">
 
                                         <label for="" class="form-label">Children</label>
-                                        <input type="number" class="form-control mb-3" name="children" id="children">
+                                        <input type="text" class="form-control mb-3" name="children" id="children"
+                                            onkeypress="return onlyNumberKey(event)">
                                     </div>
                                 </div>
 
@@ -275,7 +288,8 @@
                                             <img src="{{ asset('img/events/1.png') }}" class="card-img-top">
                                             <div class="card-body">
                                                 <h5 class="card-title">
-                                                    <input type="radio" name="functional_hall" value="Ilang-Ilang">
+                                                    <input type="radio" name="functional_hall" value="Ilang-Ilang"
+                                                        class="withEvent">
                                                     <label for="">Ilang-Ilang</label>
                                                 </h5>
                                             </div>
@@ -286,7 +300,8 @@
                                             <img src="{{ asset('img/events/2.png') }}" class="card-img-top">
                                             <div class="card-body">
                                                 <h5 class="card-title">
-                                                    <input type="radio" name="functional_hall" value="Jasmin">
+                                                    <input type="radio" name="functional_hall" value="Jasmin"
+                                                        class="withEvent">
                                                     <label for="">Jasmin</label>
                                                 </h5>
                                             </div>
@@ -626,19 +641,19 @@
         };
 
         // //STEPS BAR CLICK FUNCTION
-        DOMstrings.stepsBar.addEventListener('click', e => {
-            //check if click target is a step button
-            const eventTarget = e.target;
-            if (!eventTarget.classList.contains(`${DOMstrings.stepsBtnClass}`)) {
-                return;
-            }
-            //get active button step number
-            const activeStep = getActiveStep(eventTarget);
-            //set all steps before clicked (and clicked too) to active
-            setActiveStep(activeStep);
-            //open active panel
-            setActivePanel(activeStep);
-        });
+        // DOMstrings.stepsBar.addEventListener('click', e => {
+        //     //check if click target is a step button
+        //     const eventTarget = e.target;
+        //     if (!eventTarget.classList.contains(`${DOMstrings.stepsBtnClass}`)) {
+        //         return;
+        //     }
+        //     //get active button step number
+        //     const activeStep = getActiveStep(eventTarget);
+        //     //set all steps before clicked (and clicked too) to active
+        //     setActiveStep(activeStep);
+        //     //open active panel
+        //     setActivePanel(activeStep);
+        // });
 
         //PREV/NEXT BTNS CLICK
         DOMstrings.stepsForm.addEventListener('click', e => {
@@ -655,42 +670,53 @@
         if (eventTarget.classList.contains(`${DOMstrings.stepPrevBtnClass}`)) {
                 activePanelNum--;
             } else {
-                activePanelNum++;
-                // if (activePanelNum == 0 && $('input[name = "type_of_reservation"]:checked').val() != undefined) {
-                //     console.log($('input[name="type_of_reservation"]:checked').val())
-                //     activePanelNum++;
-                // } else if (activePanelNum == 1 && $('#dateBooked').val() != '') {
-                //     console.log($('#dateBooked').val())
-                //     activePanelNum++;
-                // } else if (activePanelNum == 2 && $('input[name="timeBooked"]:checked').val() != undefined) {
-                //     console.log($('input[name="timeBooked"]:checked').val())
-                //     activePanelNum++;
-                // } else if (activePanelNum == 3 && $('#adults').val() != '' && $('#children').val() != '') {
-                //     console.log($('#adults').val(), $('#children').val());
-                //     activePanelNum++;
-                // } else if (activePanelNum == 4 && $('input[name = "room_cottage"]:checked').val() != undefined) {
-                //     console.log($('input[name = "room_cottage"]:checked').val())
-                //     activePanelNum++;
-                // } else if (activePanelNum == 5 &&
-                //     $('#first_name').val() != '' &&
-                //     $('#last_name').val() != '' &&
-                //     $('#birthday').val() != '' &&
-                //     $('#email').val() != '' &&
-                //     $('#address').val() != '' &&
-                //     $('#contact_no').val() != '' &&
-                //     $('#password').val() != '' && $('#confPassword').val() != '') {
+                //activePanelNum++;
+                if (activePanelNum == 0 && $('input[name = "type_of_reservation"]:checked').val() != undefined) {
+                    console.log($('input[name="type_of_reservation"]:checked').val())
+                    activePanelNum++;
+                } else if (activePanelNum == 1 && $('#dateStart').val() != '') {
+                    console.log($('#dateStart').val())
+                    activePanelNum++;
+                } else if (activePanelNum == 2 && $('input[name="timeBooked"]:checked').val() != undefined) {
+                    console.log($('input[name="timeBooked"]:checked').val())
+                    activePanelNum++;
+                } else if (activePanelNum == 3 && $('input[name="place_of_pool"]:checked').val() != undefined) {
+                    console.log($('input[name="place_of_pool"]').val())
+                    activePanelNum++;
+                } else if (activePanelNum == 4 && $('input[name = "room_cottage"]:checked').val() != undefined) {
+                    console.log($('input[name = "room_cottage"]:checked').val())
+                    activePanelNum++;
+                } else if (activePanelNum == 5 && $('#adults').val() != '' && $('#children').val() != '') {
+                    console.log($('#adults').val(), $('#children').val());
+                    activePanelNum++;
+                } else if (activePanelNum == 6) {
+                    if ($('input[name = "functional_hall"]:checked').val() == 0) {
+                        activePanelNum++;
+                    } else if ($('input[name = "functional_hall"]:checked').val() != 0 && $(
+                            'input[name = "inclusions"]:checked').val() != undefined) {
+                        activePanelNum++;
+                    }
+                    console.log($('input[name = "functional_hall"]:checked').val(), $(
+                        'input[name = "inclusions"]:checked').val());
 
-                //     console.log($('#first_name').val(),
-                //         $('#last_name').val(),
-                //         $('#birthday').val(),
-                //         $('#email').val(),
-                //         $('#address').val(),
-                //         $('#contact_no').val(),
-                //         $('#password').val())
-                //     activePanelNum++;
-                // }
+                } else if (activePanelNum == 7 &&
+                    $('#first_name').val() != '' &&
+                    $('#last_name').val() != '' &&
+                    $('#birthday').val() != '' &&
+                    $('#email').val() != '' &&
+                    $('#address').val() != '' &&
+                    $('#contact_no').val() != '' &&
+                    $('#password').val() != '' && $('#confPassword').val() != '') {
 
-
+                    console.log($('#first_name').val(),
+                        $('#last_name').val(),
+                        $('#birthday').val(),
+                        $('#email').val(),
+                        $('#address').val(),
+                        $('#contact_no').val(),
+                        $('#password').val())
+                    activePanelNum++;
+                }
             }
             setActiveStep(activePanelNum);
             setActivePanel(activePanelNum);
@@ -701,58 +727,113 @@
         window.addEventListener('resize', setFormHeight, false);
     </script>
 
-    {{-- VALIDATIONS 
-<script>
-    $('#nextBtnToDate').on('click', () => {
-        if (!$('input[name="type_of_reservation"]').is(':checked')) {
-            swal({
-                icon: 'warning',
-                title: 'Select a type of reservation!',
-                text: 'Please choose a type of reservation.'
-            })
-        }
-    });
+    {{-- VALIDATIONS  --}}
+    <script>
+        // TYPE OF RESERVATION VALIDATION
+        $('#nextBtnToDate').on('click', () => {
+            if (!$('input[name="type_of_reservation"]').is(':checked')) {
+                swal({
+                    icon: 'warning',
+                    title: 'Select a type of reservation!',
+                    text: 'Please choose a type of reservation.'
+                })
+            }
+        });
 
-    $('#nextBtnToType').on('click', () => {
-        if ($('#dateBooked').val() == '') {
-            swal({
-                icon: 'warning',
-                title: 'Select a date',
-                text: 'Please choose the date.'
-            })
-        }
-    });
+        // DATE CALENDAR VALIDATION
+        $('#nextBtnToType').on('click', () => {
+            if ($('#dateStart').val() == '') {
+                swal({
+                    icon: 'warning',
+                    title: 'Select a date',
+                    text: 'Please choose the date.'
+                })
+            }
+        });
 
-    $('#nextBtnToNumPeople').on('click', () => {
-        if (!$('input[name ="timeBooked"]').is(':checked')) {
-            swal({
-                icon: 'warning',
-                title: "Select a time!",
-                text: "Please choose a time."
-            })
-        }
-    });
+        // TIME OF BOOKING VALIDATION
+        $('#nextBtnToPlaceOfPool').on('click', () => {
+            if (!$('input[name ="timeBooked"]').is(':checked')) {
+                swal({
+                    icon: 'warning',
+                    title: "Select a time!",
+                    text: "Please choose a time."
+                })
+            }
+        });
 
-    $('#nextBtnToRoom').on('click', () => {
-        if ($('#adults').val() == '' || $('#children').val() == '') {
-            swal({
-                icon: 'warning',
-                title: "Indicate the number of persons!",
-                text: "Please indicate the number of adult and children in the field."
-            })
-        }
-    });
+        // POOL VALIDATION
+        $('#nextBtnToRoom').on('click', () => {
+            if (!$('input[name="place_of_pool"]').is(':checked')) {
+                swal({
+                    icon: 'warning',
+                    title: "Select a pool!",
+                    text: "Please select your desired pool."
+                })
+            }
+        })
 
-    $('#nextBtnToInfo').on('click', () => {
-        if (!$('input[name = "room_cottage"]').is(':checked')) {
-            swal({
-                icon: 'warning',
-                title: 'Select a Room or Cottage',
-                text: 'Please choose the room or cottage you want to reserve.'
-            })
-        }
-    });
-</script> --}}
+        // ROOM VALIDATION
+        $('#nextBtnToNumPeople').on('click', () => {
+            if (!$('input[name = "room_cottage"]').is(':checked')) {
+                swal({
+                    icon: 'warning',
+                    title: 'Select a Room or Cottage',
+                    text: 'Please choose the room or cottage you want to reserve.'
+                })
+            }
+        });
+
+        // REMOVES THE CHECKBOX OF OTHER ROOMS WHEN NO ROOMS RESERVED
+        $('input[name="room_cottage"]').click(function() {
+            let value = $(this).attr('value')
+
+            if (value == 0) {
+                $('#roomsAndCottagesContent').toggle();
+                $('.withRoom').prop('checked', false)
+            }
+        });
+
+        // ADULTS AND CHILDREN VALIDATION
+        $('#nextBtnToPlacePool').on('click', () => {
+            if ($('#adults').val() == '' || $('#children').val() == '') {
+                swal({
+                    icon: 'warning',
+                    title: "Indicate the number of persons!",
+                    text: "Please indicate the number of adult and children in the field."
+                })
+            }
+        });
+
+        // EVENT AND INCLUSIONS VALIDATION
+        $('#nextBtnToInfo').on('click', () => {
+            if (!$('input[name="functional_hall"]').is(':checked')) {
+                swal({
+                    icon: 'warning',
+                    title: "Select a functional hall and inclusions!",
+                    text: "Please select the functional hall and inclusions you desire."
+                })
+            } else if ($('input[name="functional_hall"]:checked').val() != 0 && !$('input[name="inclusions"]').is(
+                    ':checked')) {
+                swal({
+                    icon: 'warning',
+                    title: "Select an inclusions!",
+                    text: "Please select the inclusions you desire."
+                })
+            }
+        });
+
+        // REMOVES THE EVENTS AND INCLUSIONS SELECTED WHEN NO EVENT RESERVED
+        $('input[name="functional_hall"]').click(function() {
+            let value = $(this).attr('value');
+
+            if (value == 0) {
+                $('#bookEventContent').toggle();
+                $('.withEvent').prop('checked', false);
+                $('input[name="inclusions"]').prop('checked', false);
+            }
+        })
+    </script>
 
     {{-- RESTRICTIONS AND API CALLS --}}
     <script>
@@ -801,7 +882,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title">
                                                 <input id="${d.room_id}" type="checkbox" name="room_cottage"
-                                                    value="${d.id}">
+                                                    value="${d.id}" class="withRoom">
                                                 <label
                                                     id="roomCottageName${d.id}">${d.room_id}</label>
                                             </h5>
@@ -831,7 +912,7 @@
                                             <div class="card-body">
                                                 <h5 class="card-title">
                                                     <input id="${d.cottage_name}" type="checkbox"
-                                                        name="room_cottage" value="${d.id}">
+                                                        name="room_cottage" value="${d.id}" class="withRoom">
                                                     <label
                                                         id="roomCottageName${d.id}">${d.cottage_name}</label>
                                                 </h5>
@@ -845,36 +926,9 @@
                     })
             @endif
         })
-
-        $('input[name="room_cottage"]').click(function() {
-            let value = $(this).attr('value')
-
-            if (value == 0) {
-                $('#roomsAndCottagesContent').toggle();
-            }
-        });
-
-        $('input[name="functional_hall"]').click(function() {
-            let value = $(this).attr('value');
-
-            if (value == 0) {
-                $('#bookEventContent').toggle();
-            }
-        })
     </script>
 
-    {{-- SUMMARY & PAYMENT --}}
-    <script>
-        $('#nextBtnToSummary').on('click', () => {
-            $dateStart = $('input[name="dateStart"]:checked').val();
-            $dateEnd = $('input[name="dateEnd"]:checked').val();
-            $day =
-                $('#bookInfo_date').val()
-        });
-    </script>
-
-
-    {{-- SUBMISSION OF FORM --}}
+    {{-- SUMMARY & PAYMENT & SUBMISSION OF FORM --}}
     <script>
         // CALENDAR
         const clickDate = (info) => {
@@ -897,227 +951,243 @@
 
         // END OF CALENDAR
 
+        // SUMMARY AND PAYMENT
         $('#nextBtnToSummary').on('click', () => {
-            //VALUES
-            $typeOfReservation = $('input[name="type_of_reservation"]:checked').val();
-            $dateStart = moment($('#dateStart').val()).format('ll');
-            $dateEnd = '';
-            $time = $('input[name = "timeBooked"]:checked').val();
-            $timeFormat = '';
-            $placePool = $('input[name="place_of_pool"]:checked').val();
+            if ($('#first_name').val() == '' ||
+                $('#last_name').val() == '' ||
+                $('#birthday').val() == '' ||
+                $('#email').val() == '' ||
+                $('#address').val() == '' ||
+                $('#contact_no').val() == '' ||
+                $('#password').val() == '' || $('#confPassword').val() == '') {
 
-            //Payment Information
-            $content = '' // type of reservation
-            $exclusivePrice = ''
-            $admissionFee = 0; //for non-exclu & exclusive day only
-            $totalAdmissionFee = 0;
-            $totalPaymentPrice = 0
+                swal({
+                    icon: 'warning',
+                    title: "Complete the form!",
+                    text: "Please fill out the required fields."
+                })
+            } else {
 
-            let totalRoomPrice = 0;
-            let roomsAndCottages = $('input[name="room_cottage"]:checked').map(function() {
-                $roomID = $(this).val();
-                if ($roomID != 0) {
-                    return $('#roomCottageName' + $roomID).text();
-                } else {
-                    return 'No room or cottage.'
-                }
+                //VALUES
+                $typeOfReservation = $('input[name="type_of_reservation"]:checked').val();
+                $dateStart = moment($('#dateStart').val()).format('ll');
+                $dateEnd = '';
+                $time = $('input[name = "timeBooked"]:checked').val();
+                $timeFormat = '';
+                $placePool = $('input[name="place_of_pool"]:checked').val();
 
-            }).get(); // displays the chosen rooms & cottages
+                //Payment Information
+                $content = '' // type of reservation
+                $exclusivePrice = ''
+                $admissionFee = 0; //for non-exclu & exclusive day only
+                $totalAdmissionFee = 0;
+                $totalPaymentPrice = 0
 
-            let roomsAndCottagesPrice = $('input[name="room_cottage"]:checked').map(function() {
-                $roomID = $(this).val();
-                if ($roomID != 0) {
-                    return $('#roomCottagePrice' + $roomID).text();
-                } else {
-                    return 0;
-                }
+                let totalRoomPrice = 0;
+                let roomsAndCottages = $('input[name="room_cottage"]:checked').map(function() {
+                    $roomID = $(this).val();
+                    if ($roomID != 0) {
+                        return $('#roomCottageName' + $roomID).text();
+                    } else {
+                        return 'No room or cottage.'
+                    }
 
-            }).get(); // gets the prices of rooms selected
+                }).get(); // displays the chosen rooms & cottages
 
-            roomsAndCottagesPrice.map((item, index) => {
-                totalRoomPrice = totalRoomPrice + Number(item)
-            }) // stores the prices of each room selected
+                let roomsAndCottagesPrice = $('input[name="room_cottage"]:checked').map(function() {
+                    $roomID = $(this).val();
+                    if ($roomID != 0) {
+                        return $('#roomCottagePrice' + $roomID).text();
+                    } else {
+                        return 0;
+                    }
 
-            // intialized it here to retrieve the total room price
-            $('#payment_roomCottagePrice').text(`${totalRoomPrice}`);
-            $totalRoomCottagePrice = Number($('#payment_roomCottagePrice').text());
+                }).get(); // gets the prices of rooms selected
+
+                roomsAndCottagesPrice.map((item, index) => {
+                    totalRoomPrice = totalRoomPrice + Number(item)
+                }) // stores the prices of each room selected
+
+                // intialized it here to retrieve the total room price
+                $('#payment_roomCottagePrice').text(`${totalRoomPrice}`);
+                $totalRoomCottagePrice = Number($('#payment_roomCottagePrice').text());
 
 
-            $adults = $('#adults').val();
-            $children = $('#children').val();
-            $totalPersons = Number($adults) + Number($children);
+                $adults = $('#adults').val();
+                $children = $('#children').val();
+                $totalPersons = Number($adults) + Number($children);
 
-            // events & inclusions are for exclu day & overnight 
-            $event = $('input[name="functional_hall"]:checked').val();
-            $inclusions = $('input[name="inclusions"]:checked').val();
-            $inclusionsPrice = 0;
+                // events & inclusions are for exclu day & overnight 
+                $event = $('input[name="functional_hall"]:checked').val();
+                $inclusions = $('input[name="inclusions"]:checked').val();
+                $inclusionsPrice = 0;
 
-            if ($typeOfReservation == 'non-exclusive') {
-                $('#bookInfo_date').text(`Booking Date: ${$dateStart}`);
-
-                $timeFormat = '8:00 AM - 5:00 PM';
-                $content = 'Non-Exclusive Day Swimming';
-                $admissionFee = 75;
-                $totalAdmissionFee = Number($admissionFee) * Number($totalPersons);
-
-                $totalPaymentPrice = Number($totalAdmissionFee) + Number(
-                    $totalRoomCottagePrice); //computes the total price
-            } else if ($typeOfReservation == 'exclusive') {
-                if ($time == 'day') {
+                if ($typeOfReservation == 'non-exclusive') {
                     $('#bookInfo_date').text(`Booking Date: ${$dateStart}`);
 
                     $timeFormat = '8:00 AM - 5:00 PM';
-                    $content = 'Exclusive Day Swimming';
-                    $admissionFee = 100;
+                    $content = 'Non-Exclusive Day Swimming';
+                    $admissionFee = 75;
                     $totalAdmissionFee = Number($admissionFee) * Number($totalPersons);
 
-                    if ($placePool == 'taas') {
-                        $exclusivePrice = 1950;
+                    $totalPaymentPrice = Number($totalAdmissionFee) + Number(
+                        $totalRoomCottagePrice); //computes the total price
+                } else if ($typeOfReservation == 'exclusive') {
+                    if ($time == 'day') {
+                        $('#bookInfo_date').text(`Booking Date: ${$dateStart}`);
 
-                    } else if ($placePool == 'baba') {
-                        $exclusivePrice = 3550;
-                    }
+                        $timeFormat = '8:00 AM - 5:00 PM';
+                        $content = 'Exclusive Day Swimming';
+                        $admissionFee = 100;
+                        $totalAdmissionFee = Number($admissionFee) * Number($totalPersons);
 
+                        if ($placePool == 'taas') {
+                            $exclusivePrice = 1950;
 
-                    if ($event == 'Ilang-Ilang') {
-                        if ($inclusions == 'with Tables and Chairs') {
-                            $inclusionsPrice = 3000;
-                        } else if ($inclusions == 'without Tables and Chairs') {
-                            $inclusionsPrice = 2000;
+                        } else if ($placePool == 'baba') {
+                            $exclusivePrice = 3550;
                         }
-                    } else if ($event == 'Jasmin') {
-                        if ($inclusions == 'with Tables and Chairs') {
-                            $inclusionsPrice = 4000;
-                        } else if ($inclusions == 'without Tables and Chairs') {
-                            $inclusionsPrice = 3000;
+
+
+                        if ($event == 'Ilang-Ilang') {
+                            if ($inclusions == 'with Tables and Chairs') {
+                                $inclusionsPrice = 3000;
+                            } else if ($inclusions == 'without Tables and Chairs') {
+                                $inclusionsPrice = 2000;
+                            }
+                        } else if ($event == 'Jasmin') {
+                            if ($inclusions == 'with Tables and Chairs') {
+                                $inclusionsPrice = 4000;
+                            } else if ($inclusions == 'without Tables and Chairs') {
+                                $inclusionsPrice = 3000;
+                            }
                         }
-                    }
 
-                    console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice,
-                        $inclusionsPrice)
+                        console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice,
+                            $inclusionsPrice)
 
-                    $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
-                        $totalRoomCottagePrice) + Number($inclusionsPrice); //computes the total price
-
-
-                } else if ($time == 'night') {
-                    $dateEnd = moment($('#dateEnd').val()).subtract(1, 'days').format('ll');
-
-                    $('#bookInfo_date').text(`Booking Date: ${$dateStart}`);
-                    $timeFormat = '7:00 PM - 11:00 PM';
-                    $content = 'Exclusive Night Swimming';
-                    $exclusivePrice = 1200;
-
-                    console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice)
-
-                    if ($totalPersons <= 7) {
-                        $totalPaymentPrice = Number($exclusivePrice) + Number(
-                            $totalRoomCottagePrice); //computes the total price
-                    } else {
-                        $excess = $totalPersons - 7;
-                        $totalPersons = $excess;
-                        $admissionFee = 100
-                        $totalAdmissionFee = Number($admissionFee) * Number($excess);
-
-                        $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
-                            $totalRoomCottagePrice); //computes the total price
-                    }
-
-                    // TODO: MISSING TOTAL FEE;
-                } else if ($time == 'overnight') {
-                    $dateEnd = moment($('#dateEnd').val()).format('ll');
-
-                    $('#bookInfo_date').text(`Booking Date: ${$dateStart} - ${$dateEnd}`);
-                    $timeFormat = '7:00 PM - 8:00 AM';
-                    $content = 'Exclusive Overnight Swimming';
-                    $exclusivePrice = 4000;
-
-                    if ($event == 'Ilang-Ilang') {
-                        if ($inclusions == 'with Tables and Chairs') {
-                            $inclusionsPrice = 4000;
-                        } else if ($inclusions == 'without Tables and Chairs') {
-                            $inclusionsPrice = 3000;
-                        }
-                    } else if ($event == 'Jasmin') {
-                        if ($inclusions == 'with Tables and Chairs') {
-                            $inclusionsPrice = 5000;
-                        } else if ($inclusions == 'without Tables and Chairs') {
-                            $inclusionsPrice = 4000;
-                        }
-                    }
-
-                    console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice, $inclusionsPrice)
-
-                    if ($totalPersons <= 25) {
                         $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
                             $totalRoomCottagePrice) + Number($inclusionsPrice); //computes the total price
-                    } else {
-                        $excess = $totalPersons - 25
-                        $totalPersons = $excess
 
-                        $admissionFee = 110;
-                        $totalAdmissionFee = Number($admissionFee) * Number($excess);
 
-                        $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
-                            $totalRoomCottagePrice) + Number($inclusionsPrice)
+                    } else if ($time == 'night') {
+                        $dateEnd = moment($('#dateEnd').val()).subtract(1, 'days').format('ll');
+
+                        $('#bookInfo_date').text(`Booking Date: ${$dateStart}`);
+                        $timeFormat = '7:00 PM - 11:00 PM';
+                        $content = 'Exclusive Night Swimming';
+                        $exclusivePrice = 1200;
+
+                        console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice)
+
+                        if ($totalPersons <= 7) {
+                            $totalPaymentPrice = Number($exclusivePrice) + Number(
+                                $totalRoomCottagePrice); //computes the total price
+                        } else {
+                            $excess = $totalPersons - 7;
+                            $totalPersons = $excess;
+                            $admissionFee = 100
+                            $totalAdmissionFee = Number($admissionFee) * Number($excess);
+
+                            $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
+                                $totalRoomCottagePrice); //computes the total price
+                        }
+
+                        // TODO: MISSING TOTAL FEE;
+                    } else if ($time == 'overnight') {
+                        $dateEnd = moment($('#dateEnd').val()).format('ll');
+
+                        $('#bookInfo_date').text(`Booking Date: ${$dateStart} - ${$dateEnd}`);
+                        $timeFormat = '7:00 PM - 8:00 AM';
+                        $content = 'Exclusive Overnight Swimming';
+                        $exclusivePrice = 4000;
+
+                        if ($event == 'Ilang-Ilang') {
+                            if ($inclusions == 'with Tables and Chairs') {
+                                $inclusionsPrice = 4000;
+                            } else if ($inclusions == 'without Tables and Chairs') {
+                                $inclusionsPrice = 3000;
+                            }
+                        } else if ($event == 'Jasmin') {
+                            if ($inclusions == 'with Tables and Chairs') {
+                                $inclusionsPrice = 5000;
+                            } else if ($inclusions == 'without Tables and Chairs') {
+                                $inclusionsPrice = 4000;
+                            }
+                        }
+
+                        console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice, $inclusionsPrice)
+
+                        if ($totalPersons <= 25) {
+                            $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
+                                $totalRoomCottagePrice) + Number($inclusionsPrice); //computes the total price
+                        } else {
+                            $excess = $totalPersons - 25
+                            $totalPersons = $excess
+
+                            $admissionFee = 110;
+                            $totalAdmissionFee = Number($admissionFee) * Number($excess);
+
+                            $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
+                                $totalRoomCottagePrice) + Number($inclusionsPrice)
+                        }
+
+                        //TODO: MISSING TOTAL FEE;
                     }
-
-                    //TODO: MISSING TOTAL FEE;
                 }
+
+                //checks and replaces the content if there's a booked event
+                $eventContent = '';
+                $inclusionsContent = '';
+
+                if ($event == 0) {
+                    $eventContent = 'No reserved functional hall';
+                    $inclusionsContent = 'No inclusions added.';
+                } else {
+                    $eventContent = $('input[name="functional_hall"]:checked').val();
+                    $inclusionsContent = $('input[name="inclusions"]:checked').val();
+                }
+
+
+                $fname = $('#first_name').val();
+                $lname = $('#last_name').val();
+                $bday = moment($('#birthday').val()).format('ll');
+                $email = $('#email').val();
+                $address = $('#address').val();
+                $contact_no = $('#contact_no').val();
+
+
+                $('#bookInfo_time').text(`Time: ${$timeFormat}`);
+                $('#bookInfo_placePool').text(`Chosen Pool: ${$placePool}`);
+                $('#bookInfo_room').text(`Room or Cottage: ${roomsAndCottages}`);
+                $('#bookInfo_adults').text(`Number of Adults: ${$adults}`);
+                $('#bookInfo_children').text(`Number of Children: ${$children}`);
+
+                $('#bookInfo_name').text(`Name: ${$fname} ${$lname}`);
+                $('#bookInfo_bday').text(`Birthday: ${$bday}`);
+                $('#bookInfo_email').text(`Email: ${$email}`);
+                $('#bookInfo_addr').text(`Address: ${$address}`);
+                $('#bookInfo_contact').text(`Contact Number: ${$contact_no}`);
+
+                $('#bookInfo_functionalHall').text(`Functional Hall: ${$eventContent}`);
+                $('#bookInfo_inclusions').text(`Inclusions: ${$inclusionsContent}`)
+
+                //PAYMENT 
+                $('#payment_exlusiveReservationHeading').text($content); // for exclusive only
+                $('#payment_exlusiveReservationPrice').text(`P ${$exclusivePrice}`); // for exclusive only
+
+                $('#payment_typeOfReservation').text($content);
+                $('#payment_totalPersons').text($totalPersons);
+                $('#payment_admissionFeePrice').text(`P ${$admissionFee}`); // for non-exclusive only
+                $('#payment_totalAdmissionFee').text(`P ${$totalAdmissionFee}`);
+                $('#payment_inclusions').text(`P ${$inclusionsPrice}`);
+
+                $('#payment_totalFee').text(`${$totalPaymentPrice}`);
+
             }
-
-            //checks and replaces the content if there's a booked event
-            $eventContent = '';
-            $inclusionsContent = '';
-
-            if ($event == 0) {
-                $eventContent = 'No reserved functional hall';
-                $inclusionsContent = 'No inclusions added.';
-            } else {
-                $eventContent = $('input[name="functional_hall"]:checked').val();
-                $inclusionsContent = $('input[name="inclusions"]:checked').val();
-            }
-
-
-            $fname = $('#first_name').val();
-            $lname = $('#last_name').val();
-            $bday = moment($('#birthday').val()).format('ll');
-            $email = $('#email').val();
-            $address = $('#address').val();
-            $contact_no = $('#contact_no').val();
-
-
-            $('#bookInfo_time').text(`Time: ${$timeFormat}`);
-            $('#bookInfo_placePool').text(`Chosen Pool: ${$placePool}`);
-            $('#bookInfo_room').text(`Room or Cottage: ${roomsAndCottages}`);
-            $('#bookInfo_adults').text(`Number of Adults: ${$adults}`);
-            $('#bookInfo_children').text(`Number of Children: ${$children}`);
-
-            $('#bookInfo_name').text(`Name: ${$fname} ${$lname}`);
-            $('#bookInfo_bday').text(`Birthday: ${$bday}`);
-            $('#bookInfo_email').text(`Email: ${$email}`);
-            $('#bookInfo_addr').text(`Address: ${$address}`);
-            $('#bookInfo_contact').text(`Contact Number: ${$contact_no}`);
-
-            $('#bookInfo_functionalHall').text(`Functional Hall: ${$eventContent}`);
-            $('#bookInfo_inclusions').text(`Inclusions: ${$inclusionsContent}`)
-
-            //PAYMENT 
-            $('#payment_exlusiveReservationHeading').text($content); // for exclusive only
-            $('#payment_exlusiveReservationPrice').text(`P ${$exclusivePrice}`); // for exclusive only
-
-            $('#payment_typeOfReservation').text($content);
-            $('#payment_totalPersons').text($totalPersons);
-            $('#payment_admissionFeePrice').text(`P ${$admissionFee}`); // for non-exclusive only
-            $('#payment_totalAdmissionFee').text(`P ${$totalAdmissionFee}`);
-            $('#payment_inclusions').text(`P ${$inclusionsPrice}`);
-
-            $('#payment_totalFee').text(`${$totalPaymentPrice}`);
-
-
         });
 
-
+        // SUBMISSION OF FORMS
         $('#bookingBtn').on('click', () => {
             //VALUES
             $reservationType = $('input[name="type_of_reservation"]:checked').val();
