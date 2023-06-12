@@ -23,19 +23,16 @@
                         <button class="multisteps-form__progress-btn js-active" type="button" title="Type of Reservation">Type
                             of
                             Reservation</button>
-                        <button class="multisteps-form__progress-btn" type="button" title="Choose a Date"
-                            id="dateCalendarBtn">Choose
-                            a
-                            Date</button>
-                        <button class="multisteps-form__progress-btn" type="button" title="Day / Night Swimming Rates">Day
-                            or Night Swimming</button>
                         <button class="multisteps-form__progress-btn" type="button" title="Place of Swimming">Choose a
                             Pool</button>
-                        <button class="multisteps-form__progress-btn" type="button" title="Choose a Room or Cottage">Choose
-                            a
-                            Room or Cottage</button>
+                        <button class="multisteps-form__progress-btn" type="button" title="Day / Night Swimming Rates">Day
+                            or Night Swimming</button>
+                        <button class="multisteps-form__progress-btn" type="button" title="Choose a Date"
+                            id="dateCalendarBtn">Choose a Date</button>
                         <button class="multisteps-form__progress-btn" type="button" title="Number of persons">
                             Number of persons</button>
+                        <button class="multisteps-form__progress-btn" type="button" title="Choose a Room or Cottage">Choose
+                            a Room or Cottage</button>
                         <button class="multisteps-form__progress-btn" type="button" title="Book an Event">Book an
                             Event</button>
                         <button class="multisteps-form__progress-btn" type="button" title="Guest Information">Guest
@@ -97,28 +94,51 @@
                                         role="button" title="Next">Cancel</a>
 
                                     <button class="btn btn-primary ms-auto js-btn-next" type="button" title="Next"
-                                        id="nextBtnToDate">Next</button>
+                                        id="nextBtnToPlaceOfPool">Next</button>
                                 </div>
                             </div>
                         </div>
                         <!--single form panel: END OF TYPE OF RESERVATION CONTENT -->
 
-                        <!--single form panel: DATE CONTENT-->
-                        <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn"
-                            id="dateCalendar">
-                            <h3 class="multisteps-form__title">Choose a Date</h3>
+                        <!--single form panel: PLACE OF POOL -->
+                        <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
+                            <h3 class="multisteps-form__title">Choose a Pool</h3>
                             <div class="multisteps-form__content">
-                                <div id='calendar'></div>
-                                <input type="text" name="date_Start" id="dateStart" hidden>
-                                <input type="text" name="date_End" id="dateEnd" hidden>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="card h-100 rooms-cottages-card p-4">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <input id="taasPool" type="radio" name="place_of_pool"
+                                                        value="taas">
+                                                    <label for="">Taas</label>
+                                                </h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="card h-100 rooms-cottages-card p-4">
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <input id="babaPool" type="radio" name="place_of_pool"
+                                                        value="baba">
+                                                    <label for="">Baba</label>
+                                                </h5>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="button-row d-flex mt-4">
-                                    <button class="btn btn-primary js-btn-prev" type="button" title="Prev">Prev</button>
-                                    <button class="btn btn-primary ms-auto js-btn-next" type="button" id="nextBtnToType"
-                                        title="Next">Next</button>
+                                    <button class="btn btn-primary js-btn-prev" type="button"
+                                        title="Prev">Prev</button>
+                                    <button class="btn btn-primary ms-auto js-btn-next" type="button" title="Next"
+                                        id="nextBtnToType">Next</button>
                                 </div>
                             </div>
                         </div>
-                        <!--single form panel: DATE CONTENT-->
+                        <!--single form panel: END OF PLACE OF POOL -->
 
                         <!--single form panel: DAY / NIGHT CONTENT -->
                         <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
@@ -169,39 +189,44 @@
                                     <button class="btn btn-primary js-btn-prev" type="button"
                                         title="Prev">Prev</button>
                                     <button class="btn btn-primary ms-auto js-btn-next" type="button" title="Next"
-                                        id="nextBtnToPlaceOfPool">Next</button>
+                                        id="nextBtnToDate">Next</button>
                                 </div>
                             </div>
                         </div>
                         <!--single form panel: END OF DAY / NIGHT CONTENT -->
 
-                        <!--single form panel: PLACE OF POOL -->
-                        <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
-                            <h3 class="multisteps-form__title">Choose a Pool</h3>
+                        <!--single form panel: DATE CONTENT-->
+                        <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn"
+                            id="dateCalendar">
+                            <h3 class="multisteps-form__title">Choose a Date</h3>
+                            <div class="multisteps-form__content">
+                                <div id='calendar'></div>
+                                <input type="text" name="date_Start" id="dateStart" hidden>
+                                <input type="text" name="date_End" id="dateEnd" hidden>
+                                <div class="button-row d-flex mt-4">
+                                    <button class="btn btn-primary js-btn-prev" type="button"
+                                        title="Prev">Prev</button>
+                                    <button class="btn btn-primary ms-auto js-btn-next" type="button"
+                                        id="nextBtnToPeople" title="Next">Next</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!--single form panel: DATE CONTENT-->
+
+                        <!--single form panel: NUMBER OF PEOPLE CONTENT -->
+                        <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn"
+                            id="paxCard">
+                            <h3 class="multisteps-form__title">Indicate number of Persons</h3>
                             <div class="multisteps-form__content">
                                 <div class="row">
-                                    <div class="col-12 col-lg-6">
-                                        <div class="card h-100 rooms-cottages-card p-4">
-                                            <div class="card-body">
-                                                <h5 class="card-title">
-                                                    <input id="taasPool" type="radio" name="place_of_pool"
-                                                        value="taas">
-                                                    <label for="">Taas</label>
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-lg-6">
-                                        <div class="card h-100 rooms-cottages-card p-4">
-                                            <div class="card-body">
-                                                <h5 class="card-title">
-                                                    <input id="babaPool" type="radio" name="place_of_pool"
-                                                        value="baba">
-                                                    <label for="">Baba</label>
-                                                </h5>
+                                    <div class="col-12">
+                                        <label for="" class="form-label">Adults</label>
+                                        <input type="text" class="form-control mb-3" name="adults" id="adults"
+                                            onkeypress="return onlyNumberKey(event)">
 
-                                            </div>
-                                        </div>
+                                        <label for="" class="form-label">Children</label>
+                                        <input type="text" class="form-control mb-3" name="children" id="children"
+                                            onkeypress="return onlyNumberKey(event)">
                                     </div>
                                 </div>
 
@@ -213,7 +238,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!--single form panel: END OF PLACE OF POOL -->
+                        <!--single form panel: END OF NUMBER OF PEOPLE CONTENT -->
 
                         <!--single form panel: ROOM OR COTTAGE CONTENT-->
                         <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
@@ -241,38 +266,11 @@
                                     <button class="btn btn-primary js-btn-prev" type="button"
                                         title="Prev">Prev</button>
                                     <button class="btn btn-primary ms-auto js-btn-next" type="button" title="Next"
-                                        id="nextBtnToNumPeople">Next</button>
+                                        id="nextBtnToBookEvent">Next</button>
                                 </div>
                             </div>
                         </div>
                         <!--single form panel: END OF ROOM OR COTTAGE CONTENT-->
-
-                        <!--single form panel: NUMBER OF PEOPLE CONTENT -->
-                        <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn"
-                            id="paxCard">
-                            <h3 class="multisteps-form__title">Indicate number of Persons</h3>
-                            <div class="multisteps-form__content">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <label for="" class="form-label">Adults</label>
-                                        <input type="text" class="form-control mb-3" name="adults" id="adults"
-                                            onkeypress="return onlyNumberKey(event)">
-
-                                        <label for="" class="form-label">Children</label>
-                                        <input type="text" class="form-control mb-3" name="children" id="children"
-                                            onkeypress="return onlyNumberKey(event)">
-                                    </div>
-                                </div>
-
-                                <div class="button-row d-flex mt-4">
-                                    <button class="btn btn-primary js-btn-prev" type="button"
-                                        title="Prev">Prev</button>
-                                    <button class="btn btn-primary ms-auto js-btn-next" type="button" title="Next"
-                                        id="nextBtnToPlacePool">Next</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!--single form panel: END OF NUMBER OF PEOPLE CONTENT -->
 
                         <!--single form panel: BOOK AN EVENT -->
                         <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
@@ -674,20 +672,20 @@
                 if (activePanelNum == 0 && $('input[name = "type_of_reservation"]:checked').val() != undefined) {
                     console.log($('input[name="type_of_reservation"]:checked').val())
                     activePanelNum++;
-                } else if (activePanelNum == 1 && $('#dateStart').val() != '') {
-                    console.log($('#dateStart').val())
+                } else if (activePanelNum == 1 && $('input[name="place_of_pool"]:checked').val() != undefined) {
+                    console.log($('input[name="place_of_pool"]').val())
                     activePanelNum++;
                 } else if (activePanelNum == 2 && $('input[name="timeBooked"]:checked').val() != undefined) {
                     console.log($('input[name="timeBooked"]:checked').val())
                     activePanelNum++;
-                } else if (activePanelNum == 3 && $('input[name="place_of_pool"]:checked').val() != undefined) {
-                    console.log($('input[name="place_of_pool"]').val())
+                } else if (activePanelNum == 3 && $('#dateStart').val() != '') {
+                    console.log($('#dateStart').val())
                     activePanelNum++;
-                } else if (activePanelNum == 4 && $('input[name = "room_cottage"]:checked').val() != undefined) {
-                    console.log($('input[name = "room_cottage"]:checked').val())
-                    activePanelNum++;
-                } else if (activePanelNum == 5 && $('#adults').val() != '' && $('#children').val() != '') {
+                } else if (activePanelNum == 4 && $('#adults').val() != '' && $('#children').val() != '') {
                     console.log($('#adults').val(), $('#children').val());
+                    activePanelNum++;
+                } else if (activePanelNum == 5 && $('input[name = "room_cottage"]:checked').val() != undefined) {
+                    console.log($('input[name = "room_cottage"]:checked').val())
                     activePanelNum++;
                 } else if (activePanelNum == 6) {
                     if ($('input[name = "functional_hall"]:checked').val() == 0) {
@@ -730,7 +728,7 @@
     {{-- VALIDATIONS  --}}
     <script>
         // TYPE OF RESERVATION VALIDATION
-        $('#nextBtnToDate').on('click', () => {
+        $('#nextBtnToPlaceOfPool').on('click', () => {
             if (!$('input[name="type_of_reservation"]').is(':checked')) {
                 swal({
                     icon: 'warning',
@@ -740,30 +738,8 @@
             }
         });
 
-        // DATE CALENDAR VALIDATION
-        $('#nextBtnToType').on('click', () => {
-            if ($('#dateStart').val() == '') {
-                swal({
-                    icon: 'warning',
-                    title: 'Select a date',
-                    text: 'Please choose the date.'
-                })
-            }
-        });
-
-        // TIME OF BOOKING VALIDATION
-        $('#nextBtnToPlaceOfPool').on('click', () => {
-            if (!$('input[name ="timeBooked"]').is(':checked')) {
-                swal({
-                    icon: 'warning',
-                    title: "Select a time!",
-                    text: "Please choose a time."
-                })
-            }
-        });
-
         // POOL VALIDATION
-        $('#nextBtnToRoom').on('click', () => {
+        $('#nextBtnToType').on('click', () => {
             if (!$('input[name="place_of_pool"]').is(':checked')) {
                 swal({
                     icon: 'warning',
@@ -773,8 +749,41 @@
             }
         })
 
+        // TIME OF BOOKING VALIDATION
+        $('#nextBtnToDate').on('click', () => {
+            if (!$('input[name ="timeBooked"]').is(':checked')) {
+                swal({
+                    icon: 'warning',
+                    title: "Select a time!",
+                    text: "Please choose a time."
+                })
+            }
+        });
+
+        // DATE CALENDAR VALIDATION
+        $('#nextBtnToPeople').on('click', () => {
+            if ($('#dateStart').val() == '') {
+                swal({
+                    icon: 'warning',
+                    title: 'Select a date',
+                    text: 'Please choose the date.'
+                })
+            }
+        });
+
+        // ADULTS AND CHILDREN VALIDATION
+        $('#nextBtnToRoom').on('click', () => {
+            if ($('#adults').val() == '' || $('#children').val() == '') {
+                swal({
+                    icon: 'warning',
+                    title: "Indicate the number of persons!",
+                    text: "Please indicate the number of adult and children in the field."
+                })
+            }
+        });
+
         // ROOM VALIDATION
-        $('#nextBtnToNumPeople').on('click', () => {
+        $('#nextBtnToBookEvent').on('click', () => {
             if (!$('input[name = "room_cottage"]').is(':checked')) {
                 swal({
                     icon: 'warning',
@@ -791,17 +800,6 @@
             if (value == 0) {
                 $('#roomsAndCottagesContent').toggle();
                 $('.withRoom').prop('checked', false)
-            }
-        });
-
-        // ADULTS AND CHILDREN VALIDATION
-        $('#nextBtnToPlacePool').on('click', () => {
-            if ($('#adults').val() == '' || $('#children').val() == '') {
-                swal({
-                    icon: 'warning',
-                    title: "Indicate the number of persons!",
-                    text: "Please indicate the number of adult and children in the field."
-                })
             }
         });
 
