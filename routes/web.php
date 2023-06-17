@@ -5,6 +5,7 @@ use App\Http\Controllers\Features\ProfileController;
 use App\Http\Controllers\Features\UserAccountsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Features\BookNowController;
+use App\Http\Controllers\Features\DashboardController;
 use App\Http\Controllers\Features\PurchaseAndRental;
 use App\Http\Controllers\Features\RoomsAndCottagesController;
 use App\Http\Controllers\Features\SMSController;
@@ -28,31 +29,43 @@ Route::get('/', function () {
 Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('verified');
-Route::get('/booknow', [BookNowController::class, 'index'])->name('booknow');
+
+// ADMIN / GUEST: PROFILE
 Route::get('/editprofile/{id}', [ProfileController::class, 'index'])->name('editprofile');
 Route::post('/editprofile', [ProfileController::class, 'updatePersonalInfo']);
 Route::post('/editpassword', [ProfileController::class, 'updatePassword']);
 
-// ADMIN 
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+// ADMIN: USER ACCOUNTS MODULE
 Route::get('/useraccounts', [UserAccountsController::class, 'index'])->name('useraccounts');
 Route::get('/addadmin', [UserAccountsController::class, 'showAddAdmin'])->name('showAddAdmin');
 Route::post('/addadmin', [UserAccountsController::class, 'addAdmin']);
+
+// ADMIN: ROOMS AND COTTAGES MODULE
 Route::get('/rooms', [RoomsAndCottagesController::class, 'showRoomsPage'])->name('showRoomsPage');
 Route::post('/addroom', [RoomsAndCottagesController::class, 'addRoom']);
+Route::post('/deleteRoom/{id}', [RoomsAndCottagesController::class, 'deleteRoom']);
+Route::get('/checkrooms', [RoomsAndCottagesController::class, 'checkRoomIndex'])->name('checkroom');
 Route::get('/cottages', [RoomsAndCottagesController::class, 'showCottagesPage'])->name('showCottagesPage');
 Route::post('/addcottage', [RoomsAndCottagesController::class, 'addCottage']);
+Route::post('/deleteCottage/{id}', [RoomsAndCottagesController::class, 'deleteCottage']);
+Route::get('/checkcottages', [RoomsAndCottagesController::class, 'checkCottageIndex'])->name('checkcottage');
 
-//Route::post('/addbooking', [BookNowController::class, 'addBooking']);
-
+// ADMIN / GUEST: BOOKING MODULE
+Route::get('/booknow', [BookNowController::class, 'index'])->name('booknow');
 Route::get('/addbooking', [BookNowController::class, 'addBooking'])->name('addbooking');
 Route::get('/bookevent', [BookEventsController::class, 'index'])->name('bookevent');
 Route::post('/admin-addbooking', [BookNowController::class, 'adminAddBooking']);
-Route::get('/getFilteredRooms/{place}', [BookNowController::class, 'getRooms']);
-Route::get('/getFilteredCottages/{place}', [BookNowController::class, 'getCottages']);
 Route::post('/approvePaymentStatus/{id}', [BookNowController::class, 'approvePaymentStatus']);
 Route::post('/checkFullPayment/{id}', [BookNowController::class, 'checkFullPayment']);
 Route::post('/deleteBooking/{id}', [BookNowController::class, 'deleteBooking']);
+Route::get('/viewBooking/{id}', [BookNowController::class, 'viewBooking'])->name('viewBooking');
+Route::get('/getDisabledDates', [BookNowController::class, 'getDisabledDates']);
+Route::get('/getFilteredRooms', [BookNowController::class, 'getFilteredRooms']);
+Route::get('/getFilteredCottages', [BookNowController::class, 'getFilteredCottages']);
 
+// PURCHASE AND RENTAL MODULE
 Route::get('/purchaseandrentals', [PurchaseAndRental::class, 'index'])->name('purchaseAndRentals');
 Route::post('/addpurchaseandrental', [PurchaseAndRental::class, 'addPurchaseAndRental']);
 Route::post('/deletepurchaseandrental', [PurchaseAndRental::class, 'deletePurchaseAndRental']);

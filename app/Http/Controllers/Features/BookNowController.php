@@ -33,7 +33,6 @@ class BookNowController extends Controller
                 'payments.payment_type',
                 'payments.payment_status',
                 'payments.payment_image',
-
             )
             ->get();
 
@@ -57,11 +56,21 @@ class BookNowController extends Controller
                 'payments.payment_image',
             )
             ->get();
+
+        $rooms = DB::table('rooms_and_cottages')
+            ->select(
+                'id',
+                'room_name',
+                'cottage_name'
+            )
+            ->get();
+
         //dd($getMyBookings);
         //return $getAllBookings;
         return view('features.booknow', [
             'allBookings' => $getAllBookings,
-            'myBooking' => $getMyBookings
+            'myBooking' => $getMyBookings,
+            'rooms' => $rooms
         ]);
     }
 
@@ -89,7 +98,7 @@ class BookNowController extends Controller
             ]);
 
             $booking = Bookings::create([
-                'room_id' => json_encode($request->room_cottage_id), // note: ask rob how to save array
+                'room_id' => $request->room_cottage_id,
                 'reservation_type' => $request->reservation_type,
                 'date_start' => $request->date_start,
                 'date_end' => $request->date_end,
@@ -134,7 +143,7 @@ class BookNowController extends Controller
         } else if ($request->user_role == 2) {
             // SAVING FOR THOSE WHO HAVE ALREADY ACCTS
             $booking = Bookings::create([
-                'room_id' => json_encode($request->room_cottage_id), // note: ask rob how to save array
+                'room_id' => $request->room_cottage_id,
                 'reservation_type' => $request->reservation_type,
                 'date_start' => $request->date_start,
                 'date_end' => $request->date_end,
@@ -175,23 +184,43 @@ class BookNowController extends Controller
         }
     }
 
-    public function getRooms($place)
+    public function viewBooking($id)
     {
-        $filteredRooms = DB::table('rooms_and_cottages')
-            ->where('place_room_cottage', $place)
-            ->where('cottage_name', NULL)
-            ->get();
-        return $filteredRooms;
-    }
+        $getAllBookings = DB::table('bookings')
+            ->join('users', 'users.id', '=', 'bookings.user_id')
+            ->join('payments', 'payments.booking_id', '=', 'bookings.id')
+            ->where('bookings.id', $id)
+            //->join('rooms_and_cottages', 'rooms_and_cottages.id', '=', 'bookings.room_id')
+            ->select(
+                'bookings.*',
+                'users.email',
+                'users.first_name',
+                'users.last_name',
+                'users.birthday',
+                'users.address',
+                'users.contact_no',
+                'payments.total_paid',
+                'payments.total_price',
+                'payments.payment_type',
+                'payments.payment_status',
+                'payments.payment_image',
 
-    public function getCottages($place)
-    {
-        $filteredCottages = DB::table('rooms_and_cottages')
-            ->where('place_room_cottage', $place)
-            ->where('room_id', NULL)
-            ->get();
+            )
+            ->first();
 
-        return $filteredCottages;
+        $rooms = DB::table('rooms_and_cottages')
+            ->select(
+                'id',
+                'room_name',
+                'cottage_name'
+            )
+            ->get();
+        //return $getAllBookings;
+
+        return view('features.booking.viewbooking', [
+            'booking' => $getAllBookings,
+            'rooms' => $rooms
+        ]);
     }
 
     public function approvePaymentStatus($id)
@@ -213,5 +242,62 @@ class BookNowController extends Controller
     {
         Bookings::find($id)->delete();
         Payments::where('booking_id', $id)->delete();
+    }
+
+    public function getDisabledDates(Request $request)
+    {
+        $disabledDates = DB::table('bookings')
+            ->where('reservation_type', 'exclusive')
+            ->where('place_pool', $request->input('place_of_pool'))
+            ->where('type', $request->input('timeBooked'))
+            ->pluck('date_start')
+            ->toArray();
+        return response()->json($disabledDates);
+    }
+
+    public function getFilteredRooms(Request $request)
+    {
+        $filteredRooms = DB::table('bookings')
+            ->where('date_start', $request->date_Start)
+            ->where('place_pool',  $request->place_of_pool)
+            ->where('type', $request->timeBooked)
+            ->pluck('room_id')
+            ->toArray();
+
+        $singleArrayRooms = array_reduce($filteredRooms, function ($carry, $item) {
+            $decoded = json_decode($item, true);
+            return array_merge($carry, $decoded);
+        }, []);
+
+        $rooms = DB::table('rooms_and_cottages')
+            ->where('cottage_name', NULL)
+            ->where('place_room_cottage',  $request->place_of_pool)
+            ->whereNotIn('id', $singleArrayRooms)
+            ->get();
+
+        return response()->json($rooms);
+    }
+
+    public function getFilteredCottages(Request $request)
+    {
+        $filteredCottages = DB::table('bookings')
+            ->where('date_start', $request->date_Start)
+            ->where('place_pool',  $request->place_of_pool)
+            ->where('type', $request->timeBooked)
+            ->pluck('room_id')
+            ->toArray();
+
+        $singleArrayCottages = array_reduce($filteredCottages, function ($carry, $item) {
+            $decoded = json_decode($item, true);
+            return array_merge($carry, $decoded);
+        }, []);
+
+        $cottages = DB::table('rooms_and_cottages')
+            ->where('room_id', NULL)
+            ->where('place_room_cottage',  $request->place_of_pool)
+            ->whereNotIn('id', $singleArrayCottages)
+            ->get();
+
+        return response()->json($cottages);
     }
 }

@@ -112,9 +112,7 @@
                             @if (Auth::user()->user_role == 1)
                                 <div class="list-group list-group-flush">
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">Dashboard</a>
-                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">Analytics</a>
+                                        href="{{ route('dashboard') }}">Dashboard</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('useraccounts') }}">User Accounts</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
@@ -126,7 +124,7 @@
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('purchaseAndRentals') }}">Purchase and Rental Inventory</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="#!">Events</a>
+                                        href="{{ route('bookevent') }}">Events</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('smsDashboard') }}">SMS Notification System</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
