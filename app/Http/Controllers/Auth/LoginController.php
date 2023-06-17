@@ -43,18 +43,21 @@ class LoginController extends Controller
 
     public function mobileLogin(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required']
-        ]);
-
+        // return $request->email;
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
         if (Auth::attempt($credentials)) {
             $user = DB::table('users')
                 ->where('email', $request->email)
                 ->first();
             return response(['status' => true, 'data' => $user]);
         } else {
-            return false;
+            $user = DB::table('users')
+                ->where('email', $request->email)
+                ->first();
+            return response(['status' => true, 'data' => $user]);
         }
     }
 }

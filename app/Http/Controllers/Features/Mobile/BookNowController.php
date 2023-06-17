@@ -42,6 +42,7 @@ class BookNowController extends Controller
                 'type' => $request->type,
                 'adults' => $request->adults,
                 'children' => $request->children,
+                'place_pool' => $request->place_pool,
                 'functional_hall' => $request->functional_hall,
                 'inclusions' => $request->inclusions,
                 'user_id' => $request->user_id,

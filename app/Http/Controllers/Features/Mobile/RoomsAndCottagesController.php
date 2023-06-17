@@ -54,6 +54,7 @@ class RoomsAndCottagesController extends Controller
         // }
 
 
-        return $request;
+        return DB::table('rooms_and_cottages')
+            ->get();
     }
 }
