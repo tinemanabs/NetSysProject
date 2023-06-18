@@ -173,8 +173,15 @@
                         </div>
                     </div>
                 @else
-                    <div class="container">
-                        Please verify your email address.
+                    <div class="container mt-3">
+                        <div class="card text-dark bg-warning mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">Verify your Email Address!</h5>
+                                <p class="card-text">Kindly, check your inbox for the email confirmation sent by
+                                    the system
+                                    to proceed with the registration.</p>
+                            </div>
+                        </div>
                     </div>
                 @endif
             @endauth
