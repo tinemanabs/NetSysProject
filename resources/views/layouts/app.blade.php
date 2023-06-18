@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Labak sa Morong</title>
 
     <!-- Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -67,8 +67,8 @@
                     <div class="collapse navbar-collapse justify-content-center " id="navbarNavAltMarkup">
                         <div class="navbar-nav align-items-lg-center">
                             <a class="nav-link active" aria-current="page" href="#header">Home</a>
-                            <a class="nav-link" href="#cottages">Cottages</a>
-                            <a class="nav-link" href="#rooms">Rooms</a>
+                            <a class="nav-link" href="#cottages">Cottages & Rooms</a>
+                            {{-- <a class="nav-link" href="#rooms">Rooms</a> --}}
                             <a class="nav-link" href="#ammenities">Ammenities</a>
                             <a class="nav-link" href="#pools">Pools</a>
                             <a class="navbar-brand d-none d-lg-block" href="#header">
@@ -77,7 +77,6 @@
                             <a class="nav-link" href="#aboutus">About Us</a>
                             <a class="nav-link" href="#events">Events</a>
                             <a class="nav-link" href="#deals">Deals</a>
-                            <a class="nav-link" href="#reviews">Reviews</a>
                             @guest
                                 <a class="nav-link" href="{{ route('login') }}">Book Now</a>
                             @endguest

@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-
+@section('title', 'SMS Notification')
 @section('content')
     <div class="container-fluid">
 

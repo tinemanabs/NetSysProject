@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-
+@section('title', 'Purchase and Rental Inventory')
 @section('content')
     <h4>Purchase and Rental Inventory</h4>
     <div class="d-flex justify-content-end mb-3">
@@ -84,7 +84,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addRoomModalLabel">Add Rooms</h5>
+                    <h5 class="modal-title" id="addRoomModalLabel">Add Item</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="" method="post" enctype="multipart/form-data">

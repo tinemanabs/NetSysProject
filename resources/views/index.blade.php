@@ -292,7 +292,7 @@
     {{-- END OF DEALS SECTION --}}
 
     {{-- REVIEWS --}}
-    <div id="reviews">
+    {{-- <div id="reviews">
         <div class="container section-content">
             <h3>Reviews</h3>
             <p class="subheading">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque perferendis assumenda
@@ -352,10 +352,10 @@
                 </div>
                 <div class="swiper-pagination"></div>
                 {{-- <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div> --}}
+                <div class="swiper-button-prev"></div> 
 
             </div>
         </div>
-    </div>
+    </div> --}}
     {{-- END OF REVIEWS SECTION --}}
 @endsection

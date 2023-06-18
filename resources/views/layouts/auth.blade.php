@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Labak sa Morong') }}</title>
+    <title>@yield('title') | Labak sa Morong</title>
 
     <!-- Bootstrap CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -70,7 +70,8 @@
 
                     @auth
                         @if (Auth::user()->email_verified_at !== null || Auth::user()->user_role == 1)
-                            <button class="btn btn-primary" id="sidebarToggle"><i class="fa-solid fa-bars"></i></button>
+                            <button class="btn btn-primary d-none d-md-block" id="sidebarToggle"><i
+                                    class="fa-solid fa-bars"></i></button>
                         @endif
                     @endauth
 
@@ -88,9 +89,29 @@
 
                             @auth
                                 <a class="nav-link">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</a>
+                                @if (Auth::user()->user_role == 1)
+                                    <div class="d-block d-md-none">
+                                        <a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a>
+                                        <a href="{{ route('useraccounts') }}" class="nav-link">User Accounts</a>
+                                        <a href="{{ route('booknow') }}" class="nav-link">Book Now</a>
+                                        <a href="{{ route('showRoomsPage') }}" class="nav-link">Rooms</a>
+                                        <a href="{{ route('showCottagesPage') }}" class="nav-link">Cottages</a>
+                                        <a href="{{ route('purchaseAndRentals') }}" class="nav-link">Purchase and Rental
+                                            Inventory</a>
+                                        <a href="{{ route('bookevent') }}" class="nav-link">Events</a>
+                                        <a href="{{ route('smsDashboard') }}" class="nav-link">SMS Notification System</a>
+                                        <a href="{{ route('editprofile', Auth::user()->id) }}" class="nav-link">Profile</a>
+                                    </div>
+                                @else
+                                    <div class="d-block d-md-none">
+                                        <a href="{{ route('booknow') }}" class="nav-link">Book Now</a>
+                                        <a href="{{ route('bookevent') }}" class="nav-link">Events</a>
+                                        <a href="{{ route('editprofile', Auth::user()->id) }}" class="nav-link">Profile</a>
+                                    </div>
+                                @endif
+
                                 <a class="nav-link" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit();">
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     Logout</a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -135,7 +156,7 @@
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('booknow') }}">Book Now</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
-                                        href="{{ route('bookevent') }}">Book an Event</a>
+                                        href="{{ route('bookevent') }}">Events</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('editprofile', Auth::user()->id) }}">Profile</a>
                                 </div>

@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-
+@section('title', 'Dashboard')
 @section('content')
     <div class="container-fluid">
         <h4>Dashboard</h4>
@@ -47,8 +47,8 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs fw-bold text-info text-uppercase mb-1">
-                                    Total Monthly Bookings</div>
-                                <div class="h5 mb-0 fw-bold text-black">{{ $totalMonthlyBooking }}</div>
+                                    Total Sales of Booking</div>
+                                <div class="h5 mb-0 fw-bold text-black">P {{ $totalSalesBookingFormat }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar-days fa-2x text-muted"></i>
@@ -65,8 +65,8 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs fw-bold text-warning text-uppercase mb-1">
-                                    Total Bookings</div>
-                                <div class="h5 mb-0 fw-bold text-black">{{ $totalBookings }}</div>
+                                    Total Rental Sales</div>
+                                <div class="h5 mb-0 fw-bold text-black">P {{ $totalSalesPurchaseFormat }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-calendar fa-2x text-muted"></i>

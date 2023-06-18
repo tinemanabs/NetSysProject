@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-
+@section('title', 'Cottages')
 @section('content')
     <div class="container-fluid">
         <div class="d-flex justify-content-between mb-3">

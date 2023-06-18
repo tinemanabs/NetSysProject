@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-
+@section('title', 'Edit Profile')
 @section('content')
     <div class="container">
         <div class="card">

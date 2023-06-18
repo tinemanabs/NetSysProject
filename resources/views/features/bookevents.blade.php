@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-
+@section('title', 'Events')
 @section('content')
     <div class="container-fluid">
         <h4>Book an Event</h4>

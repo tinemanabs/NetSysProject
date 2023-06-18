@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-
+@section('title', 'Create a SMS')
 @section('content')
     <div class="container-fluid">
         <h4 class="mb-3">Create a Message</h4>

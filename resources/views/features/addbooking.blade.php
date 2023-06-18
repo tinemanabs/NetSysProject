@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-
+@section('title', 'Add Booking')
 @section('content')
     <script>
         function onlyNumberKey(evt) {
@@ -53,7 +53,7 @@
                             <h3 class="multisteps-form__title">Type of Reservation</h3>
                             <div class="multisteps-form__content">
                                 <div class="row">
-                                    <div class="col-12 col-lg-6">
+                                    <div class="col-12 col-lg-6 {{ Auth::user()->user_role == 2 ? 'd-none' : '' }}">
                                         <div class="card h-100 rooms-cottages-card p-4">
                                             <div class="card-body">
                                                 <h5 class="card-title">
@@ -70,7 +70,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-lg-6">
+                                    <div class="col-12 {{ Auth::user()->user_role == 1 ? 'col-lg-6' : '' }}">
                                         <div class="card h-100 rooms-cottages-card p-4">
                                             <div class="card-body">
                                                 <h5 class="card-title">

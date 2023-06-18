@@ -93,17 +93,21 @@
                                                     <a href="{{ route('viewBooking', $booking->id) }}"
                                                         class="dropdown-item">View</a>
                                                 </li>
-                                                <li><button class="dropdown-item">Edit</button></li>
+                                                {{-- <li><button class="dropdown-item">Edit</button></li> --}}
                                                 @if ($booking->payment_type == 'Down Payment')
                                                     <li><button class="dropdown-item"
                                                             id="checkFullPaymentBtn{{ $booking->id }}"
                                                             data-id="{{ $booking->id }}">Check Full Payment</button>
+                                                    </li>
                                                 @endif
-                                                </li>
-                                                <li><button class="dropdown-item"
-                                                        id="approvePaymentBtn{{ $booking->id }}"
-                                                        data-id="{{ $booking->id }}">Approve
-                                                        Payment Status</button></li>
+                                                @if ($booking->payment_status != 1)
+                                                    <li>
+                                                        <button class="dropdown-item"
+                                                            id="approvePaymentBtn{{ $booking->id }}"
+                                                            data-id="{{ $booking->id }}">Approve
+                                                            Payment Status</button>
+                                                    </li>
+                                                @endif
                                                 <li><button class="dropdown-item"
                                                         id="deleteBookingBtn{{ $booking->id }}"
                                                         data-id="{{ $booking->id }}">Delete</button></li>

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Features;
 
 use App\Http\Controllers\Controller;
 use App\Models\Bookings;
+use App\Models\Payments;
 use App\Models\User;
+use App\Models\UserRentals;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +20,14 @@ class DashboardController extends Controller
         $now = Carbon::now()->format('Y-m-d');
         $bookingToday = Bookings::where('date_start', $now)->count();
         $month = Carbon::now()->format('m');
-        $totalMonthlyBooking = Bookings::whereMonth('date_start', $month)->count();
+        // $totalMonthlyBooking = Bookings::whereMonth('date_start', $month)->count();
+        $totalSalesBooking = Payments::sum('total_paid');
+        $totalSalesBookingFormat = number_format($totalSalesBooking, 2);
+        $totalSalesPurchase = DB::table('user_rentals')
+            ->where('item_payment_status', '1')
+            ->selectRaw('SUM(quantity * price) as total')
+            ->first();
+        $totalSalesPurchaseFormat = number_format($totalSalesPurchase->total);
         $totalBookings = Bookings::all()->count();
 
         //chart js
@@ -53,8 +62,8 @@ class DashboardController extends Controller
         return view('features.dashboard', [
             'users' => $users,
             'bookingToday' => $bookingToday,
-            'totalMonthlyBooking' => $totalMonthlyBooking,
-            'totalBookings' => $totalBookings,
+            'totalSalesBookingFormat' => $totalSalesBookingFormat,
+            'totalSalesPurchaseFormat' => $totalSalesPurchaseFormat,
 
             'month' => $months,
             'nonExclusive' => $nonExclusive,

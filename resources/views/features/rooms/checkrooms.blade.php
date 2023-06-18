@@ -1,4 +1,5 @@
 @extends('layouts.auth')
+@section('title', 'Check Rooms')
 @section('content')
     <div class="container-fluid">
         <h4>Check Rooms</h4>

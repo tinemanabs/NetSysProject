@@ -1,5 +1,5 @@
 @extends('layouts.auth')
-
+@section('title', 'Book Now')
 @section('content')
     @if (Auth::user()->user_role == 1)
         @include('features.booking.admin')
