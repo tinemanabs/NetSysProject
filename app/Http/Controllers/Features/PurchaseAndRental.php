@@ -12,8 +12,12 @@ class PurchaseAndRental extends Controller
     {
         $allItems = DB::table('purchase_and_rentals')
             ->get();
+        $userRentals = DB::table('user_rentals')
+            ->join('users', 'users.id', 'user_rentals.user_id')
+            ->get();
         return view('features.purchaseandrental', [
             "items" => $allItems,
+            'user_rentals' => $userRentals
         ]);
     }
 

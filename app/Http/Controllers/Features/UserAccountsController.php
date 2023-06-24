@@ -34,4 +34,13 @@ class UserAccountsController extends Controller
             ->where('id', $request->id)
             ->first();
     }
+
+    public function editProfile(Request $request)
+    {
+        DB::table('users')
+            ->where('id', $request->id)
+            ->update([
+                'password' => Hash::make($request->password)
+            ]);
+    }
 }

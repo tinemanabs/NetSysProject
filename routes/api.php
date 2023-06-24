@@ -28,8 +28,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Auth::routes();
 
 Route::post('getProfile', [UserAccountsController::class, 'getProfile']);
+Route::post('editProfile', [UserAccountsController::class, 'editProfile']);
 Route::post('mobileLogin', [LoginController::class, 'mobileLogin']);
+
+
 Route::post('addBooking', [BookNowController::class, 'addbooking']);
+Route::post('cancelBooking', [BookNowController::class, 'cancelBooking']);
 Route::post('getUserBooking', [BookNowController::class, 'getUserBooking']);
 Route::post('getIndividualBooking', [BookNowController::class, 'getIndividualBooking']);
 Route::post('filterDates', [BookNowController::class, 'filterDates']);
@@ -41,6 +45,7 @@ Route::post('submitPayment', [PaymentController::class, 'submitPayment']);
 
 //rentals
 Route::get('getAllRentals', [RentalsController::class, 'getAllRentals']);
+Route::get('getNewestRental', [RentalsController::class, 'getNewestRental']);
 Route::post('addPurchaseAndRentals', [RentalsController::class, 'addPurchaseAndRentals']);
 Route::post('getUserPurchaseAndRentals', [RentalsController::class, 'getUserPurchaseAndRentals']);
 Route::post('addPurchaseAndRentalsQuantity', [RentalsController::class, 'addPurchaseAndRentalsQuantity']);

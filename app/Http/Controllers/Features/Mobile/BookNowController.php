@@ -84,4 +84,19 @@ class BookNowController extends Controller
             ->where('bookings.id', $request->id)
             ->first();
     }
+
+    public function cancelBooking(Request $request)
+    {
+        DB::table('bookings')
+            ->where('id', $request->booking_id)
+            ->delete();
+        DB::table('payments')
+            ->where('id', $request->id)
+            ->delete();
+        DB::table('users')
+            ->where("id", $request->user_id)
+            ->update([
+                'is_booked' => NULL
+            ]);
+    }
 }

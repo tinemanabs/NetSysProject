@@ -168,6 +168,10 @@
                         <div id="page-content-wrapper">
                             <!-- Page content-->
                             <div class="container-fluid p-4">
+                                <div class="alert alert-info alert-dismissible fade hide" role="alert">
+                                    <strong>Alert!</strong> <span id="alertMessage">You should check in on some of those
+                                        fields below.</span>
+                                </div>
                                 @yield('content')
                             </div>
                         </div>
@@ -192,6 +196,37 @@
 
         </main>
     </div>
+
+    @auth
+        @if (Auth::user()->user_role == 1)
+            <script>
+                $(document).ready(() => {
+                    axios.get('api/getNewestRental').then(response => {
+                        const data = response.data
+                        $('#alertMessage').html(
+                            `User <b>${data.first_name} ${data.last_name}</b> with <b>Booking #${data.rental_id}</b> purchased/rented an item.`
+                        )
+                        $(".alert").addClass('show')
+                        $(".alert").removeClass('hide')
+                    }).catch(err => {
+                        console.log(err.response)
+                    })
+                    const interval = setInterval(() => {
+                        axios.get('api/getNewestRental').then(response => {
+                            const data = response.data
+                            $('#alertMessage').html(
+                                `User <b>${data.first_name} ${data.last_name}</b> with <b>Booking #${data.rental_id}</b> purchased/rented an item.`
+                            )
+                            $(".alert").addClass('show')
+                            $(".alert").removeClass('hide')
+                        }).catch(err => {
+                            console.log(err.response)
+                        })
+                    }, 5000);
+                })
+            </script>
+        @endif
+    @endauth
 
     {{-- Bootstrap JS Bundle --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

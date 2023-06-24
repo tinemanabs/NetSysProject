@@ -15,6 +15,16 @@ class RentalsController extends Controller
             ->get();
     }
 
+    public function getNewestRental()
+    {
+        return DB::table('user_rentals')
+            ->join('users', "user_rentals.user_id", 'users.id')
+            ->join('bookings', 'user_rentals.rental_id', 'bookings.id')
+            ->latest('users.first_name', 'users.last_name', 'bookings.id')
+            ->where('user_rentals.item_payment_status', 0)
+            ->first();
+    }
+
     public function addPurchaseAndRentals(Request $request)
     {
         // return $request;

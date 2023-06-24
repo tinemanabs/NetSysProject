@@ -9,6 +9,8 @@ use App\Http\Controllers\Features\DashboardController;
 use App\Http\Controllers\Features\PurchaseAndRental;
 use App\Http\Controllers\Features\RoomsAndCottagesController;
 use App\Http\Controllers\Features\SMSController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +23,11 @@ use App\Http\Controllers\Features\SMSController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (Request $request) {
+    DB::table('web_visits')
+        ->insert([
+            'ip_address' => $request->ip()
+        ]);
     return view('index');
 });
 

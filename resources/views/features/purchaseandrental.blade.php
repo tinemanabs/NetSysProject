@@ -2,7 +2,7 @@
 @section('title', 'Purchase and Rental Inventory')
 @section('content')
     <h4>Purchase and Rental Inventory</h4>
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-end">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoomModal">
             Add Inventory
         </button>
@@ -31,6 +31,77 @@
                                 <td>P{{ $item->item_price }}</td>
                                 <td>{{ $item->item_count }}</td>
                                 <td>{{ $item->item_count }}</td>
+                                <td><img src="{{ asset('img/purchaseandrentals/' . $item->item_image) }}" height="100"
+                                        width="100">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" id="delete{{ $item->id }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                            <path
+                                                d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                            <script>
+                                $("#delete{{ $item->id }}").click(() => {
+                                    swal({
+                                        icon: "warning",
+                                        title: "Delete Item?",
+                                        text: "Are you sure you want to delete the item?",
+                                        buttons: true,
+                                        dangerMode: true
+                                    }).then(response => {
+                                        const formdata = new FormData()
+                                        formdata.append("id", "{{ $item->id }}")
+                                        if (response) {
+                                            axios.post('/deletepurchaseandrental', formdata)
+                                                .then(response => {
+                                                    swal({
+                                                        icon: "success",
+                                                        title: "Item Deleted!",
+                                                        text: "The item has been deleted!",
+                                                        buttons: false
+                                                    }).then(() => {
+                                                        location.reload()
+                                                    })
+                                                })
+                                        }
+                                    })
+                                })
+                            </script>
+                        @empty
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <h4 class="mt-5">User Purchases and Rentals</h4>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="myTable" class="row-border" style="width:100%">
+                    <thead>
+
+                        <tr>
+                            <th>Name</th>
+                            <th>Item Description</th>
+                            <th>Item Price</th>
+                            <th>Item Count</th>
+                            <th>Image</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($user_rentals as $user_rental)
+                            <tr>
+                                <td>{{ $user_rental->first_name }} {{ $user_rental->last_name }}</td>
+                                <td>{{ $user_rental->item_description }}</td>
+                                <td>P{{ $user_rental->item_price }}</td>
+                                <td>{{ $user_rental->item_count }}</td>
+                                <td>{{ $user_rental->item_count }}</td>
                                 <td><img src="{{ asset('img/purchaseandrentals/' . $item->item_image) }}" height="100"
                                         width="100">
                                 </td>
