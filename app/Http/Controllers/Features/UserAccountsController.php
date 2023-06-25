@@ -43,4 +43,17 @@ class UserAccountsController extends Controller
                 'password' => Hash::make($request->password)
             ]);
     }
+
+    public function checkPassword(Request $request)
+    {
+        $user = DB::table('users')
+            ->where("id", $request->user_id)
+            ->first();
+
+        if (Hash::check($request->password, $user->password)) {
+            return 'true';
+        } else {
+            return 'false';
+        }
+    }
 }

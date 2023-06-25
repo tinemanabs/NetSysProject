@@ -31,8 +31,8 @@
                                 <td>P{{ $item->item_price }}</td>
                                 <td>{{ $item->item_count }}</td>
                                 <td>{{ $item->item_count }}</td>
-                                <td><img src="{{ asset('img/purchaseandrentals/' . $item->item_image) }}" height="100"
-                                        width="100">
+                                <td><img src="https://labaksamorong.com/NetSysProject-main/public/img/purchaseandrentals/{{ $item->item_image }}"
+                                        height="100" width="100">
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-danger" id="delete{{ $item->id }}">
@@ -102,8 +102,8 @@
                                 <td>P{{ $user_rental->item_price }}</td>
                                 <td>{{ $user_rental->item_count }}</td>
                                 <td>{{ $user_rental->item_count }}</td>
-                                <td><img src="{{ asset('img/purchaseandrentals/' . $item->item_image) }}" height="100"
-                                        width="100">
+                                <td><img src="https://labaksamorong.com/NetSysProject-main/public/img/purchaseandrentals/{{ $item->item_image }}"
+                                        height="100" width="100">
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-danger" id="delete{{ $item->id }}">

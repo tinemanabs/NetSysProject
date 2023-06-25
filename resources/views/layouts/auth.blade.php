@@ -203,22 +203,32 @@
                 $(document).ready(() => {
                     axios.get('api/getNewestRental').then(response => {
                         const data = response.data
-                        $('#alertMessage').html(
-                            `User <b>${data.first_name} ${data.last_name}</b> with <b>Booking #${data.rental_id}</b> purchased/rented an item.`
-                        )
+                        console.log(data);
+                        if (data == '') {
+                            $(".alert").addClass('d-none')
+                        } else {
+                            $('#alertMessage').html(
+                                `User <b>${data.first_name} ${data.last_name}</b> ${data.is_rental == 'true' ? 'rented' : 'purchased'} <b>${data.quantity}x ${data.item_name}</b>`
+                            )
+                            $(".alert").removeClass('d-none')
+                        }
                         $(".alert").addClass('show')
-                        $(".alert").removeClass('hide')
                     }).catch(err => {
                         console.log(err.response)
                     })
                     const interval = setInterval(() => {
                         axios.get('api/getNewestRental').then(response => {
                             const data = response.data
-                            $('#alertMessage').html(
-                                `User <b>${data.first_name} ${data.last_name}</b> with <b>Booking #${data.rental_id}</b> purchased/rented an item.`
-                            )
+                            console.log(data);
+                            if (data == '') {
+                                $(".alert").addClass('d-none')
+                            } else {
+                                $('#alertMessage').html(
+                                    `User <b>${data.first_name} ${data.last_name}</b> ${data.is_rental == 'true' ? 'rented' : 'purchased'} <b>${data.quantity}x ${data.item_name}</b>`
+                                )
+                                $(".alert").removeClass('d-none')
+                            }
                             $(".alert").addClass('show')
-                            $(".alert").removeClass('hide')
                         }).catch(err => {
                             console.log(err.response)
                         })

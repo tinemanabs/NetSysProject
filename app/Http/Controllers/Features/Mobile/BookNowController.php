@@ -99,4 +99,25 @@ class BookNowController extends Controller
                 'is_booked' => NULL
             ]);
     }
+
+    public function checkUserBooking(Request $request)
+    {
+        $checkIfBooked = DB::table('users')
+            ->where('id', $request->user_id)
+            ->first();
+
+        $checkBookingToday = DB::table('bookings')
+            ->join('users', 'bookings.user_id', 'users.id')
+            ->where('users.id', $request->user_id)
+            ->first();
+        if ($checkIfBooked->is_booked == NULL) {
+            return 'no booking';
+        }
+
+        if ($checkBookingToday->date_start != Carbon::create()->toDateString()) {
+            return "not today";
+        } else {
+            return "today";
+        }
+    }
 }

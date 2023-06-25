@@ -29,11 +29,13 @@ Auth::routes();
 
 Route::post('getProfile', [UserAccountsController::class, 'getProfile']);
 Route::post('editProfile', [UserAccountsController::class, 'editProfile']);
+Route::post('checkPassword', [UserAccountsController::class, 'checkPassword']);
 Route::post('mobileLogin', [LoginController::class, 'mobileLogin']);
 
 
 Route::post('addBooking', [BookNowController::class, 'addbooking']);
 Route::post('cancelBooking', [BookNowController::class, 'cancelBooking']);
+Route::post('checkUserBooking', [BookNowController::class, 'checkUserBooking']);
 Route::post('getUserBooking', [BookNowController::class, 'getUserBooking']);
 Route::post('getIndividualBooking', [BookNowController::class, 'getIndividualBooking']);
 Route::post('filterDates', [BookNowController::class, 'filterDates']);
