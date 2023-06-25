@@ -1,7 +1,9 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h6>Booking</h6>
-        <a class="btn btn-primary" href="{{ route('addbooking') }}" role="button">Add Booking</a>
+        <h4>Booking</h4>
+        @if (Auth::user()->is_booked != 1)
+            <a class="btn btn-primary" href="{{ route('addbooking') }}" role="button">Add Booking</a>
+        @endif
     </div>
 
     <div class="card">

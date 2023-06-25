@@ -70,6 +70,7 @@ Route::get('/viewBooking/{id}', [BookNowController::class, 'viewBooking'])->name
 Route::get('/getDisabledDates', [BookNowController::class, 'getDisabledDates']);
 Route::get('/getFilteredRooms', [BookNowController::class, 'getFilteredRooms']);
 Route::get('/getFilteredCottages', [BookNowController::class, 'getFilteredCottages']);
+Route::get('/getUser/{id}', [BookNowController::class, 'getUserID']);
 
 // PURCHASE AND RENTAL MODULE
 Route::get('/purchaseandrentals', [PurchaseAndRental::class, 'index'])->name('purchaseAndRentals');

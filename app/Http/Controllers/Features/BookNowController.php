@@ -76,7 +76,8 @@ class BookNowController extends Controller
 
     public function addBooking()
     {
-        return view('features.addbooking');
+        $users = User::where('user_role', 2)->get();
+        return view('features.addbooking', compact('users'));
     }
 
     public function adminAddBooking(Request $request)
@@ -84,65 +85,113 @@ class BookNowController extends Controller
 
         if ($request->user_role == 1) {
             // SAVING FOR ADMIN SIDE - WALK IN GUEST
-            $user = User::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'birthday' => $request->birthday,
-                'email' => $request->email,
-                'address' => $request->address,
-                'contact_no' => $request->contact_no,
-                'password' => Hash::make($request->password),
-                'user_role' => 2,
-                'email_verified_at' => now(),
-                'is_notify' => NULL,
-                'is_booked' => NULL
-            ]);
-
-            $booking = Bookings::create([
-                'room_id' => $request->room_cottage_id,
-                'reservation_type' => $request->reservation_type,
-                'date_start' => $request->date_start,
-                'date_end' => $request->date_end,
-                'type' => $request->time,
-                'place_pool' => $request->place_pool,
-                'adults' => $request->adults,
-                'children' => $request->children,
-                'functional_hall' => $request->event,
-                'inclusions' => $request->inclusions,
-                'user_id' => $user->id,
-            ]);
-
-            if ($request->payment_type == 'Full Payment') {
-                $payment = Payments::create([
-                    'user_id' => $user->id,
-                    'booking_id' => $booking->id,
-                    'total_paid' => $request->total_price,
-                    'total_price' => $request->total_price,
-                    'payment_type' => $request->payment_type,
-                    'payment_status' => 1,
-                    'payment_image' => NULL, // should be null bc there's a cash option
+            if ($request->user_account_status == 'registered_user') {
+                // have accounts in the system 
+                User::where('id', $request->registered_user_id)->update(['is_booked' => 1]);
+                $booking = Bookings::create([
+                    'room_id' => $request->room_cottage_id,
+                    'reservation_type' => $request->reservation_type,
+                    'date_start' => $request->date_start,
+                    'date_end' => $request->date_end,
+                    'type' => $request->time,
+                    'place_pool' => $request->place_pool,
+                    'adults' => $request->adults,
+                    'children' => $request->children,
+                    'functional_hall' => $request->event,
+                    'inclusions' => $request->inclusions,
+                    'user_id' => $request->registered_user_id,
                 ]);
-            } else if ($request->payment_type == 'Down Payment') {
-                $payment = Payments::create([
-                    'user_id' => $user->id,
-                    'booking_id' => $booking->id,
-                    'total_paid' => $request->down_payment, // change base if full payment or downpayment
-                    'total_price' => $request->total_price,
-                    'payment_type' => $request->payment_type,
-                    'payment_status' => 1,
-                    'payment_image' => NULL,
-                ]);
-            }
 
-            if ($request->hasFile('payment_image')) {
-                $receiptImage = $request->payment_image->getClientOriginalName();
-                $request->payment_image->move(public_path('img/payments/' . $user->id), $receiptImage);
-                $payment->update(['payment_image' => $receiptImage]);
+                if ($request->payment_type == 'Full Payment') {
+                    $payment = Payments::create([
+                        'user_id' => $request->registered_user_id,
+                        'booking_id' => $booking->id,
+                        'total_paid' => $request->total_price,
+                        'total_price' => $request->total_price,
+                        'payment_type' => $request->payment_type,
+                        'payment_status' => 1,
+                        'payment_image' => NULL, // should be null bc there's a cash option
+                    ]);
+                } else if ($request->payment_type == 'Down Payment') {
+                    $payment = Payments::create([
+                        'user_id' => $request->registered_user_id,
+                        'booking_id' => $booking->id,
+                        'total_paid' => $request->down_payment, // change base if full payment or downpayment
+                        'total_price' => $request->total_price,
+                        'payment_type' => $request->payment_type,
+                        'payment_status' => 1,
+                        'payment_image' => NULL,
+                    ]);
+                }
+
+                if ($request->hasFile('payment_image')) {
+                    $receiptImage = $request->payment_image->getClientOriginalName();
+                    $request->payment_image->move(public_path('img/payments/' . $request->registered_user_id), $receiptImage);
+                    $payment->update(['payment_image' => $receiptImage]);
+                }
+            } else {
+                // dont have accounts in the system
+                $user = User::create([
+                    'first_name' => $request->first_name,
+                    'last_name' => $request->last_name,
+                    'birthday' => $request->birthday,
+                    'email' => $request->email,
+                    'address' => $request->address,
+                    'contact_no' => $request->contact_no,
+                    'password' => Hash::make($request->password),
+                    'user_role' => 2,
+                    'email_verified_at' => now(),
+                    'is_notify' => NULL,
+                    'is_booked' => 1
+                ]);
+
+                $booking = Bookings::create([
+                    'room_id' => $request->room_cottage_id,
+                    'reservation_type' => $request->reservation_type,
+                    'date_start' => $request->date_start,
+                    'date_end' => $request->date_end,
+                    'type' => $request->time,
+                    'place_pool' => $request->place_pool,
+                    'adults' => $request->adults,
+                    'children' => $request->children,
+                    'functional_hall' => $request->event,
+                    'inclusions' => $request->inclusions,
+                    'user_id' => $user->id,
+                ]);
+
+                if ($request->payment_type == 'Full Payment') {
+                    $payment = Payments::create([
+                        'user_id' => $user->id,
+                        'booking_id' => $booking->id,
+                        'total_paid' => $request->total_price,
+                        'total_price' => $request->total_price,
+                        'payment_type' => $request->payment_type,
+                        'payment_status' => 1,
+                        'payment_image' => NULL, // should be null bc there's a cash option
+                    ]);
+                } else if ($request->payment_type == 'Down Payment') {
+                    $payment = Payments::create([
+                        'user_id' => $user->id,
+                        'booking_id' => $booking->id,
+                        'total_paid' => $request->down_payment, // change base if full payment or downpayment
+                        'total_price' => $request->total_price,
+                        'payment_type' => $request->payment_type,
+                        'payment_status' => 1,
+                        'payment_image' => NULL,
+                    ]);
+                }
+
+                if ($request->hasFile('payment_image')) {
+                    $receiptImage = $request->payment_image->getClientOriginalName();
+                    $request->payment_image->move(public_path('img/payments/' . $user->id), $receiptImage);
+                    $payment->update(['payment_image' => $receiptImage]);
+                }
             }
 
             //note: don't use same email address
         } else if ($request->user_role == 2) {
             // SAVING FOR THOSE WHO HAVE ALREADY ACCTS
+            User::where('id', $request->registered_user_id)->update(['is_booked' => 1]);
             $booking = Bookings::create([
                 'room_id' => $request->room_cottage_id,
                 'reservation_type' => $request->reservation_type,
@@ -300,5 +349,11 @@ class BookNowController extends Controller
             ->get();
 
         return response()->json($cottages);
+    }
+
+    public function getUserID($id)
+    {
+        $user = User::where('id', $id)->first();
+        return response()->json($user);
     }
 }
