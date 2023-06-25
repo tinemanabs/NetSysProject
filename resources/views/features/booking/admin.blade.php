@@ -93,7 +93,8 @@
                                                     <a href="{{ route('viewBooking', $booking->id) }}"
                                                         class="dropdown-item">View</a>
                                                 </li>
-                                                {{-- <li><button class="dropdown-item">Edit</button></li> --}}
+                                                <li><a href="{{ route('editbooking', $booking->id) }}"
+                                                        class="dropdown-item">Edit</a></li>
                                                 @if ($booking->payment_type == 'Down Payment')
                                                     <li><button class="dropdown-item"
                                                             id="checkFullPaymentBtn{{ $booking->id }}"

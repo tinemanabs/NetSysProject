@@ -71,6 +71,8 @@ Route::get('/getDisabledDates', [BookNowController::class, 'getDisabledDates']);
 Route::get('/getFilteredRooms', [BookNowController::class, 'getFilteredRooms']);
 Route::get('/getFilteredCottages', [BookNowController::class, 'getFilteredCottages']);
 Route::get('/getUser/{id}', [BookNowController::class, 'getUserID']);
+Route::get('/editBooking/{id}', [BookNowController::class, 'editBooking'])->name('editbooking');
+Route::post('/admin-updatebooking/{id}', [BookNowController::class, 'updateBooking']);
 
 // PURCHASE AND RENTAL MODULE
 Route::get('/purchaseandrentals', [PurchaseAndRental::class, 'index'])->name('purchaseAndRentals');

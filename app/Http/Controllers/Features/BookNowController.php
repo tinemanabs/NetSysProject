@@ -356,4 +356,69 @@ class BookNowController extends Controller
         $user = User::where('id', $id)->first();
         return response()->json($user);
     }
+
+    public function editBooking($id)
+    {
+        $booking =  DB::table('bookings')
+            ->join('users', 'users.id', '=', 'bookings.user_id')
+            ->join('payments', 'payments.booking_id', '=', 'bookings.id')
+            ->where('bookings.id', $id)
+            //->join('rooms_and_cottages', 'rooms_and_cottages.id', '=', 'bookings.room_id')
+            ->select(
+                'bookings.*',
+                'users.email',
+                'users.first_name',
+                'users.last_name',
+                'users.birthday',
+                'users.address',
+                'users.contact_no',
+                'payments.total_paid',
+                'payments.total_price',
+                'payments.payment_type',
+                'payments.payment_status',
+                'payments.payment_image',
+
+            )
+            ->first();
+
+        $rooms = RoomsAndCottages::all();
+        $roomsResult = Bookings::where('id', $id)->pluck('room_id')->toArray();
+
+        // for JS Rooms or cottage info
+        $roomsArray = [];
+        foreach ($rooms as $room) {
+            if (in_array($room->id, json_decode($roomsResult[0]))) {
+                $roomsArray[] = $room->room_id . $room->cottage_name;
+            }
+        }
+        $roomsStr = implode(', ', $roomsArray);
+
+        // for JS Rooms or cottage price info 
+
+        $roomsPriceArray = [];
+        foreach ($rooms as $room) {
+            if (in_array($room->id, json_decode($roomsResult[0]))) {
+                $roomsPriceArray[] = $room->room_cottage_price;
+            }
+        }
+
+        $totalRoomPriceArr = array_sum($roomsPriceArray);
+
+        //return $totalRoomPriceArr;
+        return view('features.booking.editbooking', compact('booking', 'rooms', 'roomsStr', 'totalRoomPriceArr'));
+    }
+
+    public function updateBooking(Request $request, $id)
+    {
+        Bookings::where('id', $id)->update([
+            'place_pool' => $request->place_pool,
+            'type' => $request->time,
+            'date_start' => $request->date_start,
+            'date_end' => $request->date_end
+        ]);
+
+        Payments::where('booking_id', $id)->update([
+            'total_price' => $request->total_price
+        ]);
+    }
 }
