@@ -337,7 +337,37 @@
                         <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
                             <h3 class="multisteps-form__title">Guest Information</h3>
                             <div class="multisteps-form__content">
-                                <div class="row">
+                                @if (Auth::user()->user_role == 1)
+                                    <div class="row mb-3">
+                                        <div class="col-lg-6">
+                                            <input type="radio" name="user_account" id="registered_user"
+                                                value="registered_user">
+                                            <label for="" class="form-control-label">Registered User</label>
+                                            <br>
+                                            <input type="radio" name="user_account" id="unregistered_user"
+                                                value="unregistered_user" checked>
+                                            <label for="" class="form-control-label">Unregistered User</label>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if (Auth::user()->user_role == 1)
+                                    <div class="row" id="registered_user_content">
+                                        <div class="col-12">
+                                            @if (count($users) > 0)
+                                                <select name="registered_user_id" id="registered_user_id"
+                                                    class="form-select">
+                                                    @foreach ($users as $user)
+                                                        <option value="{{ $user->id }}">{{ $user->first_name }}
+                                                            {{ $user->last_name }} - {{ $user->email }}</option>
+                                                    @endforeach
+                                                </select>
+                                            @else
+                                                <p>There are no registered users.</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
+                                <div class="row" id="unregistered_user_content">
                                     <div class="col-lg-6 mb-3">
                                         <label for="" class="form-label">First Name</label>
                                         @if (Auth::user()->user_role == 1)
@@ -638,20 +668,20 @@
             formHeight(activePanel);
         };
 
-        // //STEPS BAR CLICK FUNCTION
-        // DOMstrings.stepsBar.addEventListener('click', e => {
-        //     //check if click target is a step button
-        //     const eventTarget = e.target;
-        //     if (!eventTarget.classList.contains(`${DOMstrings.stepsBtnClass}`)) {
-        //         return;
-        //     }
-        //     //get active button step number
-        //     const activeStep = getActiveStep(eventTarget);
-        //     //set all steps before clicked (and clicked too) to active
-        //     setActiveStep(activeStep);
-        //     //open active panel
-        //     setActivePanel(activeStep);
-        // });
+        //STEPS BAR CLICK FUNCTION
+        DOMstrings.stepsBar.addEventListener('click', e => {
+            //check if click target is a step button
+            const eventTarget = e.target;
+            if (!eventTarget.classList.contains(`${DOMstrings.stepsBtnClass}`)) {
+                return;
+            }
+            //get active button step number
+            const activeStep = getActiveStep(eventTarget);
+            //set all steps before clicked (and clicked too) to active
+            setActiveStep(activeStep);
+            //open active panel
+            setActivePanel(activeStep);
+        });
 
         //PREV/NEXT BTNS CLICK
         DOMstrings.stepsForm.addEventListener('click', e => {
@@ -697,22 +727,38 @@
                     console.log($('input[name = "functional_hall"]:checked').val(), $(
                         'input[name = "inclusions"]:checked').val());
 
-                } else if (activePanelNum == 7 &&
-                    $('#first_name').val() != '' &&
+                } else if (activePanelNum == 7 && $('#userRole').val() == 1) {
+                    if ($('input[name="user_account"]:checked').val() == 'unregistered_user' && $('#first_name')
+                        .val() != '' &&
+                        $('#last_name').val() != '' &&
+                        $('#birthday').val() != '' &&
+                        $('#email').val() != '' &&
+                        $('#address').val() != '' &&
+                        $('#contact_no').val() != '' &&
+                        $('#password').val() != '' && $('#confPassword').val() != '') {
+                        activePanelNum++;
+
+                        console.log($('#first_name').val(),
+                            $('#last_name').val(),
+                            $('#birthday').val(),
+                            $('#email').val(),
+                            $('#address').val(),
+                            $('#contact_no').val(),
+                            $('#password').val())
+                    } else if ($('input[name="user_account"]:checked').val() == 'registered_user' && $(
+                            '#registered_user_id').val() != undefined) {
+                        console.log($(
+                            '#registered_user_id').val())
+                        activePanelNum++;
+                    }
+                } else if (activePanelNum == 7 && $('#userRole').val() == 2 && $('#first_name')
+                    .val() != '' &&
                     $('#last_name').val() != '' &&
                     $('#birthday').val() != '' &&
                     $('#email').val() != '' &&
                     $('#address').val() != '' &&
                     $('#contact_no').val() != '' &&
                     $('#password').val() != '' && $('#confPassword').val() != '') {
-
-                    console.log($('#first_name').val(),
-                        $('#last_name').val(),
-                        $('#birthday').val(),
-                        $('#email').val(),
-                        $('#address').val(),
-                        $('#contact_no').val(),
-                        $('#password').val())
                     activePanelNum++;
                 }
             }
@@ -892,6 +938,18 @@
                 $('input[name="inclusions"]').prop('checked', false);
             }
         })
+
+        $('input[name="user_account"]').click(function() {
+            let value = $(this).attr('value');
+
+            if (value == 'unregistered_user') {
+                $('#unregistered_user_content').show();
+                $('#registered_user_content').hide();
+            } else {
+                $('#registered_user_content').show();
+                $('#unregistered_user_content').hide();
+            }
+        })
     </script>
 
     {{-- RESTRICTIONS AND API CALLS --}}
@@ -914,6 +972,7 @@
 
         @if (Auth::user()->user_role == 1)
             $('#modeOfPaymentUpload').hide('#modeOfPaymentUpload');
+            $('#registered_user_content').hide();
         @endif
         $('input[name="mode_of_payment"]').click(function() {
             let value = $(this).attr('value');
@@ -1026,238 +1085,300 @@
     <script>
         // SUMMARY AND PAYMENT
         $('#nextBtnToSummary').on('click', () => {
-            if ($('#first_name').val() == '' ||
-                $('#last_name').val() == '' ||
-                $('#birthday').val() == '' ||
-                $('#email').val() == '' ||
-                $('#address').val() == '' ||
-                $('#contact_no').val() == '' ||
-                $('#password').val() == '' || $('#confPassword').val() == '') {
+            @if (Auth::user()->user_role == 1)
+                if ($('input[name="user_account"]:checked').val() == 'unregistered_user') {
+                    if ($('#first_name').val() == '' ||
+                        $('#last_name').val() == '' ||
+                        $('#birthday').val() == '' ||
+                        $('#email').val() == '' ||
+                        $('#address').val() == '' ||
+                        $('#contact_no').val() == '' ||
+                        $('#password').val() == '' || $('#confPassword').val() == '') {
 
-                swal({
-                    icon: 'warning',
-                    title: "Complete the form!",
-                    text: "Please fill out the required fields."
-                })
-            } else {
-
-                //VALUES
-                $typeOfReservation = $('input[name="type_of_reservation"]:checked').val();
-                $dateStart = moment($('#dateStart').val()).format('ll');
-                $dateEnd = '';
-                $time = $('input[name = "timeBooked"]:checked').val();
-                $timeFormat = '';
-                $placePool = $('input[name="place_of_pool"]:checked').val();
-
-                //Payment Information
-                $content = '' // type of reservation
-                $exclusivePrice = ''
-                $admissionFee = 0; //for non-exclu & exclusive day only
-                $totalAdmissionFee = 0;
-                $totalPaymentPrice = 0
-
-                let totalRoomPrice = 0;
-                let roomsAndCottages = $('input[name="room_cottage"]:checked').map(function() {
-                    $roomID = $(this).val();
-                    if ($roomID != 0) {
-                        return $('#roomCottageName' + $roomID).text();
-                    } else {
-                        return 'No room or cottage.'
+                        swal({
+                            icon: 'warning',
+                            title: "Complete the form!",
+                            text: "Please fill out the required fields."
+                        })
                     }
-
-                }).get(); // displays the chosen rooms & cottages
-
-                let roomsAndCottagesPrice = $('input[name="room_cottage"]:checked').map(function() {
-                    $roomID = $(this).val();
-                    if ($roomID != 0) {
-                        return $('#roomCottagePrice' + $roomID).text();
-                    } else {
-                        return 0;
+                } else if ($('input[name="user_account"]:checked').val() == 'registered_user') {
+                    if ($('#registered_user_id').val() == undefined) {
+                        swal({
+                            icon: 'warning',
+                            title: "Complete the form!",
+                            text: "Please choose a user."
+                        })
                     }
+                }
+            @else
+                if ($('#first_name').val() == '' ||
+                    $('#last_name').val() == '' ||
+                    $('#birthday').val() == '' ||
+                    $('#email').val() == '' ||
+                    $('#address').val() == '' ||
+                    $('#contact_no').val() == '' ||
+                    $('#password').val() == '' || $('#confPassword').val() == '') {
 
-                }).get(); // gets the prices of rooms selected
+                    swal({
+                        icon: 'warning',
+                        title: "Complete the form!",
+                        text: "Please fill out the required fields."
+                    })
+                }
+            @endif
 
-                roomsAndCottagesPrice.map((item, index) => {
-                    totalRoomPrice = totalRoomPrice + Number(item)
-                }) // stores the prices of each room selected
+            //VALUES
+            $typeOfReservation = $('input[name="type_of_reservation"]:checked').val();
+            $dateStart = moment($('#dateStart').val()).format('ll');
+            $dateEnd = '';
+            $time = $('input[name = "timeBooked"]:checked').val();
+            $timeFormat = '';
+            $placePool = $('input[name="place_of_pool"]:checked').val();
 
-                // intialized it here to retrieve the total room price
-                $('#payment_roomCottagePrice').text(`${totalRoomPrice}`);
-                $totalRoomCottagePrice = Number($('#payment_roomCottagePrice').text());
+            //Payment Information
+            $content = '' // type of reservation
+            $exclusivePrice = ''
+            $admissionFee = 0; //for non-exclu & exclusive day only
+            $totalAdmissionFee = 0;
+            $totalPaymentPrice = 0
+
+            let totalRoomPrice = 0;
+            let roomsAndCottages = $('input[name="room_cottage"]:checked').map(function() {
+                $roomID = $(this).val();
+                if ($roomID != 0) {
+                    return $('#roomCottageName' + $roomID).text();
+                } else {
+                    return 'No room or cottage.'
+                }
+
+            }).get(); // displays the chosen rooms & cottages
+
+            let roomsAndCottagesPrice = $('input[name="room_cottage"]:checked').map(function() {
+                $roomID = $(this).val();
+                if ($roomID != 0) {
+                    return $('#roomCottagePrice' + $roomID).text();
+                } else {
+                    return 0;
+                }
+
+            }).get(); // gets the prices of rooms selected
+
+            roomsAndCottagesPrice.map((item, index) => {
+                totalRoomPrice = totalRoomPrice + Number(item)
+            }) // stores the prices of each room selected
+
+            // intialized it here to retrieve the total room price
+            $('#payment_roomCottagePrice').text(`${totalRoomPrice}`);
+            $totalRoomCottagePrice = Number($('#payment_roomCottagePrice').text());
 
 
-                $adults = $('#adults').val();
-                $children = $('#children').val();
-                $totalPersons = Number($adults) + Number($children);
+            $adults = $('#adults').val();
+            $children = $('#children').val();
+            $totalPersons = Number($adults) + Number($children);
 
-                // events & inclusions are for exclu day & overnight 
-                $event = $('input[name="functional_hall"]:checked').val();
-                $inclusions = $('input[name="inclusions"]:checked').val();
-                $inclusionsPrice = 0;
+            // events & inclusions are for exclu day & overnight 
+            $event = $('input[name="functional_hall"]:checked').val();
+            $inclusions = $('input[name="inclusions"]:checked').val();
+            $inclusionsPrice = 0;
 
-                if ($typeOfReservation == 'non-exclusive') {
+            if ($typeOfReservation == 'non-exclusive') {
+                $('#bookInfo_date').text(`Booking Date: ${$dateStart}`);
+
+                $timeFormat = '8:00 AM - 5:00 PM';
+                $content = 'Non-Exclusive Day Swimming';
+                $admissionFee = 75;
+                $totalAdmissionFee = Number($admissionFee) * Number($totalPersons);
+
+                $totalPaymentPrice = Number($totalAdmissionFee) + Number(
+                    $totalRoomCottagePrice); //computes the total price
+            } else if ($typeOfReservation == 'exclusive') {
+                if ($time == 'day') {
                     $('#bookInfo_date').text(`Booking Date: ${$dateStart}`);
 
                     $timeFormat = '8:00 AM - 5:00 PM';
-                    $content = 'Non-Exclusive Day Swimming';
-                    $admissionFee = 75;
+                    $content = 'Exclusive Day Swimming';
+                    $admissionFee = 100;
                     $totalAdmissionFee = Number($admissionFee) * Number($totalPersons);
 
-                    $totalPaymentPrice = Number($totalAdmissionFee) + Number(
-                        $totalRoomCottagePrice); //computes the total price
-                } else if ($typeOfReservation == 'exclusive') {
-                    if ($time == 'day') {
-                        $('#bookInfo_date').text(`Booking Date: ${$dateStart}`);
+                    if ($placePool == 'taas') {
+                        $exclusivePrice = 1950;
 
-                        $timeFormat = '8:00 AM - 5:00 PM';
-                        $content = 'Exclusive Day Swimming';
-                        $admissionFee = 100;
-                        $totalAdmissionFee = Number($admissionFee) * Number($totalPersons);
+                    } else if ($placePool == 'baba') {
+                        $exclusivePrice = 3550;
+                    }
 
-                        if ($placePool == 'taas') {
-                            $exclusivePrice = 1950;
 
-                        } else if ($placePool == 'baba') {
-                            $exclusivePrice = 3550;
+                    if ($event == 'Ilang-Ilang') {
+                        if ($inclusions == 'with Tables and Chairs') {
+                            $inclusionsPrice = 3000;
+                        } else if ($inclusions == 'without Tables and Chairs') {
+                            $inclusionsPrice = 2000;
                         }
-
-
-                        if ($event == 'Ilang-Ilang') {
-                            if ($inclusions == 'with Tables and Chairs') {
-                                $inclusionsPrice = 3000;
-                            } else if ($inclusions == 'without Tables and Chairs') {
-                                $inclusionsPrice = 2000;
-                            }
-                        } else if ($event == 'Jasmin') {
-                            if ($inclusions == 'with Tables and Chairs') {
-                                $inclusionsPrice = 4000;
-                            } else if ($inclusions == 'without Tables and Chairs') {
-                                $inclusionsPrice = 3000;
-                            }
+                    } else if ($event == 'Jasmin') {
+                        if ($inclusions == 'with Tables and Chairs') {
+                            $inclusionsPrice = 4000;
+                        } else if ($inclusions == 'without Tables and Chairs') {
+                            $inclusionsPrice = 3000;
                         }
+                    }
 
-                        console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice,
-                            $inclusionsPrice)
+                    console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice,
+                        $inclusionsPrice)
+
+                    $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
+                        $totalRoomCottagePrice) + Number($inclusionsPrice); //computes the total price
+
+
+                } else if ($time == 'night') {
+                    $dateEnd = moment($('#dateEnd').val()).subtract(1, 'days').format('ll');
+
+                    $('#bookInfo_date').text(`Booking Date: ${$dateStart}`);
+                    $timeFormat = '7:00 PM - 11:00 PM';
+                    $content = 'Exclusive Night Swimming';
+                    $exclusivePrice = 1200;
+
+                    console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice)
+
+                    if ($totalPersons <= 7) {
+                        $totalPaymentPrice = Number($exclusivePrice) + Number(
+                            $totalRoomCottagePrice); //computes the total price
+                    } else {
+                        $excess = $totalPersons - 7;
+                        $totalPersons = $excess;
+                        $admissionFee = 100
+                        $totalAdmissionFee = Number($admissionFee) * Number($excess);
 
                         $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
-                            $totalRoomCottagePrice) + Number($inclusionsPrice); //computes the total price
-
-
-                    } else if ($time == 'night') {
-                        $dateEnd = moment($('#dateEnd').val()).subtract(1, 'days').format('ll');
-
-                        $('#bookInfo_date').text(`Booking Date: ${$dateStart}`);
-                        $timeFormat = '7:00 PM - 11:00 PM';
-                        $content = 'Exclusive Night Swimming';
-                        $exclusivePrice = 1200;
-
-                        console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice)
-
-                        if ($totalPersons <= 7) {
-                            $totalPaymentPrice = Number($exclusivePrice) + Number(
-                                $totalRoomCottagePrice); //computes the total price
-                        } else {
-                            $excess = $totalPersons - 7;
-                            $totalPersons = $excess;
-                            $admissionFee = 100
-                            $totalAdmissionFee = Number($admissionFee) * Number($excess);
-
-                            $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
-                                $totalRoomCottagePrice); //computes the total price
-                        }
-
-                        // TODO: MISSING TOTAL FEE;
-                    } else if ($time == 'overnight') {
-                        $dateEnd = moment($('#dateEnd').val()).format('ll');
-
-                        $('#bookInfo_date').text(`Booking Date: ${$dateStart} - ${$dateEnd}`);
-                        $timeFormat = '7:00 PM - 8:00 AM';
-                        $content = 'Exclusive Overnight Swimming';
-                        $exclusivePrice = 4000;
-
-                        if ($event == 'Ilang-Ilang') {
-                            if ($inclusions == 'with Tables and Chairs') {
-                                $inclusionsPrice = 4000;
-                            } else if ($inclusions == 'without Tables and Chairs') {
-                                $inclusionsPrice = 3000;
-                            }
-                        } else if ($event == 'Jasmin') {
-                            if ($inclusions == 'with Tables and Chairs') {
-                                $inclusionsPrice = 5000;
-                            } else if ($inclusions == 'without Tables and Chairs') {
-                                $inclusionsPrice = 4000;
-                            }
-                        }
-
-                        console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice, $inclusionsPrice)
-
-                        if ($totalPersons <= 25) {
-                            $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
-                                $totalRoomCottagePrice) + Number($inclusionsPrice); //computes the total price
-                        } else {
-                            $excess = $totalPersons - 25
-                            $totalPersons = $excess
-
-                            $admissionFee = 110;
-                            $totalAdmissionFee = Number($admissionFee) * Number($excess);
-
-                            $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
-                                $totalRoomCottagePrice) + Number($inclusionsPrice)
-                        }
-
-                        //TODO: MISSING TOTAL FEE;
+                            $totalRoomCottagePrice); //computes the total price
                     }
+
+                    // TODO: MISSING TOTAL FEE;
+                } else if ($time == 'overnight') {
+                    $dateEnd = moment($('#dateEnd').val()).format('ll');
+
+                    $('#bookInfo_date').text(`Booking Date: ${$dateStart} - ${$dateEnd}`);
+                    $timeFormat = '7:00 PM - 8:00 AM';
+                    $content = 'Exclusive Overnight Swimming';
+                    $exclusivePrice = 4000;
+
+                    if ($event == 'Ilang-Ilang') {
+                        if ($inclusions == 'with Tables and Chairs') {
+                            $inclusionsPrice = 4000;
+                        } else if ($inclusions == 'without Tables and Chairs') {
+                            $inclusionsPrice = 3000;
+                        }
+                    } else if ($event == 'Jasmin') {
+                        if ($inclusions == 'with Tables and Chairs') {
+                            $inclusionsPrice = 5000;
+                        } else if ($inclusions == 'without Tables and Chairs') {
+                            $inclusionsPrice = 4000;
+                        }
+                    }
+
+                    console.log($exclusivePrice, $totalAdmissionFee, $totalRoomCottagePrice,
+                        $inclusionsPrice)
+
+                    if ($totalPersons <= 25) {
+                        $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
+                            $totalRoomCottagePrice) + Number($inclusionsPrice); //computes the total price
+                    } else {
+                        $excess = $totalPersons - 25
+                        $totalPersons = $excess
+
+                        $admissionFee = 110;
+                        $totalAdmissionFee = Number($admissionFee) * Number($excess);
+
+                        $totalPaymentPrice = Number($exclusivePrice) + Number($totalAdmissionFee) + Number(
+                            $totalRoomCottagePrice) + Number($inclusionsPrice)
+                    }
+
+                    //TODO: MISSING TOTAL FEE;
                 }
+            }
 
-                //checks and replaces the content if there's a booked event
-                $eventContent = '';
-                $inclusionsContent = '';
+            //checks and replaces the content if there's a booked event
+            $eventContent = '';
+            $inclusionsContent = '';
 
-                if ($event == 0) {
-                    $eventContent = 'No reserved functional hall';
-                    $inclusionsContent = 'No inclusions added.';
+            if ($event == 0) {
+                $eventContent = 'No reserved functional hall';
+                $inclusionsContent = 'No inclusions added.';
+            } else {
+                $eventContent = $('input[name="functional_hall"]:checked').val();
+                $inclusionsContent = $('input[name="inclusions"]:checked').val();
+            }
+
+            @if (Auth::user()->user_role == 1)
+                $fname = '';
+                $lname = '';
+                $bday = '';
+                $email = '';
+                $address = '';
+                $contact_no = '';
+
+                if ($('input[name="user_account"]:checked').val() == 'registered_user') {
+                    let registeredID = $('#registered_user_id').val();
+                    axios.get('/getUser/' + registeredID)
+                        .then((response) => {
+                            console.log(response.data)
+                            $fname = response.data.first_name;
+                            $lname = response.data.last_name;
+                            $bday = response.data.birthday;
+                            $email = response.data.email;
+                            $address = response.data.address;
+                            $contact_no = response.data.contact_no;
+
+                            $('#bookInfo_name').text(`Name: ${$fname} ${$lname}`);
+                            $('#bookInfo_bday').text(`Birthday: ${$bday}`);
+                            $('#bookInfo_email').text(`Email: ${$email}`);
+                            $('#bookInfo_addr').text(`Address: ${$address}`);
+                            $('#bookInfo_contact').text(`Contact Number: ${$contact_no}`);
+
+                        })
                 } else {
-                    $eventContent = $('input[name="functional_hall"]:checked').val();
-                    $inclusionsContent = $('input[name="inclusions"]:checked').val();
+                    $fname = $('#first_name').val();
+                    $lname = $('#last_name').val();
+                    $bday = moment($('#birthday').val()).format('ll');
+                    $email = $('#email').val();
+                    $address = $('#address').val();
+                    $contact_no = $('#contact_no').val();
                 }
-
-
+            @else
                 $fname = $('#first_name').val();
                 $lname = $('#last_name').val();
                 $bday = moment($('#birthday').val()).format('ll');
                 $email = $('#email').val();
                 $address = $('#address').val();
                 $contact_no = $('#contact_no').val();
+            @endif
 
+            $('#bookInfo_time').text(`Time: ${$timeFormat}`);
+            $('#bookInfo_placePool').text(`Chosen Pool: ${$placePool}`);
+            $('#bookInfo_room').text(`Room or Cottage: ${roomsAndCottages}`);
+            $('#bookInfo_adults').text(`Number of Adults: ${$adults}`);
+            $('#bookInfo_children').text(`Number of Children: ${$children}`);
 
-                $('#bookInfo_time').text(`Time: ${$timeFormat}`);
-                $('#bookInfo_placePool').text(`Chosen Pool: ${$placePool}`);
-                $('#bookInfo_room').text(`Room or Cottage: ${roomsAndCottages}`);
-                $('#bookInfo_adults').text(`Number of Adults: ${$adults}`);
-                $('#bookInfo_children').text(`Number of Children: ${$children}`);
+            $('#bookInfo_name').text(`Name: ${$fname} ${$lname}`);
+            $('#bookInfo_bday').text(`Birthday: ${$bday}`);
+            $('#bookInfo_email').text(`Email: ${$email}`);
+            $('#bookInfo_addr').text(`Address: ${$address}`);
+            $('#bookInfo_contact').text(`Contact Number: ${$contact_no}`);
 
-                $('#bookInfo_name').text(`Name: ${$fname} ${$lname}`);
-                $('#bookInfo_bday').text(`Birthday: ${$bday}`);
-                $('#bookInfo_email').text(`Email: ${$email}`);
-                $('#bookInfo_addr').text(`Address: ${$address}`);
-                $('#bookInfo_contact').text(`Contact Number: ${$contact_no}`);
+            $('#bookInfo_functionalHall').text(`Functional Hall: ${$eventContent}`);
+            $('#bookInfo_inclusions').text(`Inclusions: ${$inclusionsContent}`)
 
-                $('#bookInfo_functionalHall').text(`Functional Hall: ${$eventContent}`);
-                $('#bookInfo_inclusions').text(`Inclusions: ${$inclusionsContent}`)
+            //PAYMENT 
+            $('#payment_exlusiveReservationHeading').text($content); // for exclusive only
+            $('#payment_exlusiveReservationPrice').text(`P ${$exclusivePrice}`); // for exclusive only
 
-                //PAYMENT 
-                $('#payment_exlusiveReservationHeading').text($content); // for exclusive only
-                $('#payment_exlusiveReservationPrice').text(`P ${$exclusivePrice}`); // for exclusive only
+            $('#payment_typeOfReservation').text($content);
+            $('#payment_totalPersons').text($totalPersons);
+            $('#payment_admissionFeePrice').text(`P ${$admissionFee}`); // for non-exclusive only
+            $('#payment_totalAdmissionFee').text(`P ${$totalAdmissionFee}`);
+            $('#payment_inclusions').text(`P ${$inclusionsPrice}`);
 
-                $('#payment_typeOfReservation').text($content);
-                $('#payment_totalPersons').text($totalPersons);
-                $('#payment_admissionFeePrice').text(`P ${$admissionFee}`); // for non-exclusive only
-                $('#payment_totalAdmissionFee').text(`P ${$totalAdmissionFee}`);
-                $('#payment_inclusions').text(`P ${$inclusionsPrice}`);
+            $('#payment_totalFee').text(`${$totalPaymentPrice}`);
 
-                $('#payment_totalFee').text(`${$totalPaymentPrice}`);
-
-            }
         });
 
         // SUBMISSION OF FORMS
@@ -1307,6 +1428,8 @@
             $password = $('#password').val();
 
             $user = $('#userID').val();
+            $userAccountStatus = $('input[name="user_account"]:checked').val();
+            $registered_id = $('#registered_user_id').val()
             $userRole = $('#userRole').val();
 
             $paymentFee = $('#payment_totalFee').text();
@@ -1345,6 +1468,8 @@
                         formdata.append('inclusions', $inclusions)
 
                         formdata.append('user', $user);
+                        formdata.append('user_account_status', $userAccountStatus);
+                        formdata.append('registered_user_id', $registered_id);
                         formdata.append('user_role', $userRole)
 
                         formdata.append('first_name', $fname);
