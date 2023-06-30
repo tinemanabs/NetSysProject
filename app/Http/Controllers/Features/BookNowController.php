@@ -191,7 +191,7 @@ class BookNowController extends Controller
             //note: don't use same email address
         } else if ($request->user_role == 2) {
             // SAVING FOR THOSE WHO HAVE ALREADY ACCTS
-            User::where('id', $request->registered_user_id)->update(['is_booked' => 1]);
+            User::where('id', $request->user)->update(['is_booked' => 1]);
             $booking = Bookings::create([
                 'room_id' => $request->room_cottage_id,
                 'reservation_type' => $request->reservation_type,
@@ -419,6 +419,17 @@ class BookNowController extends Controller
 
         Payments::where('booking_id', $id)->update([
             'total_price' => $request->total_price
+        ]);
+    }
+
+    public function updateCompleteBooking(Request $request)
+    {
+        // Bookings::where('id', $request->id)->update([
+        //     'booking_status' => $request->booking_status
+        // ]);
+
+        User::where('id', $request->user_id)->update([
+            'is_booked' => $request->is_booked
         ]);
     }
 }

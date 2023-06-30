@@ -73,6 +73,7 @@ Route::get('/getFilteredCottages', [BookNowController::class, 'getFilteredCottag
 Route::get('/getUser/{id}', [BookNowController::class, 'getUserID']);
 Route::get('/editBooking/{id}', [BookNowController::class, 'editBooking'])->name('editbooking');
 Route::post('/admin-updatebooking/{id}', [BookNowController::class, 'updateBooking']);
+Route::post('/completeBooking/{id}', [BookNowController::class, 'updateCompleteBooking']);
 
 // PURCHASE AND RENTAL MODULE
 Route::get('/purchaseandrentals', [PurchaseAndRental::class, 'index'])->name('purchaseAndRentals');
