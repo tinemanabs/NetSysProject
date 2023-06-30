@@ -227,6 +227,16 @@
                                         <label for="" class="form-label">Children</label>
                                         <input type="text" class="form-control mb-3" name="children" id="children"
                                             onkeypress="return onlyNumberKey(event)">
+
+                                        @if (Auth::user()->user_role == 1)
+                                            <div id="formInputForFreePerson">
+                                                <label for="" class="form-label">Persons with 33 inches
+                                                    height</label>
+                                                <input type="text" class="form-control mb-3" name="free_person"
+                                                    id="free_person" onkeypress="return onlyNumberKey(event)">
+                                            </div>
+                                        @endif
+
                                     </div>
                                 </div>
 
@@ -423,8 +433,8 @@
                                     <div class="col-lg-6 mb-3">
                                         <label for="" class="form-label">Contact Number</label>
                                         @if (Auth::user()->user_role == 1)
-                                            <input type="text" name="contact_no" class="form-control"
-                                                id="contact_no">
+                                            <input type="text" name="contact_no" class="form-control" id="contact_no"
+                                                maxlength="11" onkeypress="return onlyNumberKey(event)">
                                         @elseif (Auth::user()->user_role == 2)
                                             <input type="text" name="contact_no" class="form-control" id="contact_no"
                                                 value="{{ Auth::user()->contact_no }}" readonly>
@@ -513,8 +523,18 @@
 
                                                     <p class="m-0 p-0" id="payment_totalAdmissionFee"></p>
                                                 </div>
+                                                @if (Auth::user()->user_role == 1)
+                                                    <div class="d-flex w-100 justify-content-between"
+                                                        id="promoForNonExclusive">
+                                                        <div>
+                                                            <small class="mb-1" id="payment_promo"></small>
+                                                            <small class="mb-1" id="promoForNonExclusiveX">x <span
+                                                                    id="payment_totalFreePersons"></span></small>
+                                                        </div>
 
-
+                                                        <p class="m-0 p-0" id="payment_freePersons"></p>
+                                                    </div>
+                                                @endif
                                             </li>
                                             <li class="list-group-item px-0">
                                                 <div class="d-flex w-100 justify-content-between">
@@ -711,9 +731,19 @@
                 } else if (activePanelNum == 3 && $('#dateStart').val() != '') {
                     console.log($('#dateStart').val())
                     activePanelNum++;
-                } else if (activePanelNum == 4 && $('#adults').val() != '' && $('#children').val() != '') {
-                    console.log($('#adults').val(), $('#children').val());
-                    activePanelNum++;
+                } else if (activePanelNum == 4) {
+                    if ($('input[name = "type_of_reservation"]:checked').val() == 'exclusive') {
+                        if ($('#adults').val() != '' && $('#children').val() != '') {
+                            console.log($('#adults').val(), $('#children').val())
+                            activePanelNum++
+                        }
+                    } else {
+                        if ($('#adults').val() != '' && $('#children').val() != '' && $('#free_person').val() !=
+                            '') {
+                            console.log($('#adults').val(), $('#children').val(), $('#free_person').val())
+                            activePanelNum++
+                        }
+                    }
                 } else if (activePanelNum == 5 && $('input[name = "room_cottage"]:checked').val() != undefined) {
                     console.log($('input[name = "room_cottage"]:checked').val())
                     activePanelNum++;
@@ -880,12 +910,22 @@
 
         // ADULTS AND CHILDREN VALIDATION
         $('#nextBtnToRoom').on('click', () => {
-            if ($('#adults').val() == '' || $('#children').val() == '') {
-                swal({
-                    icon: 'warning',
-                    title: "Indicate the number of persons!",
-                    text: "Please indicate the number of adult and children in the field."
-                })
+            if ($('input[name = "type_of_reservation"]:checked').val() == 'exclusive') {
+                if ($('#adults').val() == '' || $('#children').val() == '') {
+                    swal({
+                        icon: 'warning',
+                        title: "Indicate the number of persons!",
+                        text: "Please indicate the number of adult and children in the field."
+                    })
+                }
+            } else {
+                if ($('#adults').val() == '' || $('#children').val() == '' || $('#free_person').val() == '') {
+                    swal({
+                        icon: 'warning',
+                        title: "Indicate the number of persons!",
+                        text: "Please indicate the number of adult and children in the field."
+                    })
+                }
             }
         });
 
@@ -965,6 +1005,11 @@
             } else if (event.target.value === 'exclusive') {
                 console.log('exclusive')
                 $('#cottagesValues').hide('#cottagesValues')
+                $('#promoForNonExclusive').hide('#promoForNonExclusive')
+                $('#payment_promo').hide('#payment_promo')
+                $('#payment_freePersons').hide('#payment_freePersons')
+                $('#promoForNonExclusiveX').hide('#promoForNonExclusiveX')
+                $('#formInputForFreePerson').hide('#formInputForFreePerson')
                 //$('#modeOfPayment').hide('#modeOfPayment')
                 //$('#modeOfPaymentUpload').show('#modeOfPaymentUpload')
             }
@@ -974,6 +1019,14 @@
             $('#modeOfPaymentUpload').hide('#modeOfPaymentUpload');
             $('#registered_user_content').hide();
         @endif
+
+        // @if (Auth::user()->user_role == 2)
+        //     $('#formInputForFreePerson').hide('#formInputForFreePerson')
+        //     $('#promoForNonExclusive').hide('#promoForNonExclusive')
+        //     $('#promoForNonExclusiveX').hide('#promoForNonExclusiveX')
+        //     $('#formInputForFreePerson').hide('#formInputForFreePerson')
+        // @endif
+
         $('input[name="mode_of_payment"]').click(function() {
             let value = $(this).attr('value');
 
@@ -1137,6 +1190,8 @@
 
             //Payment Information
             $content = '' // type of reservation
+            $content2 = 'Promo for persons with 33 inches height' // promo for non-exclusive only
+            $freeWord = 'FREE' // promo for non-exclusive only
             $exclusivePrice = ''
             $admissionFee = 0; //for non-exclu & exclusive day only
             $totalAdmissionFee = 0;
@@ -1174,6 +1229,7 @@
 
             $adults = $('#adults').val();
             $children = $('#children').val();
+            $freePerson = $('#free_person').val();
             $totalPersons = Number($adults) + Number($children);
 
             // events & inclusions are for exclu day & overnight 
@@ -1370,6 +1426,10 @@
             //PAYMENT 
             $('#payment_exlusiveReservationHeading').text($content); // for exclusive only
             $('#payment_exlusiveReservationPrice').text(`P ${$exclusivePrice}`); // for exclusive only
+
+            $('#payment_promo').text($content2);
+            $('#payment_totalFreePersons').text($freePerson);
+            $('#payment_freePersons').text($freeWord);
 
             $('#payment_typeOfReservation').text($content);
             $('#payment_totalPersons').text($totalPersons);
