@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Features;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserRentals;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,6 +15,7 @@ class PurchaseAndRental extends Controller
             ->get();
         $userRentals = DB::table('user_rentals')
             ->join('users', 'users.id', 'user_rentals.user_id')
+            ->join('purchase_and_rentals', 'purchase_and_rentals.id', 'user_rentals.rental_id')
             ->get();
         return view('features.purchaseandrental', [
             "items" => $allItems,

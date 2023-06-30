@@ -81,7 +81,7 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table id="myTable" class="row-border" style="width:100%">
+                <table id="userPurchaseAndRentals" class="row-border" style="width:100%">
                     <thead>
 
                         <tr>
@@ -110,16 +110,44 @@
                                         height="100" width="100">
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-danger" id="delete{{ $item->id }}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                            <path
-                                                d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-                                        </svg>
-                                    </button>
+                                    @if ($user_rental->is_rental == 'true')
+                                        <button class="btn btn-warning text-white" title="Return Item"
+                                            id="return{{ $user_rental->rental_id }}">
+                                            <i class="fa-solid fa-rotate-left"></i>
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                             <script>
+                                $('#return{{ $user_rental->rental_id }}').click(() => {
+                                    swal({
+                                        title: 'Are you sure?',
+                                        text: 'Was this item returned?',
+                                        icon: 'warning',
+                                        buttons: {
+                                            cancel: 'Cancel',
+                                            true: 'OK'
+                                        }
+                                    }).then((response) => {
+                                        let id = $('#return{{ $user_rental->rental_id }}').data('id');
+                                        console.log(id);
+                                        if (response == 'true') {
+                                            swal({
+                                                title: 'Success',
+                                                text: 'The item has been returned!',
+                                                icon: 'success'
+                                            }).then((response) => {
+                                                const formdata = new FormData();
+                                                formdata.append('id', "{{ $user_rental->rental_id }}")
+
+                                                console.log([...formdata])
+
+                                                //axios.post('/deleteRoom/' + id).then(response => location.reload())
+
+                                            })
+                                        }
+                                    })
+                                });
                                 $("#delete{{ $item->id }}").click(() => {
                                     swal({
                                         icon: "warning",
@@ -278,6 +306,7 @@
 
                     $(document).ready(function() {
                         $('#myTable').DataTable();
+                        $('#userPurchaseAndRentals').DataTable();
                     });
                 </script>
             </div>
