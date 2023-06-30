@@ -1,8 +1,8 @@
 @extends('layouts.auth')
 @section('title', 'Purchase and Rental Inventory')
 @section('content')
-    <h4>Purchase and Rental Inventory</h4>
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-between">
+        <h4>Purchase and Rental Inventory</h4>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoomModal">
             Add Inventory
         </button>
@@ -29,7 +29,6 @@
                                 <td>{{ $item->item_name }}</td>
                                 <td>{{ $item->item_description }}</td>
                                 <td>P{{ $item->item_price }}</td>
-                                <td>{{ $item->item_count }}</td>
                                 <td>{{ $item->item_count }}</td>
                                 <td><img src="https://labaksamorong.com/NetSysProject-main/public/img/purchaseandrentals/{{ $item->item_image }}"
                                         height="100" width="100">
@@ -87,9 +86,9 @@
 
                         <tr>
                             <th>Name</th>
-                            <th>Item Description</th>
-                            <th>Item Price</th>
-                            <th>Item Count</th>
+                            <th>Item Name</th>
+                            <th>Total Price</th>
+                            <th>Payment Status</th>
                             <th>Image</th>
                             <th>Action</th>
                         </tr>
@@ -98,11 +97,16 @@
                         @forelse ($user_rentals as $user_rental)
                             <tr>
                                 <td>{{ $user_rental->first_name }} {{ $user_rental->last_name }}</td>
-                                <td>{{ $user_rental->item_description }}</td>
+                                <td>{{ $user_rental->item_name }}</td>
                                 <td>P{{ $user_rental->item_price }}</td>
-                                <td>{{ $user_rental->item_count }}</td>
-                                <td>{{ $user_rental->item_count }}</td>
-                                <td><img src="https://labaksamorong.com/NetSysProject-main/public/img/purchaseandrentals/{{ $item->item_image }}"
+                                <td>
+                                    @if ($user_rental->item_payment_status == 1)
+                                        <div>Paid</div>
+                                    @else
+                                        <div>Pending</div>
+                                    @endif
+                                </td>
+                                <td><img src="https://labaksamorong.com/NetSysProject-main/public/img/purchaseandrentals/{{ $user_rental->item_image }}"
                                         height="100" width="100">
                                 </td>
                                 <td>
@@ -270,7 +274,11 @@
                                     }
                                 })
                         }
-                    })
+                    });
+
+                    $(document).ready(function() {
+                        $('#myTable').DataTable();
+                    });
                 </script>
             </div>
         </div>
