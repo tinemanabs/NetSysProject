@@ -6,7 +6,7 @@
 
         <!-- Content Row -->
         <div class="row mt-4">
-            <div class="col-xl-3 col-md-6 mb-4">
+            <div class="col-xl-2 col-md-6 mb-4">
                 <div class="card border border-primary border-top-0 border-end-0 border-bottom-0 border-4 shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6 mb-4">
+            <div class="col-xl-2 col-md-6 mb-4">
                 <div
                     class="card border border-success border-top-0 border-end-0 border-bottom-0 border-4 shadow h-100 py-2">
                     <div class="card-body">
@@ -41,6 +41,24 @@
                 </div>
             </div>
 
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div
+                    class="card border border-secondary border-top-0 border-end-0 border-bottom-0 border-4 shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs fw-bold text-secondary text-uppercase mb-1">
+                                    Total Website Visits</div>
+                                <div class="h5 mb-0 fw-bold text-black">{{ $webVisits }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-globe fa-2x text-muted"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-xl-3 col-md-6 mb-4">
                 <div class="card border border-info border-top-0 border-end-0 border-bottom-0 border-4 shadow h-100 py-2">
                     <div class="card-body">
@@ -51,7 +69,7 @@
                                 <div class="h5 mb-0 fw-bold text-black">P {{ $totalSalesBookingFormat }}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-calendar-days fa-2x text-muted"></i>
+                                <i class="fas fa-peso-sign fa-2x text-muted"></i>
                             </div>
                         </div>
                     </div>
@@ -69,7 +87,7 @@
                                 <div class="h5 mb-0 fw-bold text-black">P {{ $totalSalesPurchaseFormat }}</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-calendar fa-2x text-muted"></i>
+                                <i class="fas fa-peso-sign fa-2x text-muted"></i>
                             </div>
                         </div>
                     </div>
