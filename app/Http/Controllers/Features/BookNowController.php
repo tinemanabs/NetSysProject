@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Features;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendCancelBooking;
 use App\Models\Bookings;
 use App\Models\Payments;
 use App\Models\RoomsAndCottages;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class BookNowController extends Controller
 {
@@ -429,7 +431,29 @@ class BookNowController extends Controller
         // ]);
 
         User::where('id', $request->user_id)->update([
-            'is_booked' => $request->is_booked
+            'is_booked' => NULL
         ]);
+    }
+
+    public function cancelBooking(Request $request)
+    {
+        // Bookings::where('id', $request->book_id)->update([
+        //     'booking_status' => 'Canceled',
+        // ]);
+
+        User::where('id', $request->user_id)->update([
+            'is_booked' => NULL
+        ]);
+
+        $details = [
+            'reservation_type' => $request->reservation_type,
+            'date_start' => $request->date_start,
+            'date_end' => $request->date_end,
+            'time' => $request->time,
+            'pool' => $request->pool,
+            'name' => $request->name,
+        ];
+
+        Mail::to($request->email)->send(new SendCancelBooking($details));
     }
 }

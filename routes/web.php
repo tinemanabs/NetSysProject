@@ -74,6 +74,7 @@ Route::get('/getUser/{id}', [BookNowController::class, 'getUserID']);
 Route::get('/editBooking/{id}', [BookNowController::class, 'editBooking'])->name('editbooking');
 Route::post('/admin-updatebooking/{id}', [BookNowController::class, 'updateBooking']);
 Route::post('/completeBooking/{id}', [BookNowController::class, 'updateCompleteBooking']);
+Route::post('/cancelBooking/{id}', [BookNowController::class, 'cancelBooking']);
 
 // PURCHASE AND RENTAL MODULE
 Route::get('/purchaseandrentals', [PurchaseAndRental::class, 'index'])->name('purchaseAndRentals');

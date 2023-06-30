@@ -86,9 +86,13 @@
                                         <span class="badge bg-success">
                                             Completed
                                         </span>
-                                    @else
+                                    @elseif($booking->booking_status == NULL)
                                         <span class="badge bg-warning">
                                             Pending
+                                        </span>
+                                    @elseif($booking->booking_status == 'Canceled')
+                                        <span class="badge bg-danger">
+                                            Canceled
                                         </span>
                                     @endif
                                 </td> --}}
