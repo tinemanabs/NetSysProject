@@ -1,7 +1,16 @@
 @extends('layouts.auth')
 @section('title', 'Edit Booking')
 @section('content')
+    <script>
+        function onlyNumberKey(evt) {
 
+            // Only ASCII character in that range allowed
+            var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+            if (ASCIICode < 48 || ASCIICode > 57)
+                return false;
+            return true;
+        }
+    </script>
     <div class="container-fluid">
         <h4>Edit Booking</h4>
 
@@ -18,6 +27,8 @@
                             title="Day / Night Swimming Rates">Choose a Time</button>
                         <button class="multisteps-form__progress-btn" type="button" title="Choose a Date">Choose a
                             Date</button>
+                        <button class="multisteps-form__progress-btn" type="button" title="Number of Persons">Number of
+                            Persons</button>
                         <button class="multisteps-form__progress-btn" type="button" title="Booking Confirmation">Booking
                             Confirmation</button>
                     </div>
@@ -237,8 +248,36 @@
                             <div class="multisteps-form__content">
 
                                 <div id='calendar'></div>
-                                <input type="text" name="date_Start" id="dateStart" hidden>
-                                <input type="text" name="date_End" id="dateEnd" hidden>
+                                <input type="text" name="date_Start" id="dateStart" hidden
+                                    value="{{ $booking->date_start }}">
+                                <input type="text" name="date_End" id="dateEnd" hidden
+                                    value="{{ $booking->date_end }}">
+
+                                <div class="button-row d-flex mt-4">
+                                    <button class="btn btn-primary js-btn-prev" type="button"
+                                        title="Prev">Prev</button>
+                                    <button class="btn btn-primary ms-auto js-btn-next" type="button" title="Next"
+                                        id="nextBtnToPeople">Next</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--single form panel: NUMBER OF PEOPLE CONTENT -->
+                        <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn"
+                            id="paxCard">
+                            <h3 class="multisteps-form__title">Indicate number of Persons</h3>
+                            <div class="multisteps-form__content">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label for="" class="form-label">Adults</label>
+                                        <input type="text" class="form-control mb-3" name="adults" id="adults"
+                                            onkeypress="return onlyNumberKey(event)" value="{{ $booking->adults }}">
+
+                                        <label for="" class="form-label">Children</label>
+                                        <input type="text" class="form-control mb-3" name="children" id="children"
+                                            onkeypress="return onlyNumberKey(event)" value="{{ $booking->children }}">
+                                    </div>
+                                </div>
 
                                 <div class="button-row d-flex mt-4">
                                     <button class="btn btn-primary js-btn-prev" type="button"
@@ -248,6 +287,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!--single form panel: END OF NUMBER OF PEOPLE CONTENT -->
 
                         <!--single form panel-->
                         <div class="multisteps-form__panel shadow p-4 rounded bg-white" data-animation="scaleIn">
@@ -438,6 +478,8 @@
         //find active panel
         const activePanel = findParent(eventTarget, `${DOMstrings.stepFormPanelClass}`);
         let activePanelNum = Array.from(DOMstrings.stepFormPanels).indexOf(activePanel);
+        const bookingAdults = {!! json_encode($booking->adults) !!};
+        const bookingChildren = {!! json_encode($booking->children) !!}
         //set active step and active panel onclick
         if (eventTarget.classList.contains(`${DOMstrings.stepPrevBtnClass}`)) {
                 activePanelNum--;
@@ -451,6 +493,11 @@
                 activePanelNum++;
             } else if (activePanelNum == 3 && $('#dateStart').val() != '') {
                 console.log($('#dateStart').val())
+                activePanelNum++;
+            } else if (activePanelNum == 4 && $('#adults').val() != '' && $('#children').val() != '' && !(Number($(
+                    '#adults').val()) < Number(bookingAdults)) && !(Number($('#children').val()) < Number(
+                    bookingChildren))) {
+                console.log($('#adults').val(), $('#children').val())
                 activePanelNum++;
             }
             setActiveStep(activePanelNum);
@@ -480,14 +527,18 @@
                     text: "Please choose a time."
                 })
             } else {
+                const bookingStart = {!! json_encode($booking->date_start) !!};
+                const bookingEnd = {!! json_encode($booking->date_end) !!};
                 const placePool = $('input[name="place_of_pool"]:checked').val();
                 const timeBooked = $('input[name="timeBooked"]:checked').val();
+                const bookingID = {!! json_encode($booking->id) !!}
 
                 console.log(placePool, timeBooked)
-                axios.get('/getDisabledDates', {
+                axios.get('/getDisabledEditDates', {
                         params: {
                             timeBooked: timeBooked,
-                            place_of_pool: placePool
+                            place_of_pool: placePool,
+                            booking_id: bookingID
                         }
                     })
                     .then((response) => {
@@ -535,6 +586,10 @@
                                 // Date is disabled, gray out the cell
                                 cell.el.classList.add('disabled-cell');
                             }
+
+                            if (cellDate === bookingStart || cellDate === bookingEnd) {
+                                cell.el.classList.add('booking-cell')
+                            }
                         }
 
                     });
@@ -547,11 +602,20 @@
     {{-- SUMMARY & PAYMENT & SUBMISSION OF FORM --}}
     <script>
         $('#nextBtnToSummary').on('click', () => {
-            if ($('#dateStart').val() == '') {
+            $bookingAdults = {!! json_encode($booking->adults) !!};
+            $bookingChildren = {!! json_encode($booking->children) !!}
+            if ($('#adults').val() == '' || $('#children').val() == '') {
                 swal({
                     icon: 'warning',
-                    title: "Choose a Date!",
-                    text: "Please choose your desired date."
+                    title: "Invalid Input!",
+                    text: "Please indicate the number of persons."
+                })
+            } else if (Number($('#adults').val()) < Number($bookingAdults) || Number($('#children').val()) < Number(
+                    $bookingChildren)) {
+                swal({
+                    icon: 'warning',
+                    title: "Invalid Input!",
+                    text: "Lesser value from the previous booking can't be processed."
                 })
             } else {
                 //VALUES
@@ -609,8 +673,8 @@
                 $totalRoomCottagePrice = Number($('#payment_roomCottagePrice').text());
 
 
-                $adults = {!! json_encode($booking->adults) !!};
-                $children = {!! json_encode($booking->children) !!};
+                $adults = $('#adults').val();
+                $children = $('#children').val();
                 $totalPersons = Number($adults) + Number($children);
 
                 // events & inclusions are for exclu day & overnight 
@@ -667,7 +731,7 @@
 
 
                     } else if ($time == 'night') {
-                        $dateEnd = moment($('#dateEnd').val()).subtract(1, 'days').format('ll');
+                        $dateEnd = moment($('#dateStart').val()).add(1, 'days').format('ll');
 
                         $('#bookInfo_date').text(`Booking Date: ${$dateStart}`);
                         $timeFormat = '7:00 PM - 11:00 PM';
@@ -795,14 +859,17 @@
             if ($('input[name = "timeBooked"]:checked').val() == 'day' || $('input[name = "timeBooked"]:checked')
                 .val() == 'night') {
                 //$dateEnd = 'night and day time';
-                $dateEnd = moment($('#dateEnd').val()).subtract(1, 'days').format('YYYY-MM-DD');
+                $dateEnd = $dateStart; // had conflict when input value has been added explicitly
             } else {
-                $dateEnd = $('#dateEnd').val();
+                $dateEnd = moment($('#dateStart').val()).add(1, 'days').format(
+                    'YYYY-MM-DD'); // TODO: change for overnight
             }
 
             $placePool = $('input[name="place_of_pool"]:checked').val();
             $paymentFee = $('#payment_totalFee').text();
             $bookingID = {!! json_encode($booking->id) !!}
+            $adults = $('#adults').val();
+            $children = $('#children').val();
 
             swal({
                 icon: 'warning',
@@ -825,6 +892,8 @@
                         formdata.append('time', $time);
                         formdata.append('date_start', $dateStart);
                         formdata.append('date_end', $dateEnd);
+                        formdata.append('adults', $adults);
+                        formdata.append('children', $children);
                         formdata.append('total_price', $paymentFee);
 
                         console.log([...formdata])

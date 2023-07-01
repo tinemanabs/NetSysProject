@@ -307,6 +307,18 @@ class BookNowController extends Controller
         return response()->json($disabledDates);
     }
 
+    public function getDisabledEditDates(Request $request)
+    {
+        $disabledDates = DB::table('bookings')
+            ->where('reservation_type', 'exclusive')
+            ->where('place_pool', $request->input('place_of_pool'))
+            ->where('type', $request->input('timeBooked'))
+            ->where('id', '!=', $request->input('booking_id'))
+            ->pluck('date_start')
+            ->toArray();
+        return response()->json($disabledDates);
+    }
+
     public function getFilteredRooms(Request $request)
     {
         $filteredRooms = DB::table('bookings')
@@ -416,7 +428,9 @@ class BookNowController extends Controller
             'place_pool' => $request->place_pool,
             'type' => $request->time,
             'date_start' => $request->date_start,
-            'date_end' => $request->date_end
+            'date_end' => $request->date_end,
+            'adults' => $request->adults,
+            'children' => $request->children
         ]);
 
         Payments::where('booking_id', $id)->update([

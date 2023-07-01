@@ -765,7 +765,8 @@
                         $('#email').val() != '' &&
                         $('#address').val() != '' &&
                         $('#contact_no').val() != '' &&
-                        $('#password').val() != '' && $('#confPassword').val() != '') {
+                        $('#password').val() != '' && $('#confPassword').val() != '' && $('#contact_no').val()
+                        .length == 11) {
                         activePanelNum++;
 
                         console.log($('#first_name').val(),
@@ -1152,6 +1153,14 @@
                             icon: 'warning',
                             title: "Complete the form!",
                             text: "Please fill out the required fields."
+                        })
+                    }
+
+                    if ($('#contact_no').val().length != 11) {
+                        swal({
+                            icon: 'warning',
+                            title: "Invalid Contact Number!",
+                            text: "Phone number must be at atleast 11 numbers."
                         })
                     }
                 } else if ($('input[name="user_account"]:checked').val() == 'registered_user') {

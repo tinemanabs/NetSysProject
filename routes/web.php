@@ -68,6 +68,7 @@ Route::post('/checkFullPayment/{id}', [BookNowController::class, 'checkFullPayme
 Route::post('/deleteBooking/{id}', [BookNowController::class, 'deleteBooking']);
 Route::get('/viewBooking/{id}', [BookNowController::class, 'viewBooking'])->name('viewBooking');
 Route::get('/getDisabledDates', [BookNowController::class, 'getDisabledDates']);
+Route::get('/getDisabledEditDates', [BookNowController::class, 'getDisabledEditDates']);
 Route::get('/getFilteredRooms', [BookNowController::class, 'getFilteredRooms']);
 Route::get('/getFilteredCottages', [BookNowController::class, 'getFilteredCottages']);
 Route::get('/getUser/{id}', [BookNowController::class, 'getUserID']);
