@@ -5,9 +5,7 @@
     <div id="cottages">
         <div class="container section-content">
             <h3>Our Cottages</h3>
-            <p class="subheading">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque perferendis assumenda
-                doloribus! Facilis ad
-                error, deleniti quidem recusandae architecto eos consequatur placeat aut</p>
+            <p class="subheading">Our cottages are available for all non-exclusive and exclusive customers!</p>
 
             <div class="lightbox-gallery">
                 <div class="container">
@@ -71,9 +69,8 @@
     <div id="rooms">
         <div class="container section-content">
             <h3>Our Rooms</h3>
-            <p class="subheading">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque perferendis assumenda
-                doloribus! Facilis ad
-                error, deleniti quidem recusandae architecto eos consequatur placeat aut</p>
+            <p class="subheading">Make your stay more comfortable with our finest rooms! Either ventilated or
+                airconditioned, our rooms are exceptionally clean and comfortable.</p>
             <div class="lightbox-gallery">
                 <div class="container">
                     <div class="row rooms d-flex justify-content-center">
@@ -99,9 +96,8 @@
     <section id="ammenities">
         <div class="container section-content">
             <h3>Our Ammenities</h3>
-            <p class="subheading">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque perferendis assumenda
-                doloribus! Facilis ad
-                error, deleniti quidem recusandae architecto eos consequatur placeat aut</p>
+            <p class="subheading">Your experience is important to us! May it be your first time or the fifth time, your stay
+                will always have a unique experience.</p>
 
             <!-- Swiper -->
             <div class="swiper ammenitiesSwiper">
@@ -275,9 +271,8 @@
     <div id="deals">
         <div class="container section-content">
             <h3>Deals</h3>
-            <p class="subheading">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque perferendis assumenda
-                doloribus! Facilis ad
-                error, deleniti quidem recusandae architecto eos consequatur placeat aut</p>
+            <p class="subheading">Check out our latest Deals and Promos to maximize your budget and lessen your expenses!
+            </p>
 
             <div class="row d-flex justify-content-center align-items-center">
                 <div class="col-12 col-md-6 mb-3">
@@ -292,7 +287,7 @@
     {{-- END OF DEALS SECTION --}}
 
     {{-- REVIEWS --}}
-    {{-- <div id="reviews">
+    <div id="reviews">
         <div class="container section-content">
             <h3>Reviews</h3>
             <p class="subheading">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Atque perferendis assumenda
@@ -302,53 +297,22 @@
             <!-- Swiper -->
             <div class="swiper reviewsSwiper">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="card reviews-card">
-                            <div class="card-body d-flex justify-content-center align-items-center flex-column">
-                                <i class="fa-solid fa-quote-left fa-5x mb-3"></i>
-                                <i class="fa-regular fa-circle-user fa-4x"></i>
-                                <h5>Juan Miguel Sebastian</h5>
-                                <div class="d-flex align-items-center py-1">
-                                    <span>5/5</span>
-                                    <i class="fa-solid fa-star ms-2" style="color:#ffc107"></i>
+                    @foreach ($reviews as $review)
+                        <div class="swiper-slide">
+                            <div class="card reviews-card">
+                                <div class="card-body d-flex justify-content-center align-items-center flex-column">
+                                    <i class="fa-solid fa-quote-left fa-5x mb-3"></i>
+                                    <i class="fa-regular fa-circle-user fa-4x"></i>
+                                    <h5>{{ $review->createdBy->first_name }}</h5>
+                                    <div class="d-flex align-items-center py-1">
+                                        <span>5/5</span>
+                                        <i class="fa-solid fa-star ms-2" style="color:#ffc107"></i>
+                                    </div>
+                                    <p>Superb facilities and amenities!</p>
                                 </div>
-                                <p>Superb facilities and amenities!</p>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <div class="card reviews-card">
-                            <div class="card-body d-flex justify-content-center align-items-center flex-column">
-                                <i class="fa-solid fa-quote-left fa-5x mb-3"></i>
-                                <i class="fa-regular fa-circle-user fa-4x"></i>
-                                <h5>Michael King</h5>
-                                <div class="d-flex align-items-center py-1">
-                                    <span>4/5</span>
-                                    <i class="fa-solid fa-star ms-2" style="color:#ffc107"></i>
-                                </div>
-                                <p>Super helpful ng purchase service nila, hindi
-                                    na ako aakyat pa. Thank you sa mga person in charge
-                                    sa store. Napaka-accommodating.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide">
-                        <div class="card reviews-card">
-                            <div class="card-body d-flex justify-content-center align-items-center flex-column">
-                                <i class="fa-solid fa-quote-left fa-5x mb-3"></i>
-                                <i class="fa-regular fa-circle-user fa-4x"></i>
-                                <h5>James Sagad</h5>
-                                <div class="d-flex align-items-center py-1">
-                                    <span>4/5</span>
-                                    <i class="fa-solid fa-star ms-2" style="color:#ffc107"></i>
-                                </div>
-                                <p>Highly recommended sa mga naghahanap ng resort
-                                    sa Quezon.</p>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 <div class="swiper-pagination"></div>
                 {{-- <div class="swiper-button-next"></div>
@@ -356,6 +320,6 @@
 
             </div>
         </div>
-    </div> --}}
+    </div>
     {{-- END OF REVIEWS SECTION --}}
-@endsection
+            @endsection

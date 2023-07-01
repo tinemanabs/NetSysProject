@@ -25,6 +25,7 @@ class CreateBookingsTable extends Migration
             $table->string('children')->nullable();
             $table->string('functional_hall')->nullable();
             $table->string('inclusions')->nullable();
+            $table->string('booking_status')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });

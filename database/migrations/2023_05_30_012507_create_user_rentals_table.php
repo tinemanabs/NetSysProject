@@ -21,6 +21,7 @@ class CreateUserRentalsTable extends Migration
             $table->string('price');
             $table->string('item_payment_status')->nullable();
             $table->string('item_payment_image')->nullable();
+            $table->boolean('is_returned')->nullable();
             $table->timestamps();
         });
     }

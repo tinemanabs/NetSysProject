@@ -9,6 +9,7 @@ use App\Http\Controllers\Features\DashboardController;
 use App\Http\Controllers\Features\PurchaseAndRental;
 use App\Http\Controllers\Features\RoomsAndCottagesController;
 use App\Http\Controllers\Features\SMSController;
+use App\Models\Reviews;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -28,7 +29,10 @@ Route::get('/', function (Request $request) {
         ->insert([
             'ip_address' => $request->ip()
         ]);
-    return view('index');
+    $reviews = Reviews::all();
+    return view('index', [
+        'reviews' => $reviews
+    ]);
 });
 
 
@@ -78,6 +82,8 @@ Route::post('/admin-updatebooking/{id}', [BookNowController::class, 'updateBooki
 Route::get('/purchaseandrentals', [PurchaseAndRental::class, 'index'])->name('purchaseAndRentals');
 Route::post('/addpurchaseandrental', [PurchaseAndRental::class, 'addPurchaseAndRental']);
 Route::post('/deletepurchaseandrental', [PurchaseAndRental::class, 'deletePurchaseAndRental']);
+Route::post('/returnPurchaseAndRental', [PurchaseAndRental::class, 'returnPurchaseAndRental']);
+Route::post('/changeStocks', [PurchaseAndRental::class, 'changeStocks']);
 
 //SMS Feature
 Route::get('/smsDashboard', [SMSController::class, 'index'])->name('smsDashboard');

@@ -145,14 +145,80 @@
                                 <li class="list-group-item">
                                     <b>Receipt:</b>
                                     <br>
-                                    <img src="{{ asset('img/payments/' . $booking->user_id . '/' . $booking->payment_image) }}"
-                                        alt="" width="200">
+                                    <img src="https://labaksamorong.com/NetSysProject-main/public/img/payments/{{ $booking->user_id }}/{{ $booking->payment_image }}"
+                                        alt="" width="200" height="300">
                                 </li>
                             @endif
                         </ul>
                     </div>
                 </div>
+                <div class="row mt-5">
+                    <div class="col-12 col-lg-6">
+                        <h6>Purchase and Rentals</h6>
+                        <ul class="list-group list-group-flush">
+                            @foreach ($purchaseAndRentals as $purchaseAndRental)
+                                <li class="list-group-item">
+                                    <b>Item Name:</b>
+                                    {{ $purchaseAndRental->item_name }}
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Price: </b>
+                                    P{{ $purchaseAndRental->price }}
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Receipt: </b>
+                                </li>
+                                <img src="https://labaksamorong.com/NetSysProject-main/public/img/payments/{{ $purchaseAndRental->item_payment_image }}"
+                                    height="300" width="200" />
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
+        @if (Auth::user()->user_role == 1)
+            <div class="d-flex flex-row justify-content-end mt-3">
+                <button class="btn btn-success mb-3" id="completeBooking" data-id="{{ $booking->id }}">Complete
+                    Booking</button>
+            </div>
+        @endif
     </div>
+
+
+    <script>
+        $('#completeBooking').on('click', () => {
+            swal({
+                title: 'Are you sure?',
+                text: 'Do you want to complete this booking?',
+                icon: 'warning',
+                buttons: {
+                    cancel: 'Cancel',
+                    true: 'OK'
+                }
+            }).then((response) => {
+                let id = {!! json_encode($booking->id) !!};
+                let user_id = {!! json_encode($booking->user_id) !!}
+                console.log(id);
+                if (response == 'true') {
+                    swal({
+                        title: 'Success',
+                        text: 'Changes have been made!',
+                        icon: 'success'
+                    }).then((response) => {
+                        const formdata = new FormData();
+
+                        formdata.append('booking_status', 'Completed')
+                        formdata.append('is_booked', '0')
+                        formdata.append('id', id);
+                        formdata.append('user_id', user_id)
+
+                        axios.post('/completeBooking/' + id, formdata)
+                            .then(response => {
+                                location.reload();
+                            })
+                    })
+                }
+            })
+        })
+    </script>
 @endsection

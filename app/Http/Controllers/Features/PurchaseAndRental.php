@@ -14,6 +14,7 @@ class PurchaseAndRental extends Controller
             ->get();
         $userRentals = DB::table('user_rentals')
             ->join('users', 'users.id', 'user_rentals.user_id')
+            ->join('purchase_and_rentals', 'purchase_and_rentals.id', 'user_rentals.rental_id')
             ->get();
         return view('features.purchaseandrental', [
             "items" => $allItems,
@@ -47,5 +48,32 @@ class PurchaseAndRental extends Controller
         DB::table('purchase_and_rentals')
             ->where("id", $request->id)
             ->delete();
+    }
+
+    public function returnPurchaseAndRental(Request $request)
+    {
+        DB::table("user_rental")
+            ->where('id', $request->id)
+            ->update([
+                'is_returned' => true
+            ]);
+        $itemCount = DB::table('purchase_and_rentals')
+            ->where('id', $request->purchase_id)
+            ->first();
+        DB::table('purchase_and_rentals')
+            ->where('id', $request->purchase_id)
+            ->update([
+                'item_count' => (int)$itemCount->item_count + 1
+            ]);
+        return 'true';
+    }
+
+    public function changeStocks(Request $request)
+    {
+        DB::table("purchase_and_rentals")
+            ->where('id', $request->id)
+            ->update([
+                'item_count' => $request->item_count
+            ]);
     }
 }
