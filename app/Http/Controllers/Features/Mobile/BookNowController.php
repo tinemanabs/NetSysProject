@@ -114,7 +114,7 @@ class BookNowController extends Controller
             return 'no booking';
         }
 
-        if ($checkBookingToday->date_start != Carbon::create()->timezone('Asia/Manila')) {
+        if ($checkBookingToday->date_start != Carbon::now()->timezone('Asia/Manila')->toDateString()) {
             return "not today";
         } else {
             return "today";

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Features\BookEventsController;
+use App\Http\Controllers\Features\BookingViolationsController;
 use App\Http\Controllers\Features\ProfileController;
 use App\Http\Controllers\Features\UserAccountsController;
 use Illuminate\Support\Facades\Route;
@@ -92,3 +93,10 @@ Route::post('/changeStocks', [PurchaseAndRental::class, 'changeStocks']);
 Route::get('/smsDashboard', [SMSController::class, 'index'])->name('smsDashboard');
 Route::get('/createSMS', [SMSController::class, 'createSMS'])->name('createsms');
 Route::post('/sendSMS', [SMSController::class, 'itexmo'])->name('sendsms');
+
+//POS VIOLATION
+Route::get('/bookingviolations', [BookingViolationsController::class, 'index']);
+Route::get('/getSelectedBookingUser/{id}', [BookingViolationsController::class, 'getSelectedBookingUser']);
+Route::post('/addViolation', [BookingViolationsController::class, 'addViolation']);
+Route::post('/deleteViolation', [BookingViolationsController::class, 'deleteViolation']);
+Route::post('/editViolation', [BookingViolationsController::class, 'editViolation']);

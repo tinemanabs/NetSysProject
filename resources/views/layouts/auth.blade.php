@@ -149,6 +149,8 @@
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('smsDashboard') }}">SMS Notification System</a>
                                     <a class="list-group-item list-group-item-action list-group-item-light p-3"
+                                        href="/bookingviolations">POS Violation</a>
+                                    <a class="list-group-item list-group-item-action list-group-item-light p-3"
                                         href="{{ route('editprofile', Auth::user()->id) }}">Profile</a>
                                 </div>
                             @elseif (Auth::user()->user_role == 2)
