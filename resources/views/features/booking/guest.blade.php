@@ -20,6 +20,7 @@
                             <th>Guest Name</th>
                             <th>Payment Type</th>
                             <th>Payment Status</th>
+                            {{-- <th>Booking Status</th> --}}
                             <th>Actions</th>
 
                         </tr>
@@ -80,6 +81,21 @@
                                         </span>
                                     @endif
                                 </td>
+                                {{-- <td>
+                                    @if ($booking->booking_status == 'Completed')
+                                        <span class="badge bg-success">
+                                            Completed
+                                        </span>
+                                    @elseif($booking->booking_status == NULL)
+                                        <span class="badge bg-warning">
+                                            Pending
+                                        </span>
+                                    @elseif($booking->booking_status == 'Canceled')
+                                        <span class="badge bg-danger">
+                                            Canceled
+                                        </span>
+                                    @endif
+                                </td> --}}
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center">
                                         <div class="dropdown">

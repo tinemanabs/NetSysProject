@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Features;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SendCancelBooking;
 use App\Models\Bookings;
 use App\Models\Payments;
 use App\Models\RoomsAndCottages;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class BookNowController extends Controller
 {
@@ -191,7 +193,7 @@ class BookNowController extends Controller
             //note: don't use same email address
         } else if ($request->user_role == 2) {
             // SAVING FOR THOSE WHO HAVE ALREADY ACCTS
-            User::where('id', $request->registered_user_id)->update(['is_booked' => 1]);
+            User::where('id', $request->user)->update(['is_booked' => 1]);
             $booking = Bookings::create([
                 'room_id' => $request->room_cottage_id,
                 'reservation_type' => $request->reservation_type,
@@ -300,6 +302,18 @@ class BookNowController extends Controller
             ->where('reservation_type', 'exclusive')
             ->where('place_pool', $request->input('place_of_pool'))
             ->where('type', $request->input('timeBooked'))
+            ->pluck('date_start')
+            ->toArray();
+        return response()->json($disabledDates);
+    }
+
+    public function getDisabledEditDates(Request $request)
+    {
+        $disabledDates = DB::table('bookings')
+            ->where('reservation_type', 'exclusive')
+            ->where('place_pool', $request->input('place_of_pool'))
+            ->where('type', $request->input('timeBooked'))
+            ->where('id', '!=', $request->input('booking_id'))
             ->pluck('date_start')
             ->toArray();
         return response()->json($disabledDates);
@@ -414,11 +428,46 @@ class BookNowController extends Controller
             'place_pool' => $request->place_pool,
             'type' => $request->time,
             'date_start' => $request->date_start,
-            'date_end' => $request->date_end
+            'date_end' => $request->date_end,
+            'adults' => $request->adults,
+            'children' => $request->children
         ]);
 
         Payments::where('booking_id', $id)->update([
             'total_price' => $request->total_price
         ]);
+    }
+
+    public function updateCompleteBooking(Request $request)
+    {
+        // Bookings::where('id', $request->id)->update([
+        //     'booking_status' => $request->booking_status
+        // ]);
+
+        User::where('id', $request->user_id)->update([
+            'is_booked' => NULL
+        ]);
+    }
+
+    public function cancelBooking(Request $request)
+    {
+        // Bookings::where('id', $request->book_id)->update([
+        //     'booking_status' => 'Canceled',
+        // ]);
+
+        User::where('id', $request->user_id)->update([
+            'is_booked' => NULL
+        ]);
+
+        $details = [
+            'reservation_type' => $request->reservation_type,
+            'date_start' => $request->date_start,
+            'date_end' => $request->date_end,
+            'time' => $request->time,
+            'pool' => $request->pool,
+            'name' => $request->name,
+        ];
+
+        Mail::to($request->email)->send(new SendCancelBooking($details));
     }
 }

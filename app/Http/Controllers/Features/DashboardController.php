@@ -7,6 +7,7 @@ use App\Models\Bookings;
 use App\Models\Payments;
 use App\Models\User;
 use App\Models\UserRentals;
+use App\Models\WebVisits;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,7 @@ class DashboardController extends Controller
         $users = User::where('user_role', 2)->count();
         $now = Carbon::now()->format('Y-m-d');
         $bookingToday = Bookings::where('date_start', $now)->count();
+        $totalWebVisits = WebVisits::distinct('ip_address')->count();
         $month = Carbon::now()->format('m');
         // $totalMonthlyBooking = Bookings::whereMonth('date_start', $month)->count();
         $totalSalesBooking = Payments::sum('total_paid');
@@ -62,6 +64,7 @@ class DashboardController extends Controller
         return view('features.dashboard', [
             'users' => $users,
             'bookingToday' => $bookingToday,
+            'webVisits' => $totalWebVisits,
             'totalSalesBookingFormat' => $totalSalesBookingFormat,
             'totalSalesPurchaseFormat' => $totalSalesPurchaseFormat,
 

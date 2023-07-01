@@ -72,11 +72,14 @@ Route::post('/checkFullPayment/{id}', [BookNowController::class, 'checkFullPayme
 Route::post('/deleteBooking/{id}', [BookNowController::class, 'deleteBooking']);
 Route::get('/viewBooking/{id}', [BookNowController::class, 'viewBooking'])->name('viewBooking');
 Route::get('/getDisabledDates', [BookNowController::class, 'getDisabledDates']);
+Route::get('/getDisabledEditDates', [BookNowController::class, 'getDisabledEditDates']);
 Route::get('/getFilteredRooms', [BookNowController::class, 'getFilteredRooms']);
 Route::get('/getFilteredCottages', [BookNowController::class, 'getFilteredCottages']);
 Route::get('/getUser/{id}', [BookNowController::class, 'getUserID']);
 Route::get('/editBooking/{id}', [BookNowController::class, 'editBooking'])->name('editbooking');
 Route::post('/admin-updatebooking/{id}', [BookNowController::class, 'updateBooking']);
+Route::post('/completeBooking/{id}', [BookNowController::class, 'updateCompleteBooking']);
+Route::post('/cancelBooking/{id}', [BookNowController::class, 'cancelBooking']);
 
 // PURCHASE AND RENTAL MODULE
 Route::get('/purchaseandrentals', [PurchaseAndRental::class, 'index'])->name('purchaseAndRentals');

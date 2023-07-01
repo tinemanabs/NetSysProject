@@ -18,6 +18,7 @@
                             <th>Guest Name</th>
                             <th>Payment Type</th>
                             <th>Payment Status</th>
+                            {{-- <th>Booking Status</th> --}}
                             <th>Actions</th>
 
                         </tr>
@@ -78,6 +79,21 @@
                                         </span>
                                     @endif
                                 </td>
+                                {{-- <td>
+                                    @if ($booking->booking_status == 'Completed')
+                                        <span class="badge bg-success">
+                                            Completed
+                                        </span>
+                                    @else if($booking->booking_status == 'Pending')
+                                        <span class="badge bg-warning">
+                                            Pending
+                                        </span>
+                                    @else if($booking->booking_status == 'Canceled')
+                                        <span class="badge bg-danger">
+                                            Canceled
+                                        </span>
+                                    @endif
+                                </td> --}}
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center">
                                         <div class="dropdown">
@@ -109,6 +125,11 @@
                                                             Payment Status</button>
                                                     </li>
                                                 @endif
+                                                <li>
+                                                    <button class="dropdown-item"
+                                                        id="cancelBookingBtn{{ $booking->id }}"
+                                                        data-id="{{ $booking->id }}">Cancel</button>
+                                                </li>
                                                 <li><button class="dropdown-item"
                                                         id="deleteBookingBtn{{ $booking->id }}"
                                                         data-id="{{ $booking->id }}">Delete</button></li>
@@ -177,6 +198,52 @@
                                                 const formdata = new FormData();
                                                 formdata.append('book_id', id);
                                                 axios.post('/approvePaymentStatus/' + id, formdata)
+                                                    .then((response) => {
+                                                        location.reload();
+                                                    })
+                                            })
+                                        }
+                                    })
+                                })
+
+                                //cancel function
+                                $('#cancelBookingBtn{{ $booking->id }}').on('click', () => {
+                                    swal({
+                                        title: 'Are you sure?',
+                                        text: 'Do you want to cancel this booking?',
+                                        icon: 'warning',
+                                        buttons: {
+                                            cancel: 'Cancel',
+                                            true: 'OK'
+                                        }
+                                    }).then((response) => {
+                                        if (response == 'true') {
+                                            swal({
+                                                title: 'Success',
+                                                text: 'You have successfully canceled this booking!',
+                                                icon: 'success'
+                                            }).then((response) => {
+                                                let id = $('#cancelBookingBtn{{ $booking->id }}').data('id');
+
+                                                console.log(id);
+
+                                                const formdata = new FormData();
+                                                formdata.append('book_id', '{{ $booking->id }}');
+                                                formdata.append('email', '{{ $booking->email }}');
+                                                formdata.append('user_id', '{{ $booking->user_id }}');
+
+                                                //email contents
+                                                formdata.append('reservation_type', '{{ $booking->reservation_type }}');
+                                                formdata.append('date_start', '{{ $booking->date_start }}');
+                                                formdata.append('date_end', '{{ $booking->date_end }}');
+                                                formdata.append('time', '{{ $booking->type }}');
+                                                formdata.append('pool', '{{ $booking->place_pool }}');
+                                                formdata.append('name',
+                                                    '{{ $booking->first_name }} {{ $booking->last_name }}');
+
+                                                console.log([...formdata])
+
+                                                axios.post('/cancelBooking/' + id, formdata)
                                                     .then((response) => {
                                                         location.reload();
                                                     })

@@ -385,3 +385,7 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
     background-color: #f2f2f2 !important;
     cursor: not-allowed;
 }
+
+.booking-cell {
+    background-color: #ffc107;
+}
