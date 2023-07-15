@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Features\BookingViolationsController;
 use App\Http\Controllers\Features\Mobile\BookNowController;
 use App\Http\Controllers\Features\Mobile\PaymentController;
 use App\Http\Controllers\Features\Mobile\RentalsController;
+use App\Http\Controllers\Features\Mobile\ReviewsController;
 use App\Http\Controllers\Features\Mobile\RoomsAndCottagesController;
 use App\Http\Controllers\Features\UserAccountsController;
 use Illuminate\Http\Request;
@@ -54,3 +56,11 @@ Route::post('addPurchaseAndRentalsQuantity', [RentalsController::class, 'addPurc
 Route::post('subtractPurchaseAndRentalsQuantity', [RentalsController::class, 'subtractPurchaseAndRentalsQuantity']);
 Route::post('removePurchaseAndRentals', [RentalsController::class, 'removePurchaseAndRentals']);
 Route::post('submitPurchaseAndRentalsPayment', [RentalsController::class, 'submitPurchaseAndRentalsPayment']);
+
+//VIOLATIONS
+Route::post('/getBookingViolations', [BookingViolationsController::class, 'getBookingViolations']);
+
+//REVIEWS
+Route::get('/getLatestReviews', [ReviewsController::class, 'getLatestReviews']);
+Route::post('/getUserReviews', [ReviewsController::class, 'getUserReviews']);
+Route::post('/addUserReviews', [ReviewsController::class, 'addUserReviews']);

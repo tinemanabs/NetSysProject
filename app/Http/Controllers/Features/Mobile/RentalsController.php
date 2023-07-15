@@ -99,22 +99,18 @@ class RentalsController extends Controller
             ->where("user_rentals.id", $request->id)
             ->first();
 
-        if ($rental->item_count != 0) {
-            DB::table('user_rentals')
-                ->where('id', $request->id)
-                ->update([
-                    'quantity' => (int)$request->quantity - 1,
-                    'price' => (int)$rental->price - (int)$rental->item_price
-                ]);
-            DB::table('purchase_and_rentals')
-                ->where('id', $rental->rental_id)
-                ->update([
-                    'item_count' => (int)$rental->item_count + 1
-                ]);
-            return 'true';
-        } else {
-            return 'false';
-        }
+
+        DB::table('user_rentals')
+            ->where('id', $request->id)
+            ->update([
+                'quantity' => (int)$request->quantity - 1,
+                'price' => (int)$rental->price - (int)$rental->item_price
+            ]);
+        DB::table('purchase_and_rentals')
+            ->where('id', $rental->rental_id)
+            ->update([
+                'item_count' => (int)$rental->item_count + 1
+            ]);
 
         return $rental;
     }

@@ -89,10 +89,12 @@ class BookNowController extends Controller
     {
         DB::table('bookings')
             ->where('id', $request->booking_id)
-            ->delete();
-        DB::table('payments')
-            ->where('id', $request->id)
-            ->delete();
+            ->update([
+                'booking_status' => 'Canceled'
+            ]);
+        // DB::table('payments')
+        //     ->where('id', $request->id)
+        //     ->delete();
         DB::table('users')
             ->where("id", $request->user_id)
             ->update([
@@ -107,8 +109,8 @@ class BookNowController extends Controller
             ->first();
 
         $checkBookingToday = DB::table('bookings')
-            ->join('users', 'bookings.user_id', 'users.id')
-            ->where('users.id', $request->user_id)
+            ->where('bookings.user_id', $request->user_id)
+            ->latest()
             ->first();
         if ($checkIfBooked->is_booked == NULL) {
             return 'no booking';

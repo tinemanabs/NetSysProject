@@ -34,79 +34,77 @@
                                         height="100" width="100">
                                 </td>
                                 <td>
-                                    @if ($item->is_rental == 'false')
-                                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                            data-bs-target="#edit{{ $item->id }}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                            </svg>
-                                        </button>
-                                        <!-- Edit Quantity Modal -->
-                                        <div class="modal fade" id="edit{{ $item->id }}" tabindex="-1"
-                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Change Item Stock
-                                                        </h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="mb-3 row">
-                                                            <label for="inputPassword" class="col-sm-2 col-form-label">Item
-                                                                Stocks:</label>
-                                                            <div class="col-sm-10">
-                                                                <input type="text" class="form-control"
-                                                                    id="newQuantity{{ $item->id }}">
-                                                            </div>
+                                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                        data-bs-target="#edit{{ $item->id }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                            fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                        </svg>
+                                    </button>
+                                    <!-- Edit Quantity Modal -->
+                                    <div class="modal fade" id="edit{{ $item->id }}" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Change Item Stock
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="mb-3 row">
+                                                        <label for="inputPassword" class="col-sm-2 col-form-label">Item
+                                                            Stocks:</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control"
+                                                                id="newQuantity{{ $item->id }}">
                                                         </div>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary"
-                                                            id="saveQuantity{{ $item->id }}">Save changes</button>
-                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary"
+                                                        id="saveQuantity{{ $item->id }}">Save changes</button>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <script>
-                                            $("#saveQuantity{{ $item->id }}").click(() => {
-                                                const newQuantity = $("#newQuantity{{ $item->id }}").val()
-                                                if (newQuantity == "") {
-                                                    swal({
-                                                        icon: "error",
-                                                        title: "Error!",
-                                                        text: "Please input number for the item stock."
-                                                    })
-                                                } else if (isNaN(Number(newQuantity))) {
-                                                    swal({
-                                                        icon: "error",
-                                                        title: "Error!",
-                                                        text: "Only numbers are accepted in this field."
-                                                    })
-                                                } else {
-                                                    const formdata = new FormData()
-                                                    formdata.append('id', "{{ $item->id }}")
-                                                    formdata.append('item_count', Number(newQuantity))
-                                                    axios.post('/changeStocks', formdata)
-                                                        .then(() => {
-                                                            swal({
-                                                                icon: "success",
-                                                                title: "Changed Stocks!",
-                                                                text: "The purchaseable item's stock has been updated!"
-                                                            }).then(() => {
-                                                                location.reload()
-                                                            })
+                                    <script>
+                                        $("#saveQuantity{{ $item->id }}").click(() => {
+                                            const newQuantity = $("#newQuantity{{ $item->id }}").val()
+                                            if (newQuantity == "") {
+                                                swal({
+                                                    icon: "error",
+                                                    title: "Error!",
+                                                    text: "Please input number for the item stock."
+                                                })
+                                            } else if (isNaN(Number(newQuantity))) {
+                                                swal({
+                                                    icon: "error",
+                                                    title: "Error!",
+                                                    text: "Only numbers are accepted in this field."
+                                                })
+                                            } else {
+                                                const formdata = new FormData()
+                                                formdata.append('id', "{{ $item->id }}")
+                                                formdata.append('item_count', Number(newQuantity))
+                                                axios.post('/changeStocks', formdata)
+                                                    .then(() => {
+                                                        swal({
+                                                            icon: "success",
+                                                            title: "Changed Stocks!",
+                                                            text: "The purchaseable item's stock has been updated!"
+                                                        }).then(() => {
+                                                            location.reload()
                                                         })
-                                                }
-                                            })
-                                        </script>
-                                    @endif
+                                                    })
+                                            }
+                                        })
+                                    </script>
                                     <button type="button" class="btn btn-danger" id="delete{{ $item->id }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
                                             fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
@@ -163,7 +161,6 @@
                             <th>Total Price</th>
                             <th>Payment Status</th>
                             <th>Image</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -181,14 +178,6 @@
                                 </td>
                                 <td><img src="https://labaksamorong.com/NetSysProject-main/public/img/purchaseandrentals/{{ $user_rental->item_image }}"
                                         height="100" width="100">
-                                </td>
-                                <td>
-                                    @if ($user_rental->is_rental == 'true' && $user_rental->is_returned == null)
-                                        <button class="btn btn-warning text-white" title="Return Item"
-                                            id="return{{ $user_rental->rental_id }}">
-                                            <i class="fa-solid fa-rotate-left"></i>
-                                        </button>
-                                    @endif
                                 </td>
                             </tr>
                             <script>

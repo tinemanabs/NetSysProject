@@ -52,4 +52,12 @@ class BookingViolationsController extends Controller
             'violation_description' => $request->violation_description,
         ]);
     }
+
+
+    // * NOTE: MOBILE FUNCTIONS
+
+    public function getBookingViolations(Request $request)
+    {
+        return $request;
+    }
 }

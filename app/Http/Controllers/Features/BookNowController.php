@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Features;
 use App\Http\Controllers\Controller;
 use App\Mail\SendCancelBooking;
 use App\Models\Bookings;
+use App\Models\BookingViolations;
 use App\Models\Payments;
 use App\Models\RoomsAndCottages;
 use App\Models\User;
@@ -259,7 +260,11 @@ class BookNowController extends Controller
 
             )
             ->first();
-
+        $purchaseAndRentals = DB::table("user_rentals")
+            ->join('purchase_and_rentals', 'purchase_and_rentals.id', 'user_rentals.rental_id')
+            ->where('user_rentals.user_id', $getAllBookings->user_id)
+            ->get();
+        $violations = BookingViolations::where('booking_id', $id)->get();
         $rooms = DB::table('rooms_and_cottages')
             ->select(
                 'id',
@@ -271,7 +276,9 @@ class BookNowController extends Controller
 
         return view('features.booking.viewbooking', [
             'booking' => $getAllBookings,
-            'rooms' => $rooms
+            'rooms' => $rooms,
+            'purchaseAndRentals' => $purchaseAndRentals,
+            'violations' => $violations,
         ]);
     }
 
@@ -440,9 +447,9 @@ class BookNowController extends Controller
 
     public function updateCompleteBooking(Request $request)
     {
-        // Bookings::where('id', $request->id)->update([
-        //     'booking_status' => $request->booking_status
-        // ]);
+        Bookings::where('id', $request->id)->update([
+            'booking_status' => $request->booking_status
+        ]);
 
         User::where('id', $request->user_id)->update([
             'is_booked' => NULL
@@ -451,9 +458,9 @@ class BookNowController extends Controller
 
     public function cancelBooking(Request $request)
     {
-        // Bookings::where('id', $request->book_id)->update([
-        //     'booking_status' => 'Canceled',
-        // ]);
+        Bookings::where('id', $request->book_id)->update([
+            'booking_status' => 'Canceled',
+        ]);
 
         User::where('id', $request->user_id)->update([
             'is_booked' => NULL

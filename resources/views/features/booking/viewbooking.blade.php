@@ -156,25 +156,52 @@
                     <div class="col-12 col-lg-6">
                         <h6>Purchase and Rentals</h6>
                         <ul class="list-group list-group-flush">
-                            @foreach ($purchaseAndRentals as $purchaseAndRental)
+                            @forelse ($purchaseAndRentals as $purchaseAndRental)
                                 <li class="list-group-item">
                                     <b>Item Name:</b>
                                     {{ $purchaseAndRental->item_name }}
                                 </li>
                                 <li class="list-group-item">
                                     <b>Price: </b>
-                                    P{{ $purchaseAndRental->price }}
+                                    <span id="pPrice{{ $purchaseAndRental->id }}">P{{ $purchaseAndRental->price }}</span>
                                 </li>
                                 <li class="list-group-item">
                                     <b>Receipt: </b>
                                 </li>
                                 <img src="https://labaksamorong.com/NetSysProject-main/public/img/payments/{{ $purchaseAndRental->item_payment_image }}"
                                     height="300" width="200" />
-                            @endforeach
+                            @empty
+                                <li class="list-group-item">
+                                    <b>No Purchases have been made</b>
+                                </li>
+                            @endforelse
+                        </ul>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <h6>POS Violations</h6>
+                        <ul class="list-group list-group-flush">
+                            @forelse ($violations as $violation)
+                                <li class="list-group-item">
+                                    <b>Violation Reason:</b>
+                                    {{ $violation->violation_description }}
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Price: </b>
+                                    <span id="vPrice{{ $violation->id }}">P{{ $violation->violation_price }}</span>
+                                </li>
+
+                            @empty
+                                <li class="list-group-item">
+                                    <b>No Violations</b>
+                                </li>
+                            @endforelse
                         </ul>
                     </div>
                 </div>
             </div>
+            {{-- <div class="d-flex flex-row justify-content-end mt-3">
+                P<span id="finalPrice"></span>
+            </div> --}}
         </div>
         @if (Auth::user()->user_role == 1)
             <div class="d-flex flex-row justify-content-end mt-3">
